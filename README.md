@@ -1,54 +1,44 @@
-# Remotion video
+# Remotion Playground
 
-<p align="center">
-  <a href="https://github.com/remotion-dev/logo">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/remotion-dev/logo/raw/main/animated-logo-banner-dark.apng">
-      <img alt="Animated Remotion Logo" src="https://github.com/remotion-dev/logo/raw/main/animated-logo-banner-light.gif">
-    </picture>
-  </a>
-</p>
+Repo de prueba para experimentar con [Remotion](https://www.remotion.dev/) y generar videos animados con React.
 
-Welcome to your Remotion project!
+## Requisitos
 
-## Commands
+- Node.js 18+ (probado con Node 26)
+- macOS 15+ recomendado por Remotion
 
-**Install Dependencies**
+## Empezar
 
-```console
-npm i --loglevel=error
-```
-
-**Start Preview**
-
-```console
+```bash
+npm install
 npm run dev
 ```
 
-**Render video**
+Eso abre **Remotion Studio** en el navegador: ahí previsualizas la composición, ajustas el timeline y renders.
 
-```console
-npx remotion render
+## Renderizar un MP4
+
+```bash
+npx remotion render HelloRemotion out/hello.mp4
 ```
 
-**Upgrade Remotion**
+El vídeo queda en `out/hello.mp4` (esa carpeta está en `.gitignore`).
 
-```console
-npx remotion upgrade
-```
+## Estructura
 
-## Docs
+- `src/Root.tsx` — registro de composiciones
+- `src/Composition.tsx` — composición demo `HelloRemotion` (texto + spring + órbita)
+- `public/` — assets estáticos (imágenes, audio, etc.)
 
-Get started with Remotion by reading the [fundamentals page](https://www.remotion.dev/docs/the-fundamentals).
+## Ideas para probar
 
-## Help
+1. Cambiar colores / tipografía en `HelloRemotion`
+2. Añadir `Sequence` para escenas en serie
+3. Importar una imagen en `public/` y usarla con `<Img>`
+4. Renderizar a GIF o WebM con el CLI de Remotion
 
-We provide help on our [Discord server](https://discord.gg/6VzzNDwUwV).
+## Docs útiles
 
-## Issues
-
-Found an issue with Remotion? [File an issue here](https://github.com/remotion-dev/remotion/issues/new).
-
-## License
-
-Note that for some entities a company license is needed. [Read the terms here](https://github.com/remotion-dev/remotion/blob/main/LICENSE.md).
+- [Fundamentos](https://www.remotion.dev/docs/the-fundamentals)
+- [Animar con `spring` / `interpolate`](https://www.remotion.dev/docs/animating-properties)
+- [CLI render](https://www.remotion.dev/docs/cli/render)
