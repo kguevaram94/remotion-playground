@@ -84,6 +84,13 @@ Formato: fecha · decisión · contexto · alternativa · consecuencia.
 - **Alternativas descartadas:** Forzar el mismo beat interno que logic-lateral a todas las familias; exigir `family` en scripts legacy; mezclar beat y puzzle en un solo módulo.
 - **Consecuencia:** Scripts logic-lateral actuales sin `family` siguen válidos. P6 / B–D permanecen `proposed` hasta nuevo `approved`. Sin deps nuevas ni cambio de QC P5.
 
+## D012 — Familia math (entrega B)
+
+- **Fecha:** 2026-10-19
+- **Decisión (`T-MULTIFORMAT-001` B):** Plantilla oficial `data/templates/script-math.json` con beat propio `hook → puzzle → countdown → explanation → reveal → outro` (distinto de logic-lateral). Validador aritmético + coherencia narrativa `answerKey`↔reveal (`validateMathNarrative`). Referencia `auto_validated` con operands/operator/result. CTA comentar vía convención A.
+- **Alternativas descartadas:** Reutilizar el beat logic-lateral; basar la plantilla oficial solo en cerillas romanas frágiles; validación narrativa por LLM.
+- **Consecuencia:** Memory/illusion siguen sin narrativa específica (C/D). Beat logic-lateral y P5/QC intactos.
+
 ---
 
 Al descartar o adoptar algo nuevo: añadir **D00N** aquí y enlazar desde el PR / `tasks/approvals.md`.

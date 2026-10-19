@@ -1,6 +1,19 @@
 # Plantillas
 
-- `script-plantilla.json` — guion completo (escenas + narración + visuales). Edita y pasa con `--input`.
-- Topic mínimo: `../topics/_plantilla.json` (solo título; el pipeline genera el guion).
+| Archivo | Familia | Uso |
+| --- | --- | --- |
+| `script-logic-lateral.json` | `logic-lateral` | Formato oficial de referencia (beat + CTA comentar) |
+| `script-math.json` | `math` | Familia math (entrega B · T-MULTIFORMAT-001) |
+| `script-plantilla.json` | varias | Guion genérico / variantes legacy (p. ej. nine-dots) |
 
-Ver [docs/generar-short.md](../../docs/generar-short.md).
+Topic mínimo: `../topics/_plantilla.json` (solo título; el pipeline genera el guion).
+
+```bash
+cp data/templates/script-logic-lateral.json data/topics/mi-reto.json
+# o
+cp data/templates/script-math.json data/topics/mi-reto-math.json
+
+npm run generar-short -- --input data/topics/mi-reto.json
+```
+
+Campo opcional `family`: si se omite, se infiere. Ver [docs/generar-short.md](../../docs/generar-short.md).

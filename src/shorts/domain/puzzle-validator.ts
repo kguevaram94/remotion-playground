@@ -118,43 +118,83 @@ export const validateFindDifferent = (visual: Visual): PuzzleValidationResult =>
   return ok('auto_validated', [], {answerCellId: answer.id});
 };
 
+const evalBinary = (
+  a: number,
+  b: number,
+  operator: '+' | '-' | '*' | '/' | '=',
+): number | null => {
+  switch (operator) {
+    case '+':
+      return a + b;
+    case '-':
+      return a - b;
+    case '*':
+      return a * b;
+    case '/':
+      return b === 0 ? null : a / b;
+    case '=':
+      return null;
+    default:
+      return null;
+  }
+};
+
+/** Valida ecuación arábiga `left=right` (p. ej. `7+5=12`). */
+export const validateArabicEquation = (
+  equation: string,
+): PuzzleValidationResult => {
+  const parts = equation.split('=').map((p) => p.trim());
+  if (parts.length !== 2) {
+    return fail([`Ecuación inválida (se esperaba a=b): ${equation}`]);
+  }
+  const left = evalSimpleMath(parts[0]!);
+  const right = evalSimpleMath(parts[1]!);
+  if (left === null || right === null) {
+    return ok('partial', ['No se pudo evaluar la ecuación arábiga'], {equation});
+  }
+  if (Math.abs(left - right) > 1e-9) {
+    return fail([`Ecuación incorrecta: ${equation} (${left}≠${right})`]);
+  }
+  return ok('auto_validated', [], {equation, left, right});
+};
+
 export const validateMathPuzzle = (visual: Visual): PuzzleValidationResult => {
   if (visual.template !== 'math-puzzle') {
     return fail(['Visual no es math-puzzle']);
   }
 
   if (visual.matchsticks) {
-    const beforeCount = visual.matchsticks.before.length;
-    const afterCount = visual.matchsticks.after.length;
-    const moved = Math.abs(beforeCount - afterCount);
-    if (moved > visual.matchsticks.moves) {
-      return fail([
-        `Movimientos de cerillas inconsistentes: delta=${moved}, moves=${visual.matchsticks.moves}`,
-      ]);
+    if (visual.matchsticks.moves < 1) {
+      return fail(['matchsticks.moves debe ser ≥ 1']);
     }
-    if (visual.revealAnswer) {
-      const computed = evalSimpleMath(visual.revealAnswer.replace(/=/g, '==').replace(/==/g, '-').replace(/-/g, '-'));
-      // Prefer checking left/right of equation
-      const parts = visual.revealAnswer.split('=');
-      if (parts.length === 2) {
-        const left = evalSimpleMath(parts[0]!);
-        const right = evalSimpleMath(parts[1]!);
-        if (left === null || right === null) {
-          return ok('partial', ['No se pudo evaluar la ecuación de cerillas'], {
-            revealAnswer: visual.revealAnswer,
-          });
-        }
-        if (left !== right) {
-          return fail([`Ecuación incorrecta: ${visual.revealAnswer} (${left}≠${right})`]);
-        }
-        return ok('auto_validated', [], {equation: visual.revealAnswer, left, right});
+    if (visual.revealAnswer && /[\d+\-*/()]/.test(visual.revealAnswer)) {
+      const eq = validateArabicEquation(visual.revealAnswer);
+      if (!eq.ok || eq.level === 'auto_validated') {
+        return {
+          ...eq,
+          details: {
+            ...eq.details,
+            matchsticks: {
+              before: visual.matchsticks.before.length,
+              after: visual.matchsticks.after.length,
+              moves: visual.matchsticks.moves,
+            },
+          },
+        };
       }
-      void computed;
+      return eq;
     }
-    return ok('partial', ['Cerillas validadas parcialmente (conteo de movimientos)'], {
-      beforeCount,
-      afterCount,
-    });
+    return ok(
+      'partial',
+      [
+        'Cerillas: se valida estructura; la transformación geométrica requiere revisión o revealAnswer arábigo',
+      ],
+      {
+        beforeCount: visual.matchsticks.before.length,
+        afterCount: visual.matchsticks.after.length,
+        moves: visual.matchsticks.moves,
+      },
+    );
   }
 
   if (visual.result !== undefined && visual.operands && visual.operator) {
@@ -162,41 +202,37 @@ export const validateMathPuzzle = (visual: Visual): PuzzleValidationResult => {
     if (a === undefined || b === undefined) {
       return fail(['Faltan operandos']);
     }
-    let expected: number;
-    switch (visual.operator) {
-      case '+':
-        expected = a + b;
-        break;
-      case '-':
-        expected = a - b;
-        break;
-      case '*':
-        expected = a * b;
-        break;
-      case '/':
-        expected = a / b;
-        break;
-      default:
-        return fail([`Operador no soportado: ${visual.operator}`]);
+    const expected = evalBinary(a, b, visual.operator);
+    if (expected === null) {
+      return fail([`Operador no evaluable: ${visual.operator}`]);
     }
     if (Math.abs(expected - visual.result) > 1e-9) {
       return fail([`Resultado ${visual.result} ≠ ${expected}`]);
     }
-    return ok('auto_validated', [], {expected});
+    if (visual.revealAnswer && visual.revealAnswer.includes('=')) {
+      const eq = validateArabicEquation(visual.revealAnswer);
+      if (!eq.ok) return eq;
+    }
+    return ok('auto_validated', [], {expected, operands: [a, b], operator: visual.operator});
+  }
+
+  if (visual.revealAnswer && visual.revealAnswer.includes('=')) {
+    return validateArabicEquation(visual.revealAnswer);
   }
 
   const expr = visual.expression;
   if (expr.includes('?') || expr.includes('_')) {
     if (visual.revealAnswer) {
       const filled = expr.replace(/[?_]+/, visual.revealAnswer);
-      const value = evalSimpleMath(filled.split('=')[0] ?? filled);
+      const lhs = filled.split('=')[0] ?? filled;
+      const value = evalSimpleMath(lhs);
       if (visual.result !== undefined && value !== null && value !== visual.result) {
         return fail([`Respuesta ${visual.revealAnswer} no produce ${visual.result}`]);
       }
       return ok(
         value !== null ? 'auto_validated' : 'partial',
         value === null ? ['Expresión no evaluable automáticamente'] : [],
-        {filled},
+        {filled, value},
       );
     }
     return ok('pending_review', ['Falta revealAnswer para validar']);
@@ -210,6 +246,98 @@ export const validateMathPuzzle = (visual: Visual): PuzzleValidationResult => {
     return fail([`expression=${value} pero result=${visual.result}`]);
   }
   return ok('auto_validated', [], {value});
+};
+
+type MathAnswerKey = {
+  type?: string;
+  equation?: string;
+  left?: number;
+  right?: number;
+  result?: number;
+  operands?: number[];
+  operator?: '+' | '-' | '*' | '/' | '=';
+};
+
+/**
+ * Coherencia narrativa básica math: answerKey ↔ visual de reveal.
+ * No usa LLM; solo datos declarativos.
+ */
+export const validateMathNarrative = (
+  script: VideoScript,
+  visual: Visual,
+): PuzzleValidationResult => {
+  if (visual.template !== 'math-puzzle') {
+    return fail(['Narrativa math requiere visual math-puzzle en reveal']);
+  }
+
+  const key = script.solution.answerKey as MathAnswerKey | undefined;
+  const warnings: string[] = [];
+  const details: Record<string, unknown> = {narrative: true};
+
+  if (!key || (key.type && key.type !== 'math')) {
+    return ok('partial', ['answerKey math ausente o type≠math'], details);
+  }
+
+  if (key.result !== undefined && visual.result !== undefined) {
+    if (Math.abs(key.result - visual.result) > 1e-9) {
+      return fail(
+        [`answerKey.result ${key.result} ≠ visual.result ${visual.result}`],
+        [],
+        details,
+      );
+    }
+  }
+
+  if (key.operands && visual.operands) {
+    if (
+      key.operands.length !== visual.operands.length ||
+      key.operands.some((n, i) => n !== visual.operands![i])
+    ) {
+      return fail(['answerKey.operands no coinciden con el visual de reveal'], [], details);
+    }
+  }
+
+  if (key.operator && visual.operator && key.operator !== visual.operator) {
+    return fail(
+      [`answerKey.operator ${key.operator} ≠ visual.operator ${visual.operator}`],
+      [],
+      details,
+    );
+  }
+
+  if (key.equation) {
+    const eq = validateArabicEquation(key.equation);
+    if (!eq.ok) return {...eq, details: {...eq.details, ...details}};
+    if (visual.revealAnswer) {
+      const norm = (s: string) => s.replace(/\s+/g, '');
+      if (norm(key.equation) !== norm(visual.revealAnswer)) {
+        return fail(
+          [
+            `answerKey.equation (${key.equation}) ≠ revealAnswer (${visual.revealAnswer})`,
+          ],
+          [],
+          details,
+        );
+      }
+    }
+    details.equation = key.equation;
+  } else if (!visual.revealAnswer && visual.result === undefined) {
+    warnings.push('Sin equation ni revealAnswer: narrativa math incompleta');
+  }
+
+  const puzzle = script.scenes.find((s) => s.type === 'puzzle');
+  if (
+    puzzle?.visual.template === 'math-puzzle' &&
+    puzzle.visual.expression &&
+    visual.expression &&
+    puzzle.visual.expression.includes('?') &&
+    !visual.revealAnswer &&
+    visual.result === undefined
+  ) {
+    warnings.push('Reveal no aporta solución numérica declarada');
+  }
+
+  return ok('auto_validated', warnings, details);
 };
 
 export const validateOpticalIllusion = (visual: Visual): PuzzleValidationResult => {
@@ -389,9 +517,32 @@ export const validateFamilyPuzzle = (
     case 'find-different':
       result = validateFindDifferent(visual);
       break;
-    case 'math':
-      result = validateMathPuzzle(visual);
+    case 'math': {
+      const visualResult = validateMathPuzzle(visual);
+      if (!visualResult.ok) {
+        result = visualResult;
+        break;
+      }
+      const narrative = validateMathNarrative(script, visual);
+      if (!narrative.ok) {
+        result = narrative;
+        break;
+      }
+      const rank = (level: ValidationLevel) =>
+        ({auto_validated: 0, partial: 1, pending_review: 2, failed: 3})[level];
+      const level =
+        rank(visualResult.level) >= rank(narrative.level)
+          ? visualResult.level
+          : narrative.level;
+      result = {
+        level,
+        ok: level !== 'failed',
+        errors: [],
+        warnings: [...visualResult.warnings, ...narrative.warnings],
+        details: {...visualResult.details, ...narrative.details},
+      };
       break;
+    }
     case 'illusion':
       result = validateOpticalIllusion(visual);
       break;

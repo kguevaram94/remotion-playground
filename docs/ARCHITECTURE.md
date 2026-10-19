@@ -77,7 +77,7 @@ Familias registradas en `src/shorts/templates/registry.ts` (`TemplateFamily` en 
 | --- | --- | --- |
 | `logic-lateral` | `logic-puzzle` | Beat oficial exacto; referencia de producción |
 | `logic-puzzle` | `logic-puzzle` | Genérico (p. ej. nine-dots); sin secuencia logic-lateral |
-| `math` | `math-puzzle` | Beat específico: entrega B |
+| `math` | `math-puzzle` | Beat propio: hook→puzzle→countdown→explanation→reveal→outro · plantilla `script-math.json` (entrega B) |
 | `memory` | `memory-challenge` | Beat específico: entrega C |
 | `illusion` | `optical-illusion` | Beat específico: entrega D |
 | `find-different` | `find-different` | Scaffolding existente |

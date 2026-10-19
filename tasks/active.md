@@ -8,45 +8,51 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 ## Identificador y fase
 
-- **ID:** `T-MULTIFORMAT-001` · entrega **A** (contrato multiformato) — cerrada
+- **ID:** `T-MULTIFORMAT-001` · entrega **B** (familia math) — cerrada
 - **Fase ROADMAP:** `P6` (sigue `proposed`)
 
 ## Estado de aprobación
 
 `accepted`
 
-> Entrega **A** aceptada por humano (chat Cursor 2026-10-19).  
-> B, C, D permanecen `proposed`. P6 permanece `proposed`.  
-> **Sin** implementación `in_progress`. No iniciar B hasta nuevo `approved`.
+> Entrega **B** aceptada por humano (chat Cursor 2026-10-19).  
+> A permanece `accepted`. C, D y P6 permanecen `proposed`.  
+> **Sin** implementación `in_progress`. No iniciar C hasta nuevo `approved`.
 
-## Objetivo (A — cerrado)
+## Objetivo (B — cerrado)
 
-Contrato TypeScript multiformato, registro/resolución de familias, campo `family` opcional retrocompatible, validación compartida vs específica, beat checker de reglas comunes, tests/regresión logic-lateral y docs.
+Familia **math** al nivel de plantilla oficial: JSON, beat propio, builder, validador (+ narrativa básica answerKey↔reveal), componente, tests y docs.
 
-## Alcance entregado y aceptado (A)
+## Alcance entregado y aceptado (B)
 
-Implementado según `tasks/approvals.md` (contrato, registry, `family` opcional, beat común, validadores separados, docs D011).
+Implementado según `tasks/approvals.md`: `script-math.json`, beat math, `validateMathNarrative`, `MathPuzzle`, tests/typecheck, regresión validate logic-lateral.
 
 ## Limitaciones de aceptación (vinculantes)
 
-- Regresión = **`--mode validate`** sobre `script-logic-lateral.json`. **No** se afirma render MP4 ni inspección audiovisual.
-- Validación narrativa específica de **math / memory / illusion** queda pendiente (entregas B–D).
-- `buildFromTitle` no registrado en `TEMPLATE_FAMILIES` (generación en `script-generator.ts`).
-- P5 / QC no modificados; beat oficial logic-lateral intacto.
+- Comprobaciones = **validación** (`--mode validate` / unit tests). **No** se afirma render MP4 ni inspección audiovisual.
+- El fixture `script-math.json` y los tests cubren el camino feliz aritmético + coherencia answerKey↔reveal; **no** demuestran cobertura exhaustiva de casos límite matemáticos.
+- Validación narrativa memory/illusion pendiente (C/D).
+- Beat oficial logic-lateral y P5/QC intactos.
 
-## Criterios de aceptación (entrega A)
+## Criterios de aceptación (entrega B)
 
-- [x] Scripts logic-lateral sin `family` funcionan sin migración.
-- [x] Scripts con `family` explícito se resuelven correctamente.
-- [x] Familias desconocidas → error explícito.
-- [x] Validadores compartidos y específicos separados.
-- [x] Pipeline / P5 sin cambios de comportamiento de QC.
-- [x] `npm test` (79 tests) y `npm run typecheck` OK.
-- [x] Regresión validate de `script-logic-lateral.json` OK.
-- [x] Diff acotado a A; sin deps; sin publish.
+- [x] Fixture `script-math.json` + beat math + validación answerKey↔reveal + `MathPuzzle`.
+- [x] Tests y typecheck superados.
+- [x] Regresión validate logic-lateral OK.
 - [x] Humano marca `accepted` (2026-10-19).
+
+## Pruebas ejecutadas (referencia de la entrega)
+
+```bash
+npm test          # 18 files / 86 tests passed
+npm run typecheck # OK
+npm run short -- --input data/templates/script-math.json --mode validate --id t-multiformat-b-math
+# → auto_validated
+npm run short -- --input data/templates/script-logic-lateral.json --mode validate --id t-multiformat-b-logic-regression
+# → OK (partial)
+```
 
 ## Notas de cierre
 
-- Entrega A → `accepted`. Siguiente: B (math) en `proposed` hasta autorización humana explícita.
+- Entrega B → `accepted`. Siguiente: C (memory) en `proposed` hasta autorización humana explícita.
 - Sin commit/push/merge/publicación en este cierre documental.

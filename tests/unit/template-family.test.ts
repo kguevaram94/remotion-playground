@@ -96,15 +96,22 @@ describe('template family contract (entrega A)', () => {
       'outro',
     ]);
     const mathFamily = getTemplateFamily('math');
-    expect(mathFamily.beat.exactSequence).toBeUndefined();
+    expect(mathFamily.beat.exactSequence).toEqual([
+      'hook',
+      'puzzle',
+      'countdown',
+      'explanation',
+      'reveal',
+      'outro',
+    ]);
+    expect(mathFamily.beat.exactSequence).not.toEqual(lateral.beat.exactSequence);
   });
 
-  it('does not impose logic-lateral sequence on math stubs', () => {
+  it('does not impose logic-lateral sequence on math scripts', () => {
     const math = buildMathPuzzleScript('Ecuación', 'm1', opts);
     expect(resolveFamilyId(math)).toBe('math');
     const result = validateScriptPuzzles(math);
     expect(result.ok).toBe(true);
-    // Math stub beat ≠ logic-lateral; still passes common rules
     expect(math.scenes.map((s) => s.type)).not.toEqual([
       'hook',
       'instruction',

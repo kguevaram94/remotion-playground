@@ -56,10 +56,18 @@ export const TEMPLATE_FAMILIES: Record<TemplateFamilyId, TemplateFamily> = {
     formats: ['math-puzzle'],
     beat: {
       common: COMMON_BEAT_RULES,
-      // exactSequence: pendiente entrega B
+      exactSequence: [
+        'hook',
+        'puzzle',
+        'countdown',
+        'explanation',
+        'reveal',
+        'outro',
+      ],
       preferCommentCta: true,
     },
     allowedVisualTemplates: ['math-puzzle', 'countdown', 'hook', 'text'],
+    referenceTemplatePath: 'data/templates/script-math.json',
   },
   memory: {
     id: 'memory',

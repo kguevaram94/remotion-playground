@@ -29,7 +29,7 @@ Código terminado ≠ `accepted`.
 | P3 | Gobernanza ChatGPT+Cursor+GitHub | `accepted` | `AGENTS.md`, `ROADMAP.md`, `tasks/*`, `.cursor/rules/governance.mdc`, `.cursor/rules/shorts.mdc`, `docs/DECISIONS.md` D007–D008; informe de revisión `T-GOV-001` | humano (chat Cursor: aceptación explícita con base en informe) | 2026-10-19 |
 | P4 | CI GitHub Actions | `accepted` | `.github/workflows/ci.yml`; run [39237385007](https://github.com/kguevaram94/remotion-playground/actions/runs/39237385007) en commit `fd74e44abe169808faf90132ce52960df33dd7ef` (success: `npm ci`, `npm run typecheck`, `npm test`) | humano (chat Cursor: aceptación explícita con evidencia CI) | 2026-10-19 |
 | P5 | Pulido logic-lateral | `accepted` | `T-POLISH-001` + `T-QC-LOUDNORM-001` `accepted`. BGM=0 pistas; sin validación audiovisual MP4 no-mock | humano (chat Cursor; código/tests/typecheck; limitación AV doc.) | 2026-10-19 |
-| P6 | Más familias plantilla | `proposed` | Entrega A `accepted` (2026-10-19); B/C/D y P6 siguen `proposed` | humano (aceptó A; fase P6 no cerrada) | 2026-10-19 |
+| P6 | Más familias plantilla | `proposed` | A+B `accepted` (2026-10-19); C/D y P6 siguen `proposed` | humano (aceptó A y B; fase P6 no cerrada) | 2026-10-19 |
 | P7 | Studio/preview estable | `proposed` | Depende P0 | — | — |
 | P8 | Publicación YouTube | `blocked` | Descartado por ahora (`ROADMAP` / D-future) | — | — |
 
@@ -41,7 +41,7 @@ Código terminado ≠ `accepted`.
 | `T-CI-001` | P4 | CI test + typecheck | `accepted` | Aceptado 2026-10-19 con evidencia CI run 39237385007 (commit `fd74e44`) |
 | `T-POLISH-001` | P5 | Pulido logic-lateral (SFX, BGM curada, thumb Satori, loudnorm narración→MP4) | `accepted` | Aceptado 2026-10-19 (código/tests/typecheck; limitación AV documentada). Sin commit/push |
 | `T-QC-LOUDNORM-001` | P5 | Gate QC loudnorm + publishEligibility | `accepted` | Aceptado 2026-10-19 (auditoría final 7/7 PASS; 72 tests; typecheck OK) |
-| `T-MULTIFORMAT-001` | P6 | Multiformato (entregas A–D) | A: `accepted` · B/C/D: `proposed` | A aceptada 2026-10-19; P6 sigue `proposed`; B requiere nuevo `approved` |
+| `T-MULTIFORMAT-001` | P6 | Multiformato (entregas A–D) | A: `accepted` · B: `accepted` · C/D: `proposed` | B aceptada 2026-10-19; P6 sigue `proposed`; C requiere nuevo `approved` |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -59,11 +59,60 @@ Código terminado ≠ `accepted`.
 
 ## Tarea activa / alcance aprobado
 
-> Sin implementación `in_progress`. Entrega **A** de `T-MULTIFORMAT-001` = **`accepted`** (2026-10-19).  
-> B, C, D = `proposed`. P6 = `proposed`. P5 / QC loudnorm = `accepted`.  
-> No iniciar B hasta nuevo `approved` humano.
+> Sin implementación `in_progress`. Entregas **A** y **B** de `T-MULTIFORMAT-001` = **`accepted`** (2026-10-19).  
+> C, D = `proposed`. P6 = `proposed`. P5 / QC = `accepted`.  
+> No iniciar C hasta nuevo `approved` humano.
 
-### `T-MULTIFORMAT-001` · P6 · entrega A `accepted` (B/C/D `proposed`)
+### `T-MULTIFORMAT-001` · P6 · entrega B `accepted` (A `accepted` · C/D `proposed`)
+
+#### Aceptación humana — entrega B (2026-10-19)
+
+Estado: **`accepted`** (humano, chat Cursor 2026-10-19).
+
+La revisión humana acepta el alcance entregado:
+
+- Fixture `data/templates/script-math.json`.
+- Beat específico de math.
+- Validación `answerKey` frente a reveal.
+- Componente `MathPuzzle`.
+- Tests y typecheck superados.
+- Regresión validate de logic-lateral ejecutada correctamente.
+
+**Limitaciones documentadas (vinculantes):**
+
+- Las comprobaciones realizadas corresponden a **validación**, **no** a render ni inspección audiovisual.
+- Alcance de la validación matemática: el fixture / tests del camino feliz **no demuestran cobertura exhaustiva de casos límite**.
+- Narrativa memory/illusion pendiente (C/D). Beat logic-lateral y P5/QC intactos.
+
+**Aceptado por:** humano (chat Cursor).  
+**No autorizado en este acto:** implementar C/D; cerrar P6; commit/push/merge; alterar beat logic-lateral o P5/QC.
+
+#### Aprobación humana — inicio entrega B (2026-10-19)
+
+- **Alcance autorizado:** familia math (JSON referencia, beat propio, builder, validador/narrativa básica, componente, tests, docs).
+- **No autorizado:** C/D; cambiar beat logic-lateral; P5/QC; deps; YouTube; commit/push/merge; P6 → `accepted`.
+- **Aprobado por:** humano (chat Cursor: `approved`).
+- **Estado B (ciclo):** `approved` → `in_progress` → `review_required` → **`accepted`**.
+
+#### Informe de revisión — `T-MULTIFORMAT-001` / entrega B (pre-aceptación)
+
+- **Cambios:**
+  - Nuevo: `data/templates/script-math.json`, `tests/unit/math-family.test.ts`
+  - `src/shorts/templates/math-puzzle.ts`, `registry.ts` (exactSequence math + reference path)
+  - `puzzle-validator.ts` (`validateArabicEquation`, `validateMathNarrative`, math orquestado)
+  - `MathPuzzle.tsx` (pulido visual)
+  - Docs: README plantillas, ARCHITECTURE, DECISIONS D012, generar-short; gobernanza
+- **Decisiones:** beat math propio (≠ logic-lateral); plantilla aritmética `auto_validated`; narrativa = coherencia answerKey↔reveal (sin LLM).
+- **Comandos (validación, no render/AV):**
+  - `npm test` → 18 files / **86** tests passed
+  - `npm run typecheck` → OK
+  - validate `script-math.json` → **`auto_validated`**
+  - validate `script-logic-lateral.json` → OK (`partial`, esperado)
+- **Limitaciones:** validate only; fixture ≠ cobertura exhaustiva de edge cases; narrativa memory/illusion pendiente C/D; cerillas sin ecuación arábiga → `partial`.
+- **Estado tras aceptación:** B `accepted`; C/D `proposed`; P6 `proposed`.
+- **Siguiente:** espera `approved` humano explícito antes de implementar C.
+
+### `T-MULTIFORMAT-001` · P6 · entrega A `accepted` (histórico)
 
 #### Aceptación humana — entrega A (2026-10-19)
 

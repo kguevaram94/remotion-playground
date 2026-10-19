@@ -61,7 +61,21 @@ Topic stub: `data/topics/_plantilla-logic-lateral.json`.
 
 El guion puede incluir `"family": "logic-lateral"` (u otra familia conocida). Si se omite, el pipeline **infiere** la familia (`format` + visuales). Familias desconocidas se rechazan con error explícito. No hace falta migrar plantillas existentes.
 
-Familias registradas: `logic-lateral`, `logic-puzzle`, `math`, `memory`, `illusion`, `find-different`. El beat oficial de logic-lateral no cambia; otras familias aún no tienen plantilla de producción (entregas B–D). Detalle: `docs/ARCHITECTURE.md` · `docs/DECISIONS.md` D011.
+Familias registradas: `logic-lateral`, `logic-puzzle`, `math`, `memory`, `illusion`, `find-different`. El beat oficial de logic-lateral no cambia.
+
+### Familia math (entrega B)
+
+Plantilla: `data/templates/script-math.json`.
+
+Beat propio: `hook` → `puzzle` → `countdown` → `explanation` → `reveal` → `outro` (CTA comentar).
+
+```bash
+cp data/templates/script-math.json data/topics/mi-reto-math.json
+# editar id, title, expresión, narrations…
+npm run generar-short -- --input data/topics/mi-reto-math.json
+```
+
+Validación: aritmética declarativa + coherencia `answerKey`↔reveal (`auto_validated` en la plantilla de referencia). Memory/illusion: entregas C–D. Detalle: `docs/ARCHITECTURE.md` · D011–D012.
 
 ## 2. Solo título (plantilla automática)
 
