@@ -6,7 +6,7 @@ import {
   useVideoConfig,
 } from 'remotion';
 import {SAFE, shortColors, shortFont} from '../theme';
-import {SfxAt} from './Sfx';
+import {SfxAt, SFX_VOLUME} from './Sfx';
 
 export const AnswerReveal: React.FC<{
   headline: string;
@@ -27,7 +27,12 @@ export const AnswerReveal: React.FC<{
         textAlign: 'center',
       }}
     >
-      <SfxAt name="ding" from={0} durationInFrames={Math.round(0.5 * fps)} volume={0.4} />
+      <SfxAt
+        name="ding"
+        from={0}
+        durationInFrames={Math.round(0.55 * fps)}
+        volume={SFX_VOLUME.ding}
+      />
       <div
         style={{
           fontSize: 64,

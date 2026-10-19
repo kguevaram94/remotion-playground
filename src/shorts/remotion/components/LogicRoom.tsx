@@ -7,7 +7,7 @@ import {
 } from 'remotion';
 import type {LogicRoomVisual} from '../../domain/scene.schema';
 import {SAFE, shortColors, shortFont} from '../theme';
-import {SfxAt} from './Sfx';
+import {SfxAt, SFX_VOLUME} from './Sfx';
 
 const SwitchPlate: React.FC<{
   label: string;
@@ -170,7 +170,7 @@ export const LogicRoom: React.FC<{
         alignItems: 'center',
       }}
     >
-      <SfxAt name="pop" from={0} durationInFrames={15} volume={0.35} />
+      <SfxAt name="pop" from={0} durationInFrames={16} volume={SFX_VOLUME.pop} />
       {onScreenText ? (
         <div
           style={{

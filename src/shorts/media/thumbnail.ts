@@ -13,6 +13,7 @@ export type ThumbnailInput = {
 
 /**
  * YouTube/Shorts cover via Satori → SVG → PNG (no browser needed).
+ * Single layout for all formats (no per-family templates).
  */
 export const renderThumbnailPng = async (
   input: ThumbnailInput,
@@ -22,8 +23,9 @@ export const renderThumbnailPng = async (
   const height = input.height ?? 1920;
   const title =
     input.title.length > 72 ? `${input.title.slice(0, 69)}…` : input.title;
-  const hook = input.hook?.slice(0, 80);
+  const hook = input.hook?.trim().slice(0, 80);
   const badge = (input.badge ?? 'RETO').toUpperCase();
+  const titleSize = title.length > 48 ? 48 : title.length > 32 ? 56 : 68;
 
   // Satori accepts a React-like element tree; cast keeps us free of JSX in Node scripts.
   const tree = {
@@ -37,8 +39,8 @@ export const renderThumbnailPng = async (
         justifyContent: 'center',
         alignItems: 'center',
         background:
-          'linear-gradient(160deg, #0b1220 0%, #12233f 45%, #07111f 100%)',
-        padding: 64,
+          'linear-gradient(165deg, #050b16 0%, #0f2744 42%, #071018 100%)',
+        padding: 72,
         fontFamily: 'sans-serif',
       },
       children: [
@@ -47,13 +49,41 @@ export const renderThumbnailPng = async (
           props: {
             style: {
               display: 'flex',
-              color: '#38bdf8',
-              fontSize: 28,
-              fontWeight: 700,
-              letterSpacing: 4,
+              backgroundColor: 'rgba(56, 189, 248, 0.14)',
+              border: '2px solid #38bdf8',
+              borderRadius: 999,
+              padding: '14px 36px',
+              marginBottom: 48,
+            },
+            children: [
+              {
+                type: 'div',
+                props: {
+                  style: {
+                    display: 'flex',
+                    color: '#7dd3fc',
+                    fontSize: 30,
+                    fontWeight: 700,
+                    letterSpacing: 6,
+                  },
+                  children: badge,
+                },
+              },
+            ],
+          },
+        },
+        {
+          type: 'div',
+          props: {
+            style: {
+              display: 'flex',
+              width: 120,
+              height: 6,
+              backgroundColor: '#fbbf24',
+              borderRadius: 4,
               marginBottom: 36,
             },
-            children: badge,
+            children: '',
           },
         },
         {
@@ -62,11 +92,12 @@ export const renderThumbnailPng = async (
             style: {
               display: 'flex',
               color: '#f8fafc',
-              fontSize: title.length > 40 ? 52 : 64,
+              fontSize: titleSize,
               fontWeight: 800,
               textAlign: 'center',
-              lineHeight: 1.15,
-              maxWidth: 900,
+              lineHeight: 1.18,
+              maxWidth: 920,
+              textShadow: '0 2px 24px rgba(0,0,0,0.55)',
             },
             children: title,
           },
@@ -77,14 +108,29 @@ export const renderThumbnailPng = async (
               props: {
                 style: {
                   display: 'flex',
-                  marginTop: 40,
-                  color: '#fbbf24',
-                  fontSize: 34,
-                  fontWeight: 700,
-                  textAlign: 'center',
-                  maxWidth: 860,
+                  marginTop: 44,
+                  backgroundColor: 'rgba(251, 191, 36, 0.12)',
+                  border: '2px solid rgba(251, 191, 36, 0.55)',
+                  borderRadius: 20,
+                  padding: '22px 36px',
+                  maxWidth: 880,
                 },
-                children: hook,
+                children: [
+                  {
+                    type: 'div',
+                    props: {
+                      style: {
+                        display: 'flex',
+                        color: '#fde68a',
+                        fontSize: 32,
+                        fontWeight: 700,
+                        textAlign: 'center',
+                        lineHeight: 1.3,
+                      },
+                      children: hook,
+                    },
+                  },
+                ],
               },
             }
           : null,

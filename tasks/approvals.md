@@ -28,7 +28,7 @@ Código terminado ≠ `accepted`.
 | P2 | Validadores | `accepted` | `puzzle-validator.ts`, `tests/unit/puzzle-validator.test.ts` | legado | 2026-Q1 |
 | P3 | Gobernanza ChatGPT+Cursor+GitHub | `accepted` | `AGENTS.md`, `ROADMAP.md`, `tasks/*`, `.cursor/rules/governance.mdc`, `.cursor/rules/shorts.mdc`, `docs/DECISIONS.md` D007–D008; informe de revisión `T-GOV-001` | humano (chat Cursor: aceptación explícita con base en informe) | 2026-10-19 |
 | P4 | CI GitHub Actions | `accepted` | `.github/workflows/ci.yml`; run [39237385007](https://github.com/kguevaram94/remotion-playground/actions/runs/39237385007) en commit `fd74e44abe169808faf90132ce52960df33dd7ef` (success: `npm ci`, `npm run typecheck`, `npm test`) | humano (chat Cursor: aceptación explícita con evidencia CI) | 2026-10-19 |
-| P5 | Pulido logic-lateral | `proposed` | Ver propuesta `T-POLISH-001` abajo | — | — |
+| P5 | Pulido logic-lateral | `review_required` | `T-POLISH-001` implementado; ver evidencias abajo. BGM curado=0 pistas (limitación doc.) | aprobado inicio: humano 2026-10-19; aceptación pendiente | 2026-10-19 |
 | P6 | Más familias plantilla | `proposed` | Depende P1/P2 + decisión de alcance | — | — |
 | P7 | Studio/preview estable | `proposed` | Depende P0 | — | — |
 | P8 | Publicación YouTube | `blocked` | Descartado por ahora (`ROADMAP` / D-future) | — | — |
@@ -39,7 +39,7 @@ Código terminado ≠ `accepted`.
 | --- | --- | --- | --- | --- |
 | `T-GOV-001` | P3 | Protocolo colaboración + docs gobernanza | `accepted` | Aceptado 2026-10-19 con base en el informe de revisión |
 | `T-CI-001` | P4 | CI test + typecheck | `accepted` | Aceptado 2026-10-19 con evidencia CI run 39237385007 (commit `fd74e44`) |
-| `T-POLISH-001` | P5 | Pulido logic-lateral (SFX, BGM curada, thumb Satori, loudnorm narración→MP4) | `proposed` | Gates humanos fijados 2026-10-19; **no iniciar** hasta `approved` del alcance definitivo |
+| `T-POLISH-001` | P5 | Pulido logic-lateral (SFX, BGM curada, thumb Satori, loudnorm narración→MP4) | `review_required` | Entrega lista; espera `accepted` humano. Sin commit/push |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -55,13 +55,12 @@ Código terminado ≠ `accepted`.
 4. Si se rechaza: volver a `proposed` o `blocked` + nota en evidencias.
 5. Autorizar por separado la siguiente tarea (`proposed` → `approved`).
 
-## Propuesta siguiente (no aprobada)
+## Tarea activa / alcance aprobado
 
-### `T-POLISH-001` · P5 · `proposed`
+### `T-POLISH-001` · P5 · `review_required`
 
-Estado: **`proposed`**. Alcance definitivo abajo tras gates humanos (2026-10-19).  
-**No implementar** hasta `approved` en este archivo o autorización expresa en chat Cursor.  
-Código terminado ≠ `accepted`: al cerrar → `review_required` y espera humana.
+Estado: **`review_required`** (humano autorizó alcance 2026-10-19; implementación lista).  
+Código terminado ≠ `accepted`: espera revisión humana explícita.
 
 #### Objetivo
 
@@ -156,4 +155,17 @@ Además (en implementación, según alcance):
 
 #### Estado de aprobación
 
-`proposed` — esperando **aprobación explícita del alcance definitivo** por el humano.
+`review_required` — entrega 2026-10-19. Esperando `accepted` humano.
+
+#### Evidencias de implementación (2026-10-19)
+
+- **Git pre-flight:** `main` limpio y sync con `origin/main` antes de implementar.
+- **BGM:** `songs/catalog.json` (tracks=[]), `songs/README.md`; picker solo curadas; `output*.mp3` excluidos del pool.
+- **SFX:** `scripts/generate-sfx.mjs` + `SFX_VOLUME` / cues en componentes logic-lateral; `npm run sfx:generate`.
+- **Thumbnail:** `src/shorts/media/thumbnail.ts` (badge, contraste, hook).
+- **Loudnorm:** `narration-loudnorm.ts`; voice + render usan WAV normalizado en MP4 (no mock).
+- **QC:** checks `narrationLoudnorm`, `bgmCatalog`, `sfxProcedural`.
+- **Docs:** `docs/generar-short.md`, `docs/tooling.md`, `docs/DECISIONS.md` D009.
+- **Comandos:** `npm run sfx:generate` OK · `npm test` → 15 files / 50 tests passed · `npm run typecheck` OK.
+- **Limitación:** 0 pistas BGM licenciadas; sin render TTS de pago en esta entrega.
+- **Siguiente (proposed):** tras `accepted` P5 — P6 u otra tarea según humano. Sin commit/push/merge por el agente.

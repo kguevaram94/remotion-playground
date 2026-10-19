@@ -5,6 +5,10 @@ import type {AppConfig} from '../config/env';
 import {parseVideoScript} from '../domain/script.schema';
 import {resolveJobBackgroundMusic} from '../media/bg-music';
 import {getOrCreateServeUrl} from '../media/bundle-cache';
+import {
+  ensureNarrationLoudnorm,
+  resolveNarrationForRender,
+} from '../media/narration-loudnorm';
 import {publishNarrationAudio} from '../media/public-audio';
 import {parseSrt} from '../subtitles/srt';
 import type {JobRecord, JobStore} from '../storage/job-store';
@@ -69,13 +73,39 @@ export const runRenderVideo = async (
     }
 
     let audioPublicFile: string | null = null;
-    if (job.artifacts.narrationAudio && existsSync(job.artifacts.narrationAudio)) {
-      audioPublicFile = publishNarrationAudio(
-        job.id,
-        job.artifacts.narrationAudio,
-      );
+    if (
+      job.artifacts.narrationAudio &&
+      existsSync(job.artifacts.narrationAudio) &&
+      !job.audioIsTest &&
+      !(
+        job.artifacts.narrationLoudnorm &&
+        existsSync(job.artifacts.narrationLoudnorm)
+      )
+    ) {
+      const ln = ensureNarrationLoudnorm({
+        jobDir: store.jobDir(job.id),
+        narrationAudio: job.artifacts.narrationAudio,
+        isTestAudio: false,
+      });
+      if (ln.applied && ln.loudnormPath) {
+        job.artifacts.narrationLoudnorm = ln.loudnormPath;
+      }
+    }
+
+    const narrationForRender = resolveNarrationForRender({
+      narrationAudio: job.artifacts.narrationAudio,
+      narrationLoudnorm: job.artifacts.narrationLoudnorm,
+      isTestAudio: Boolean(job.audioIsTest),
+    });
+    if (narrationForRender) {
+      audioPublicFile = publishNarrationAudio(job.id, narrationForRender);
+      const usingLoudnorm =
+        !job.audioIsTest &&
+        job.artifacts.narrationLoudnorm === narrationForRender;
       process.stdout.write(
-        `[shorts] Audio público: ${audioPublicFile} (voz=${job.providerMeta.voiceModel ?? config.voiceModel})\n`,
+        `[shorts] Audio público: ${audioPublicFile}` +
+          ` (voz=${job.providerMeta.voiceModel ?? config.voiceModel}` +
+          `${usingLoudnorm ? ', loudnorm' : ''})\n`,
       );
     }
 
@@ -88,7 +118,7 @@ export const runRenderVideo = async (
       );
     } else {
       job.warnings.push(
-        'No hay pistas en songs/ — el video se renderiza sin música de fondo.',
+        'No hay pistas curadas en songs/catalog.json — el video se renderiza sin música de fondo. Ver songs/README.md.',
       );
     }
 

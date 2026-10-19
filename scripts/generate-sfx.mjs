@@ -35,61 +35,61 @@ const writeWav = (filePath, sampleRate, samples) => {
 
 const sampleRate = 22050;
 
-// Short countdown tick
+// Short countdown tick — crisp click with slight high overtone
 {
-  const n = Math.floor(0.06 * sampleRate);
+  const n = Math.floor(0.07 * sampleRate);
   const samples = new Float32Array(n);
   for (let i = 0; i < n; i++) {
     const t = i / sampleRate;
-    const env = Math.exp(-t * 55);
+    const env = Math.exp(-t * 70);
     samples[i] =
-      Math.sin(2 * Math.PI * 880 * t) * 0.45 * env +
-      Math.sin(2 * Math.PI * 1320 * t) * 0.15 * env;
+      Math.sin(2 * Math.PI * 980 * t) * 0.5 * env +
+      Math.sin(2 * Math.PI * 1960 * t) * 0.12 * env;
   }
   writeWav(path.join(outDir, 'tick.wav'), sampleRate, samples);
 }
 
-// Soft whoosh for line strokes
+// Soft whoosh for transitions / reveals
 {
-  const n = Math.floor(0.28 * sampleRate);
+  const n = Math.floor(0.32 * sampleRate);
   const samples = new Float32Array(n);
   let noise = 0;
   for (let i = 0; i < n; i++) {
     const t = i / sampleRate;
-    noise = noise * 0.92 + (Math.random() * 2 - 1) * 0.08;
-    const env = Math.sin((Math.PI * i) / n) ** 1.2;
-    const pitch = 400 + t * 1200;
+    noise = noise * 0.9 + (Math.random() * 2 - 1) * 0.1;
+    const env = Math.sin((Math.PI * i) / n) ** 1.35;
+    const pitch = 320 + t * 1400;
     samples[i] =
-      noise * 0.55 * env + Math.sin(2 * Math.PI * pitch * t) * 0.08 * env;
+      noise * 0.48 * env + Math.sin(2 * Math.PI * pitch * t) * 0.1 * env;
   }
   writeWav(path.join(outDir, 'whoosh.wav'), sampleRate, samples);
 }
 
-// Pop / reveal
+// Pop / switch / scene enter
 {
-  const n = Math.floor(0.18 * sampleRate);
+  const n = Math.floor(0.16 * sampleRate);
   const samples = new Float32Array(n);
   for (let i = 0; i < n; i++) {
     const t = i / sampleRate;
-    const env = Math.exp(-t * 28);
+    const env = Math.exp(-t * 32);
     samples[i] =
-      Math.sin(2 * Math.PI * 220 * t) * 0.5 * env +
-      Math.sin(2 * Math.PI * 440 * t) * 0.2 * env;
+      Math.sin(2 * Math.PI * 240 * t) * 0.48 * env +
+      Math.sin(2 * Math.PI * 480 * t) * 0.22 * env;
   }
   writeWav(path.join(outDir, 'pop.wav'), sampleRate, samples);
 }
 
-// Soft ding for answer
+// Soft ding for answer / bulb reveal
 {
-  const n = Math.floor(0.45 * sampleRate);
+  const n = Math.floor(0.5 * sampleRate);
   const samples = new Float32Array(n);
   for (let i = 0; i < n; i++) {
     const t = i / sampleRate;
-    const env = Math.exp(-t * 6);
+    const env = Math.exp(-t * 5.2);
     samples[i] =
-      Math.sin(2 * Math.PI * 660 * t) * 0.35 * env +
-      Math.sin(2 * Math.PI * 990 * t) * 0.18 * env +
-      Math.sin(2 * Math.PI * 1320 * t) * 0.08 * env;
+      Math.sin(2 * Math.PI * 698 * t) * 0.38 * env +
+      Math.sin(2 * Math.PI * 1047 * t) * 0.2 * env +
+      Math.sin(2 * Math.PI * 1396 * t) * 0.09 * env;
   }
   writeWav(path.join(outDir, 'ding.wav'), sampleRate, samples);
 }

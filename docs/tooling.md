@@ -20,17 +20,20 @@ Remotion exige animaciones **deterministas por fotograma** (`useCurrentFrame`). 
 ## Flujo optimizado
 
 ```text
-guion → validación → voz → SRT → Remotion render (bundle cache)
+guion → validación → voz (+ loudnorm narración) → SRT
+      → Remotion render (usa WAV loudnorm si no es mock; bundle cache)
       → post-proceso FFmpeg+Satori → QC ffprobe → output/
 ```
 
 Artefactos nuevos por trabajo:
 
-- `thumbnail.png` — portada vertical (Satori)
+- `thumbnail.png` — portada vertical (Satori; tipografía/badge/hook pulidos)
 - `frame-reveal.jpg` — fotograma cerca de la revelación
 - `video-preview.mp4` — preview ligero
-- `narration-loudnorm.wav` — audio normalizado (si no es mock)
+- `narration-loudnorm.wav` — narración normalizada **antes del render** (si no es mock); el MP4 embebe esta pista
 - `probe.json` — metadatos ffprobe
+
+BGM: solo pistas en `songs/catalog.json` (ver `songs/README.md`). Sin catálogo curado → warning y vídeo sin música.
 
 ## Comandos
 

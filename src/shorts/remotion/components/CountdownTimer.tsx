@@ -5,7 +5,7 @@ import {
   useVideoConfig,
 } from 'remotion';
 import {SAFE, shortColors, shortFont} from '../theme';
-import {SfxAt} from './Sfx';
+import {SfxAt, SFX_VOLUME} from './Sfx';
 
 export const CountdownTimer: React.FC<{
   seconds: number;
@@ -40,8 +40,10 @@ export const CountdownTimer: React.FC<{
           key={`tick-${i}`}
           name="tick"
           from={i * fps}
-          durationInFrames={Math.min(fps, 12)}
-          volume={remaining <= 3 && i >= tickCount - 3 ? 0.5 : 0.32}
+          durationInFrames={Math.min(fps, 14)}
+          volume={
+            i >= tickCount - 3 ? SFX_VOLUME.tickUrgent : SFX_VOLUME.tick
+          }
         />
       ))}
       <div style={{color: shortColors.muted, fontSize: 28, marginBottom: 24}}>

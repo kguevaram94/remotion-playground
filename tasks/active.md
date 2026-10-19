@@ -8,50 +8,56 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 ## Identificador y fase
 
-- **ID:** `ninguna`
-- **Fase ROADMAP:** —
+- **ID:** `T-POLISH-001`
+- **Fase ROADMAP:** `P5`
 
 ## Estado de aprobación
 
-`proposed` (sin trabajo activo)
+`review_required`
 
-> P3 (`T-GOV-001`) y P4 (`T-CI-001`) quedaron `accepted` el 2026-10-19.  
-> P5 (`T-POLISH-001`): alcance definitivo propuesto en `tasks/approvals.md` (gates SFX=A, BGM=B, thumb=A, loudnorm=B). Sigue `proposed`. **No implementar** hasta `approved` o autorización expresa en chat.
+> Implementación lista. Esperando revisión humana. **No** marcar `accepted` el agente.
 
 ## Objetivo
 
-—
+Elevar la calidad de producción del short logic-lateral: SFX procedural, BGM con licencias verificables, thumbnail Satori pulido, narración loudnorm usada en el MP4 final — sin cambiar el beat oficial.
 
 ## Alcance
 
-—
+Completado según gates aprobados (SFX=A, BGM=B, Thumbnail=A, Loudnorm=B). Detalle en `tasks/approvals.md`.
 
 ## Fuera de alcance
 
-Cualquier cambio de producto hasta nueva tarea aprobada.
+Respetado: sin formatos nuevos, sin mix loudnorm, sin YouTube, sin packs SFX, sin deps nuevas, sin compra de assets.
 
 ## Archivos afectados previstos
 
-—
+Ver informe en `tasks/approvals.md` / diff local.
 
 ## Dependencias
 
 - P0–P4: `accepted`
-- P5: `proposed` (ver `tasks/approvals.md`)
+- Aprobación humana: 2026-10-19
 
 ## Criterios de aceptación
 
-—
+Checklist en `tasks/approvals.md` — pendiente verificación humana.
 
 ## Pruebas que deben ejecutarse
 
-—
+```bash
+npm test
+npm run typecheck
+```
+
+Ejecutados 2026-10-19: **50 tests OK**, typecheck OK. `npm run sfx:generate` OK.
 
 ## Riesgos y cuestiones pendientes
 
-- Esperando aprobación humana del **alcance definitivo** de `T-POLISH-001` / P5 (u otra tarea).
+- Catálogo BGM con **0** pistas curadas (limitación documentada en `songs/README.md`).
+- No se ejecutó render completo con TTS de pago (no autorizado en esta entrega).
+- Entrega en `review_required` hasta OK humano.
 
 ## Notas de progreso
 
-- Gobernanza (P3) y CI (P4) cerradas. Idle hasta el siguiente `approved`.
-- Propuesta P5 actualizada con gates humanos; implementación no iniciada.
+- Etapas: BGM catálogo → SFX → thumbnail → loudnorm→render → QC/docs → tests.
+- Sin commit/push/merge.

@@ -6,7 +6,7 @@ import {
 } from 'remotion';
 import type {LogicPuzzleVisual} from '../../domain/scene.schema';
 import {SAFE, shortColors, shortFont} from '../theme';
-import {SfxAt} from './Sfx';
+import {SfxAt, SFX_VOLUME} from './Sfx';
 
 export const LogicScene: React.FC<{
   visual: LogicPuzzleVisual;
@@ -47,7 +47,7 @@ export const LogicScene: React.FC<{
                 name="whoosh"
                 from={startFrame}
                 durationInFrames={Math.round(0.3 * fps)}
-                volume={0.38}
+                volume={SFX_VOLUME.whoosh}
               />
             );
           })}
@@ -117,7 +117,7 @@ export const LogicScene: React.FC<{
         padding: `${SAFE.top}px ${SAFE.side}px ${SAFE.bottom}px`,
       }}
     >
-      <SfxAt name="pop" from={0} durationInFrames={15} volume={0.35} />
+      <SfxAt name="pop" from={0} durationInFrames={16} volume={SFX_VOLUME.pop} />
       <div
         style={{
           display: 'grid',

@@ -1,6 +1,6 @@
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {SAFE, shortColors, shortFont} from '../theme';
-import {SfxAt} from './Sfx';
+import {SfxAt, SFX_VOLUME} from './Sfx';
 
 export const Hook: React.FC<{
   title: string;
@@ -22,7 +22,7 @@ export const Hook: React.FC<{
         textAlign: 'center',
       }}
     >
-      <SfxAt name="pop" from={0} durationInFrames={15} volume={0.35} />
+      <SfxAt name="pop" from={0} durationInFrames={16} volume={SFX_VOLUME.pop} />
       {badge ? (
         <div
           style={{

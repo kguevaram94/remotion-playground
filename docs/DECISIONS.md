@@ -61,6 +61,13 @@ Formato: fecha · decisión · contexto · alternativa · consecuencia.
 - **Alternativas descartadas:** Sync automático entre chats; que el agente marque fases como aceptadas; alcance abierto entre fases.
 - **Consecuencia:** Antes de fase importante hace falta `approved` en `tasks/approvals.md` o autorización expresa en Cursor; al cerrar, informe + `review_required` y siguiente fase en `proposed`. Sin merge a `main`, publish, APIs de pago no autorizadas ni ops destructivas sin OK humano. Sin secretos en docs de coordinación.
 
+## D009 — Pulido P5 (SFX / BGM / thumbnail / loudnorm)
+
+- **Fecha:** 2026-10-19
+- **Decisión (gates T-POLISH-001):** SFX procedural (`generate-sfx.mjs`); BGM solo vía `songs/catalog.json` con licencia verificable (sin packs dudosos ni compras sin OK); thumbnail Satori único pulido (sin plantillas por familia); loudnorm de **narración** aplicado antes del render y embebido en el MP4 (sin master del mix voz+BGM+SFX).
+- **Alternativas descartadas:** Packs SFX externos; usar `songs/output*.mp3` sin licencia; thumbnails multi-familia; loudnorm solo como sidecar post-hoc; loudnorm del mix final en P5.
+- **Consecuencia:** Catálogo BGM puede quedar vacío (0 pistas) hasta aportes licenciados; QC avisa. Mock no recibe loudnorm «final». Beat logic-lateral intacto.
+
 ---
 
 Al descartar o adoptar algo nuevo: añadir **D00N** aquí y enlazar desde el PR / `tasks/approvals.md`.

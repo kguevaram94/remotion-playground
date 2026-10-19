@@ -6,8 +6,8 @@ Protocolo: `AGENTS.md` (ChatGPT planifica/revisa · Cursor implementa · GitHub 
 
 ## Prioridad actual
 
-1. **P5 pulido logic-lateral** — `T-POLISH-001` en `proposed` (no iniciar sin `approved`).
-2. Solo después: P6 (más formatos), P7 (Studio), P8 (publicación) según decisión humana.
+1. **P5 pulido logic-lateral** — `T-POLISH-001` en `review_required` (espera aceptación humana).
+2. Solo después de `accepted` P5: P6 (más formatos), P7 (Studio), P8 (publicación) según decisión humana.
 3. P3: `accepted` (2026-10-19, informe de revisión).
 4. P4: `accepted` (2026-10-19, evidencia CI run 39237385007).
 
@@ -20,7 +20,7 @@ Protocolo: `AGENTS.md` (ChatGPT planifica/revisa · Cursor implementa · GitHub 
 | P2 | Validadores de acertijo + política de revisión humana | P0 | P0 | `accepted` |
 | P3 | Gobernanza ChatGPT + Cursor + GitHub | — | P0 | `accepted` |
 | P4 | CI GitHub Actions (`test` + `typecheck`) | — | P0 | `accepted` |
-| P5 | Pulido logic-lateral (SFX, música, thumbnail, loudnorm) | P1 | P1 | `proposed` |
+| P5 | Pulido logic-lateral (SFX, música, thumbnail, loudnorm) | P1 | P1 | `review_required` |
 | P6 | Más familias de plantilla (math, memory, illusion) al nivel logic-lateral | P1, P2 | P2 | `proposed` |
 | P7 | Studio / preview workflow documentado y estable | P0 | P2 | `proposed` |
 | P8 | Publicación YouTube (metadata, upload, schedule) | P5 | P3 | `blocked` |
@@ -55,7 +55,7 @@ Tras aceptar P3/P4 — **alcance definitivo** en `tasks/approvals.md` (`T-POLISH
 | --- | --- |
 | ID | `T-POLISH-001` |
 | Fase | P5 |
-| Estado | `proposed` (gates SFX=A, BGM=B, thumb=A, loudnorm=B fijados; falta `approved`) |
+| Estado | `review_required` (implementado; gates SFX=A, BGM=B, thumb=A, loudnorm=B) |
 | Objetivo | Calidad de producción del short logic-lateral de referencia |
 | Alcance | SFX procedural; BGM 3–8 pistas con licencia verificable; thumbnail Satori; loudnorm de narración usado en el MP4 |
 | Fuera de alcance | Nuevos formatos; mix loudnorm integral; YouTube upload; packs SFX; deps/pago sin OK |

@@ -68,16 +68,28 @@ export const runPostProcess = async (
       job.warnings.push('No se pudo generar video-preview.mp4');
     }
 
-    // 4) Optional loudnorm copy of narration (keeps original intact)
+    // 4) Loudnorm sidecar should already exist from voice/render; ensure once more
     if (
       job.artifacts.narrationAudio &&
       existsSync(job.artifacts.narrationAudio) &&
       !job.audioIsTest
     ) {
-      const normalized = path.join(jobDir, 'narration-loudnorm.wav');
-      if (loudnormAudio(job.artifacts.narrationAudio, normalized)) {
+      const normalized =
+        job.artifacts.narrationLoudnorm &&
+        existsSync(job.artifacts.narrationLoudnorm)
+          ? job.artifacts.narrationLoudnorm
+          : path.join(jobDir, 'narration-loudnorm.wav');
+      if (
+        !existsSync(normalized) &&
+        loudnormAudio(job.artifacts.narrationAudio, normalized)
+      ) {
         job.artifacts.narrationLoudnorm = normalized;
-        artifacts.push(normalized);
+      }
+      if (
+        job.artifacts.narrationLoudnorm &&
+        existsSync(job.artifacts.narrationLoudnorm)
+      ) {
+        artifacts.push(job.artifacts.narrationLoudnorm);
       }
     }
 

@@ -30,4 +30,21 @@ describe('satori thumbnail', () => {
     expect(existsSync(out)).toBe(true);
     expect(statSync(out).size).toBeGreaterThan(5_000);
   });
+
+  it('renders with badge and long title without crashing', async () => {
+    const out = path.join(dir, 'thumb-long.png');
+    await renderThumbnailPng(
+      {
+        title:
+          'Tres interruptores y una bombilla: ¿cuál la enciende sin mirar dos veces?',
+        hook: 'Piensa antes del countdown',
+        badge: 'LOGIC-LATERAL',
+        width: 540,
+        height: 960,
+      },
+      out,
+    );
+    expect(existsSync(out)).toBe(true);
+    expect(statSync(out).size).toBeGreaterThan(4_000);
+  });
 });

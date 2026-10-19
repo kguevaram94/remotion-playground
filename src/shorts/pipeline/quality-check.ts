@@ -1,6 +1,9 @@
 import {existsSync, readFileSync, statSync} from 'node:fs';
+import path from 'node:path';
 import type {AppConfig} from '../config/env';
+import {listCuratedSongFiles} from '../media/bg-music';
 import {probeMedia} from '../media/ffmpeg';
+import {resolveNarrationForRender} from '../media/narration-loudnorm';
 import {parseSrt} from '../subtitles/srt';
 import type {JobRecord, JobStore} from '../storage/job-store';
 
@@ -141,8 +144,59 @@ export const runQualityCheck = (
       report.warnings.push(
         'El render usa audio de prueba; no publicar como narración final',
       );
+      report.checks.narrationLoudnorm = {
+        ok: true,
+        detail: 'omitido (mock)',
+      };
     } else {
       report.checks.finalAudio = {ok: true};
+      const loudnormOk = Boolean(
+        job.artifacts.narrationLoudnorm &&
+          existsSync(job.artifacts.narrationLoudnorm),
+      );
+      const renderPath = resolveNarrationForRender({
+        narrationAudio: job.artifacts.narrationAudio,
+        narrationLoudnorm: job.artifacts.narrationLoudnorm,
+        isTestAudio: false,
+      });
+      const usesLoudnorm =
+        loudnormOk && renderPath === job.artifacts.narrationLoudnorm;
+      report.checks.narrationLoudnorm = {
+        ok: usesLoudnorm,
+        detail: usesLoudnorm
+          ? job.artifacts.narrationLoudnorm
+          : 'faltante o no usado en render',
+      };
+      if (!usesLoudnorm) {
+        report.warnings.push(
+          'Narración loudnorm ausente o no seleccionada para el MP4',
+        );
+      }
+    }
+
+    const curated = listCuratedSongFiles();
+    report.checks.bgmCatalog = {
+      ok: true,
+      detail:
+        curated.length > 0
+          ? `${curated.length} pista(s) curada(s)`
+          : '0 pistas curadas (ver songs/README.md)',
+    };
+    if (curated.length === 0) {
+      report.warnings.push(
+        'Catálogo BGM vacío: el vídeo se generó sin música de fondo licenciada',
+      );
+    }
+
+    const sfxDir = path.join(process.cwd(), 'public', 'sfx');
+    report.checks.sfxProcedural = {
+      ok: (['tick', 'ding', 'pop', 'whoosh'] as const).every((name) =>
+        existsSync(path.join(sfxDir, `${name}.wav`)),
+      ),
+      detail: 'public/sfx/*.wav',
+    };
+    if (!report.checks.sfxProcedural.ok) {
+      report.warnings.push('Faltan SFX procedurales; ejecuta npm run sfx:generate');
     }
 
     const assetsOk = Boolean(

@@ -8,9 +8,9 @@ Procedimiento para producir un vídeo nuevo con el mismo formato que `output/s4-
 
 **Stack de producción:**
 
-- Voz OpenAI TTS (entonación natural)
-- Música de fondo desde `songs/`
-- SFX en countdown, pasos, hook y revelación
+- Voz OpenAI TTS (entonación natural) + loudnorm de narración embebido en el MP4
+- Música de fondo **solo** desde pistas curadas en `songs/catalog.json` (ver `songs/README.md`)
+- SFX procedurales (`npm run sfx:generate`) en countdown, pasos, hook y revelación
 - Subtítulos karaoke: frase fija en pantalla + palabra activa resaltada
 - Pausas solo entre escenas/párrafos (no tras cada punto y seguido)
 
@@ -30,13 +30,14 @@ cp .env.example .env
 
 npm install
 npm run sfx:generate          # public/sfx/*.wav (si no existen)
-# Opcional: añade pistas MP3 en songs/
+# BGM: solo pistas listadas en songs/catalog.json con licencia verificable
+# (ver songs/README.md). Sin entradas curadas → short sin música.
 ```
 
 Comprueba:
 
 ```bash
-test -f .env && test -d songs && test -f public/sfx/tick.wav && echo OK
+test -f .env && test -f songs/catalog.json && test -f public/sfx/tick.wav && echo OK
 ```
 
 ## 1. Flujo recomendado (guion propio)
@@ -81,8 +82,9 @@ npm run short -- --id s4-19-interruptores --mode render
 | --- | --- |
 | Narración por escena + silencio ~0,7s entre escenas | `generate-voice` + `narration-segments` |
 | Subtítulos karaoke (frase fija, palabra en amarillo) | `SubtitleTrack` + `subtitle-sentences` |
-| Música de fondo (pista de `songs/` según `jobId`) | `bg-music` → `ShortVideo` |
-| SFX tick / whoosh / pop / ding | `public/sfx/` + componentes Remotion |
+| Música de fondo (catálogo curado `songs/catalog.json`) | `bg-music` → `ShortVideo` |
+| SFX tick / whoosh / pop / ding (procedural) | `public/sfx/` + componentes Remotion |
+| Narración loudnorm en el MP4 (no mock) | `narration-loudnorm` → render |
 | Thumbnail + preview | post-proceso FFmpeg/Satori |
 
 ## 5. Estructura de salida
@@ -92,6 +94,7 @@ output/<id>/
   script.json
   scenes.json
   narration.wav
+  narration-loudnorm.wav   # si voz no-mock; usada en el render
   voice-meta.json
   subtitles.srt
   video.mp4
@@ -105,8 +108,9 @@ output/<id>/
 - [ ] Beat completo: hook → rules → countdown → steps → reveal → outro
 - [ ] Outro pide comentar (voz + texto en pantalla)
 - [ ] No sale el banner «AUDIO DE PRUEBA»
-- [ ] Hay música de fondo (bajo la voz)
+- [ ] Si hay pistas en `songs/catalog.json`, hay música de fondo (bajo la voz); si el catálogo está vacío, el warning de BGM es esperado
 - [ ] Countdown suena tick; revelación suena ding/whoosh
+- [ ] Sin banner de prueba: la narración del MP4 es loudnorm (no mock)
 - [ ] Subtítulos: frase completa visible; solo la palabra activa cambia de color
 - [ ] Tras cada escena hay una pausa breve antes de seguir leyendo
 - [ ] Solución validada (`validation.ok`; three-switches suele ser `partial`)
@@ -117,7 +121,7 @@ output/<id>/
 | --- | --- |
 | Voz robótica / tono beep | `VOICE_PROVIDER=openai-tts` + `OPENAI_API_KEY` |
 | Misma voz antigua tras cambiar `.env` | `npm run short -- --id <id> --mode voice` |
-| Sin música | Añade MP3 en `songs/` y vuelve a renderizar |
+| Sin música | Añade pista **con licencia** a `songs/catalog.json` (ver README) y vuelve a renderizar |
 | Sin SFX | `npm run sfx:generate` y `--mode render` |
 | Guion inválido | `npm run short:validate -- --id <id>` |
 | Bloqueo `pending_review` / `partial` | `SHORTS_HUMAN_REVIEW_POLICY=warn_and_continue` |

@@ -7,7 +7,7 @@ import {
 } from 'remotion';
 import type {SwitchSequenceVisual} from '../../domain/scene.schema';
 import {SAFE, shortColors, shortFont} from '../theme';
-import {SfxAt} from './Sfx';
+import {SfxAt, SFX_VOLUME} from './Sfx';
 
 const ALL = ['A', 'B', 'C'] as const;
 
@@ -48,9 +48,9 @@ export const SwitchSequence: React.FC<{
         <SfxAt
           key={`sw-${i}`}
           name="pop"
-          from={i * stepLen}
-          durationInFrames={12}
-          volume={0.38}
+          from={i * stepLen + Math.round(0.04 * fps)}
+          durationInFrames={14}
+          volume={SFX_VOLUME.pop}
         />
       ))}
 

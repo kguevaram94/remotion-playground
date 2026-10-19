@@ -1,6 +1,7 @@
 import {existsSync, mkdirSync, unlinkSync} from 'node:fs';
 import path from 'node:path';
 import type {AppConfig} from '../config/env';
+import {ensureNarrationLoudnorm} from '../media/narration-loudnorm';
 import {clearPublishedNarration} from '../media/public-audio';
 import {
   concatWavFiles,
@@ -68,6 +69,7 @@ export const runGenerateVoice = async (
       job.warnings.push(
         `Reutilizando narración en caché (${config.voiceModel})`,
       );
+      applyLoudnormArtifact(store, job);
       store.setPhase(job, 'generating_voice', {
         status: 'done',
         finishedAt: new Date().toISOString(),
@@ -228,6 +230,9 @@ export const runGenerateVoice = async (
       job.warnings.push(
         'AUDIO DE PRUEBA: el tono mock no es narración final. Configura VOICE_PROVIDER=macos-say u openai-tts.',
       );
+      job.artifacts.narrationLoudnorm = undefined;
+    } else {
+      applyLoudnormArtifact(store, job);
     }
 
     store.setPhase(job, 'generating_voice', {
@@ -245,5 +250,25 @@ export const runGenerateVoice = async (
     });
     store.save(job);
     throw err;
+  }
+};
+
+const applyLoudnormArtifact = (store: JobStore, job: JobRecord): void => {
+  if (!job.artifacts.narrationAudio) return;
+  const result = ensureNarrationLoudnorm({
+    jobDir: store.jobDir(job.id),
+    narrationAudio: job.artifacts.narrationAudio,
+    isTestAudio: Boolean(job.audioIsTest),
+  });
+  if (result.applied && result.loudnormPath) {
+    job.artifacts.narrationLoudnorm = result.loudnormPath;
+    process.stdout.write(
+      `[shorts] Narración loudnorm → ${result.loudnormPath} (usada en render)\n`,
+    );
+  } else if (!job.audioIsTest) {
+    job.artifacts.narrationLoudnorm = undefined;
+    job.warnings.push(
+      'No se pudo aplicar loudnorm a la narración; el render usará narration.wav original',
+    );
   }
 };

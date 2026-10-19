@@ -7,7 +7,7 @@ import {
 } from 'remotion';
 import type {BulbStateRevealVisual} from '../../domain/scene.schema';
 import {SAFE, shortColors, shortFont} from '../theme';
-import {SfxAt} from './Sfx';
+import {SfxAt, SFX_VOLUME} from './Sfx';
 
 const META: Record<
   BulbStateRevealVisual['states'][number]['state'],
@@ -36,14 +36,19 @@ export const BulbStateReveal: React.FC<{
         alignItems: 'center',
       }}
     >
-      <SfxAt name="ding" from={0} durationInFrames={Math.round(0.5 * fps)} volume={0.4} />
+      <SfxAt
+        name="ding"
+        from={0}
+        durationInFrames={Math.round(0.55 * fps)}
+        volume={SFX_VOLUME.ding}
+      />
       {states.map((_, i) => (
         <SfxAt
           key={`whoosh-${i}`}
           name="whoosh"
-          from={i * slot}
-          durationInFrames={Math.round(0.35 * fps)}
-          volume={0.36}
+          from={i * slot + Math.round(0.06 * fps)}
+          durationInFrames={Math.round(0.4 * fps)}
+          volume={SFX_VOLUME.whoosh}
         />
       ))}
 
