@@ -8,68 +8,42 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 ## Identificador y fase
 
-- **ID:** `T-QC-LOUDNORM-001`
+- **ID:** `T-POLISH-001`
 - **Fase ROADMAP:** `P5`
 
 ## Estado de aprobación
 
 `accepted`
 
-> Aceptado por humano en chat Cursor 2026-10-19 tras auditoría final (7/7 PASS).  
-> **Sin** tarea de implementación `in_progress`. Siguiente trabajo: espera autorización humana.  
-> `T-POLISH-001` permanece en `review_required` (sin cambio).
+> Aceptado por humano en chat Cursor 2026-10-19 con limitación audiovisual documentada.  
+> Base: auditoría de código, tests y typecheck. **No** se afirma validación de MP4 real con voz no-mock ni inspección auditiva.  
+> **Sin** tarea de implementación `in_progress`. Siguiente fase/tarea: `proposed` (p. ej. P6) hasta nuevo `approved`.  
+> Relacionado: `T-QC-LOUDNORM-001` ya `accepted` (2026-10-19).
 
 ## Objetivo
 
-Definir y aplicar el gate de calidad de loudnorm: bloquear el QC técnico cuando la voz es real y el check obligatorio falla; distinguir elegibilidad de publicación; mantener `mock_omitted` como excepción de pruebas no publicable.
+Elevar la calidad de producción del short logic-lateral de referencia: SFX procedural, BGM curada, thumbnail Satori, loudnorm de narración en el MP4 — sin cambiar el beat oficial.
 
-## Alcance
+## Alcance (cerrado)
 
-- Voz real + loudnorm `failed` / `unverified` / no normalizado → blocking → `report.ok=false` → fase `quality_check` failed.
-- `publishEligibility.eligible` + `reasons` en `report.json`.
-- Mock nunca publicable aunque pase QC técnico.
-- BGM vacío: warning solo (no bloquea QC ni elegibilidad por defecto).
-- Sin migración automática de jobs antiguos; documentar revalidación.
-- Tests + docs; conservar provenance de `T-POLISH-001`.
+Implementado y aceptado según `tasks/approvals.md` (gates SFX=A, BGM=B, thumb=A, loudnorm=B) + remediación provenance + gate `T-QC-LOUDNORM-001`.
 
-## Fuera de alcance
+## Limitaciones de aceptación (vinculantes)
 
-Respetado: sin pago/YouTube/deps/beat/formatos/commit/push/merge.
-
-## Archivos afectados
-
-- `src/shorts/pipeline/quality-check.ts`
-- `tests/unit/quality-check.test.ts`
-- `docs/generar-short.md`, `docs/tooling.md`, `docs/troubleshooting.md`, `docs/DECISIONS.md` (D010)
-- `tasks/active.md`, `tasks/approvals.md`
-
-## Dependencias
-
-- Remediación loudnorm / provenance de `T-POLISH-001` (en código).
-- Autorización humana 2026-10-19 en chat Cursor.
+- Aceptación por auditoría de código / tests / typecheck.
+- **No** se afirma render MP4 real con voz no-mock ni revisión auditiva del resultado.
+- Catálogo BGM: 0 pistas licenciadas (política + código OK; warning esperado).
 
 ## Criterios de aceptación
 
-- [x] Voz real + loudnorm fallido/unverified → blocking, `report.ok=false`, fase failed.
-- [x] `publishEligibility` en report; mock nunca `eligible:true`.
-- [x] Voz real elegible solo con gate loudnorm + demás controles técnicos.
-- [x] Docs: `eligible=true` ≠ validación audiovisual humana ni inspección del audio del MP4.
-- [x] BGM vacío no bloquea QC ni elegibilidad por defecto.
-- [x] Sin migración automática; docs de revalidación de jobs antiguos.
-- [x] Tests de propuesta + mock nunca elegible + bloqueo voz real.
-- [x] `npm test` y `npm run typecheck` OK.
-- [x] Revisión humana + auditoría final 7/7 PASS → `accepted` 2026-10-19.
-
-## Pruebas ejecutadas
-
-```bash
-npm test      # 16 files / 72 tests passed
-npm run typecheck  # OK
-```
+- [x] Alcance P5 entregado y revisado (código + tests + typecheck).
+- [x] Remediación loudnorm provenance incluida.
+- [x] Gate QC loudnorm (`T-QC-LOUDNORM-001`) `accepted`.
+- [x] Limitación audiovisual documentada en `tasks/approvals.md`.
+- [x] Humano marca `accepted` (2026-10-19).
 
 ## Notas de cierre
 
-- Gate loudnorm + `publishEligibility` aceptado.
-- Provenance P5 intacta; BGM vacío no bloquea.
-- Pendiente humano (sin cambiar aquí): `T-POLISH-001` / P5 en `review_required`.
-- Siguiente tarea: `proposed` hasta nuevo `approved`.
+- P5 / `T-POLISH-001` → `accepted`.
+- Siguiente trabajo (P6 u otro): queda en `proposed` hasta autorización humana explícita.
+- Sin commit/push/merge/publicación en este cierre documental.

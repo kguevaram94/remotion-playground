@@ -28,7 +28,7 @@ Código terminado ≠ `accepted`.
 | P2 | Validadores | `accepted` | `puzzle-validator.ts`, `tests/unit/puzzle-validator.test.ts` | legado | 2026-Q1 |
 | P3 | Gobernanza ChatGPT+Cursor+GitHub | `accepted` | `AGENTS.md`, `ROADMAP.md`, `tasks/*`, `.cursor/rules/governance.mdc`, `.cursor/rules/shorts.mdc`, `docs/DECISIONS.md` D007–D008; informe de revisión `T-GOV-001` | humano (chat Cursor: aceptación explícita con base en informe) | 2026-10-19 |
 | P4 | CI GitHub Actions | `accepted` | `.github/workflows/ci.yml`; run [39237385007](https://github.com/kguevaram94/remotion-playground/actions/runs/39237385007) en commit `fd74e44abe169808faf90132ce52960df33dd7ef` (success: `npm ci`, `npm run typecheck`, `npm test`) | humano (chat Cursor: aceptación explícita con evidencia CI) | 2026-10-19 |
-| P5 | Pulido logic-lateral | `review_required` | `T-POLISH-001` en `review_required`; `T-QC-LOUDNORM-001` `accepted` (2026-10-19). BGM curado=0 pistas | P5 aceptación pendiente (Polish); QC gate aceptado | 2026-10-19 |
+| P5 | Pulido logic-lateral | `accepted` | `T-POLISH-001` + `T-QC-LOUDNORM-001` `accepted`. BGM=0 pistas; sin validación audiovisual MP4 no-mock | humano (chat Cursor; código/tests/typecheck; limitación AV doc.) | 2026-10-19 |
 | P6 | Más familias plantilla | `proposed` | Depende P1/P2 + decisión de alcance | — | — |
 | P7 | Studio/preview estable | `proposed` | Depende P0 | — | — |
 | P8 | Publicación YouTube | `blocked` | Descartado por ahora (`ROADMAP` / D-future) | — | — |
@@ -39,7 +39,7 @@ Código terminado ≠ `accepted`.
 | --- | --- | --- | --- | --- |
 | `T-GOV-001` | P3 | Protocolo colaboración + docs gobernanza | `accepted` | Aceptado 2026-10-19 con base en el informe de revisión |
 | `T-CI-001` | P4 | CI test + typecheck | `accepted` | Aceptado 2026-10-19 con evidencia CI run 39237385007 (commit `fd74e44`) |
-| `T-POLISH-001` | P5 | Pulido logic-lateral (SFX, BGM curada, thumb Satori, loudnorm narración→MP4) | `review_required` | Remediación loudnorm QC (provenance) incluida; espera `accepted` humano. Sin commit/push |
+| `T-POLISH-001` | P5 | Pulido logic-lateral (SFX, BGM curada, thumb Satori, loudnorm narración→MP4) | `accepted` | Aceptado 2026-10-19 (código/tests/typecheck; limitación AV documentada). Sin commit/push |
 | `T-QC-LOUDNORM-001` | P5 | Gate QC loudnorm + publishEligibility | `accepted` | Aceptado 2026-10-19 (auditoría final 7/7 PASS; 72 tests; typecheck OK) |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
@@ -58,12 +58,11 @@ Código terminado ≠ `accepted`.
 
 ## Tarea activa / alcance aprobado
 
-> Sin implementación `in_progress`. `T-QC-LOUDNORM-001` = `accepted`. `T-POLISH-001` = `review_required` (sin cambio). Siguiente tarea: espera `approved` humano.
+> Sin implementación `in_progress`. P5 / `T-POLISH-001` / `T-QC-LOUDNORM-001` = `accepted` (2026-10-19). Siguiente fase/tarea (p. ej. P6): `proposed` hasta nuevo `approved`.
 
 ### `T-QC-LOUDNORM-001` · P5 · `accepted`
 
-Estado: **`accepted`** (humano, chat Cursor 2026-10-19, tras auditoría final).  
-`T-POLISH-001` permanece en `review_required` (sin cambio en esta aceptación).
+Estado: **`accepted`** (humano, chat Cursor 2026-10-19, tras auditoría final).
 
 #### Objetivo
 
@@ -98,10 +97,10 @@ Bloquear el QC técnico cuando voz real falla el gate obligatorio de loudnorm; a
 
 ---
 
-### `T-POLISH-001` · P5 · `review_required`
+### `T-POLISH-001` · P5 · `accepted`
 
-Estado: **`review_required`** (humano autorizó alcance 2026-10-19; implementación lista).  
-Código terminado ≠ `accepted`: espera revisión humana explícita.
+Estado: **`accepted`** (humano, chat Cursor 2026-10-19).  
+Aceptación basada en auditoría de código, tests y typecheck. **No** se afirma validación de un MP4 real con voz no-mock ni inspección auditiva del resultado.
 
 #### Objetivo
 
@@ -159,16 +158,16 @@ No se tocan contratos de `HelloRemotion` ni `ScriptVideo`.
 
 #### Criterios de aceptación
 
-- [ ] Beat logic-lateral intacto; sin formatos nuevos.
-- [ ] SFX siguen siendo procedurales (`sfx:generate`); volumen/timing/cues pulidos en el formato de referencia; sin packs externos.
-- [ ] Biblioteca BGM = 3–8 pistas **o** menos si aún no hay suficientes con licencia verificable; cada pista incluida tiene fuente/licencia/condiciones/atribución documentadas; ninguna pista no verificable entra en el picker.
-- [ ] Thumbnail Satori mejora tipografía/contraste/badge/hook; sin sistema multi-plantilla por familia.
-- [ ] Tras voz no-mock, existe narración normalizada y el **render del MP4** usa ese audio (no solo un sidecar post-hoc).
-- [ ] Audio mock sigue etiquetado (`isTestAudio` / banner / warnings); loudnorm no se presenta como narración final en mock.
-- [ ] QC/report refleja checks relevantes (BGM curada / ausencia documentada; thumbnail; audio normalizado usado en render cuando aplica).
-- [ ] `npm test` y `npm run typecheck` pasan.
-- [ ] Docs de uso actualizados; decisión registrada o propuesta en `docs/DECISIONS.md` al entregar.
-- [ ] Entrega en `review_required`; **no** `accepted` hasta OK humano. Sin YouTube publish, sin dependencias nuevas injustificadas, sin compra de assets.
+- [x] Beat logic-lateral intacto; sin formatos nuevos.
+- [x] SFX siguen siendo procedurales (`sfx:generate`); volumen/timing/cues pulidos en el formato de referencia; sin packs externos.
+- [x] Biblioteca BGM = 3–8 pistas **o** menos si aún no hay suficientes con licencia verificable; cada pista incluida tiene fuente/licencia/condiciones/atribución documentadas; ninguna pista no verificable entra en el picker. *(entregado con 0 pistas curadas; limitación documentada)*
+- [x] Thumbnail Satori mejora tipografía/contraste/badge/hook; sin sistema multi-plantilla por familia.
+- [x] Tras voz no-mock, existe narración normalizada y el **render del MP4** usa ese audio (no solo un sidecar post-hoc). *(demostrado por provenance + tests; sin MP4 no-mock auditado en aceptación)*
+- [x] Audio mock sigue etiquetado (`isTestAudio` / banner / warnings); loudnorm no se presenta como narración final en mock.
+- [x] QC/report refleja checks relevantes (BGM curada / ausencia documentada; thumbnail; audio normalizado usado en render cuando aplica). *(gate `T-QC-LOUDNORM-001` incluido)*
+- [x] `npm test` y `npm run typecheck` pasan.
+- [x] Docs de uso actualizados; decisión registrada en `docs/DECISIONS.md` (D009 + D010).
+- [x] Aceptación humana 2026-10-19 con limitación audiovisual documentada. Sin YouTube publish.
 
 #### Pruebas previstas
 
@@ -196,7 +195,7 @@ Además (en implementación, según alcance):
 
 #### Estado de aprobación
 
-`review_required` — entrega 2026-10-19. Esperando `accepted` humano.
+`accepted` — 2026-10-19 (humano, chat Cursor). P5 → `accepted` en el mismo acto.
 
 #### Evidencias de implementación (2026-10-19)
 
@@ -209,7 +208,6 @@ Además (en implementación, según alcance):
 - **Docs:** `docs/generar-short.md`, `docs/tooling.md`, `docs/DECISIONS.md` D009.
 - **Comandos:** `npm run sfx:generate` OK · `npm test` → 15 files / 50 tests passed · `npm run typecheck` OK.
 - **Limitación:** 0 pistas BGM licenciadas; sin render TTS de pago en esta entrega.
-- **Siguiente (proposed):** tras `accepted` P5 — P6 u otra tarea según humano. Sin commit/push/merge por el agente.
 
 #### Remediación auditoría loudnorm (2026-10-19, chat Cursor)
 
@@ -220,5 +218,14 @@ Hallazgo: `post_process` podía crear `narration-loudnorm.wav` **después** del 
 - **Tests:** post-render case, selección de audio, publish bytes = loudnorm.
 - **Docs:** enmienda D009; `docs/tooling.md` / `docs/generar-short.md`.
 - **Comandos (remediación):** `npm test` → 15 files / **60** tests passed · `npm run typecheck` OK.
-- **Estado:** `review_required` (no `accepted`). Sin commit/push/merge.
-- **Pendiente humano:** revisión audiovisual opcional (extraer audio del MP4 y contrastar sha1) con job real no-mock.
+- **Nota:** la remediación quedó cubierta también por `T-QC-LOUDNORM-001` (`accepted`).
+
+#### Evidencias de aceptación (2026-10-19)
+
+- Aceptado por: humano (chat Cursor).
+- Base: auditoría de código, tests y typecheck (incl. suite posterior con gate QC; p. ej. 72 tests en cierre de `T-QC-LOUDNORM-001`).
+- **Limitación audiovisual (explícita):** no se afirma que se haya validado un MP4 real con voz no-mock ni que se haya inspeccionado auditivamente el resultado; tampoco re-extracción del audio del contenedor MP4.
+- Otras limitaciones conservadas: BGM curado = 0 pistas; sin TTS/pago en la entrega.
+- Gate relacionado: `T-QC-LOUDNORM-001` ya `accepted`.
+- Sin commit/push/merge/publicación en este cierre documental.
+- **Siguiente (proposed):** P6 u otra tarea según humano; requiere nuevo `approved`.

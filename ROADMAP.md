@@ -6,8 +6,8 @@ Protocolo: `AGENTS.md` (ChatGPT planifica/revisa · Cursor implementa · GitHub 
 
 ## Prioridad actual
 
-1. **P5 pulido logic-lateral** — `T-POLISH-001` en `review_required` (espera aceptación humana). `T-QC-LOUDNORM-001` = `accepted` (2026-10-19).
-2. Solo después de `accepted` P5: P6 (más formatos), P7 (Studio), P8 (publicación) según decisión humana.
+1. **P5 pulido logic-lateral** — `accepted` (2026-10-19). `T-POLISH-001` + `T-QC-LOUDNORM-001` `accepted` (limitación audiovisual documentada en `tasks/approvals.md`).
+2. **Siguiente:** P6 (más formatos), P7 (Studio) o P8 (publicación) según decisión humana — quedan en `proposed` / `blocked` hasta nuevo `approved`.
 3. P3: `accepted` (2026-10-19, informe de revisión).
 4. P4: `accepted` (2026-10-19, evidencia CI run 39237385007).
 
@@ -20,7 +20,7 @@ Protocolo: `AGENTS.md` (ChatGPT planifica/revisa · Cursor implementa · GitHub 
 | P2 | Validadores de acertijo + política de revisión humana | P0 | P0 | `accepted` |
 | P3 | Gobernanza ChatGPT + Cursor + GitHub | — | P0 | `accepted` |
 | P4 | CI GitHub Actions (`test` + `typecheck`) | — | P0 | `accepted` |
-| P5 | Pulido logic-lateral (SFX, música, thumbnail, loudnorm) | P1 | P1 | `review_required` |
+| P5 | Pulido logic-lateral (SFX, música, thumbnail, loudnorm) | P1 | P1 | `accepted` |
 | P6 | Más familias de plantilla (math, memory, illusion) al nivel logic-lateral | P1, P2 | P2 | `proposed` |
 | P7 | Studio / preview workflow documentado y estable | P0 | P2 | `proposed` |
 | P8 | Publicación YouTube (metadata, upload, schedule) | P5 | P3 | `blocked` |
@@ -49,18 +49,17 @@ P0 ──► P1 ──► P5 ──► P8 (futuro / blocked)
 
 ## Primera propuesta de siguiente trabajo
 
-Pendiente humano (sin cambiar estados aquí):
+Tras `accepted` P5 — siguiente en `proposed` hasta autorización humana:
 
 | Campo | Valor |
 | --- | --- |
-| ID | `T-POLISH-001` |
-| Fase | P5 |
-| Estado | `review_required` (implementado; gates SFX=A, BGM=B, thumb=A, loudnorm=B) |
-| Objetivo | Calidad de producción del short logic-lateral de referencia |
-| Alcance | SFX procedural; BGM 3–8 pistas con licencia verificable; thumbnail Satori; loudnorm de narración usado en el MP4 |
-| Relacionado | `T-QC-LOUDNORM-001` (`accepted` 2026-10-19): gate QC loudnorm + `publishEligibility` |
-| Fuera de alcance | Nuevos formatos; mix loudnorm integral; YouTube upload; packs SFX; deps/pago sin OK |
-| Gate | Aceptación humana de `T-POLISH-001` / P5; siguiente tarea en `proposed` hasta nuevo `approved` |
+| ID | P6 (o tarea que el humano autorice) |
+| Fase | P6 |
+| Estado | `proposed` |
+| Objetivo | Más familias de plantilla (math, memory, illusion) al nivel logic-lateral |
+| Depende de | P1, P2 (`accepted`); P5 (`accepted`) |
+| Gate | Requiere `approved` en `tasks/approvals.md` o OK explícito en chat Cursor |
+| Nota P5 | Aceptación con limitación audiovisual documentada (sin MP4 no-mock auditado) |
 
 ## Fuera de alcance (hasta nueva decisión)
 
