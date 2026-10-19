@@ -1,0 +1,28 @@
+---
+description: Protocolo ChatGPT + Cursor + GitHub (fases, aprobaciones, límites)
+alwaysApply: true
+---
+
+# Gobernanza del repo
+
+Fuente de verdad: GitHub + `AGENTS.md` + `ROADMAP.md` + `tasks/active.md` + `tasks/approvals.md`.
+
+## Roles
+
+- ChatGPT: plan / revisión (vía humano; no hay sync automático de chats).
+- Cursor: implementar solo alcance `approved` o autorizado en esta conversación.
+- GitHub: estado real del código y CI.
+
+## Antes de implementar
+
+1. Leer `tasks/active.md` y `tasks/approvals.md`.
+2. Si no está `approved` (ni OK explícito del usuario aquí): plan → `proposed` y parar.
+3. Código terminado ≠ `accepted`. Dejar `review_required` y esperar.
+
+## Al cerrar
+
+Ejecutar pruebas listadas; informar cambios, comandos, resultados reales, limitaciones, evidencias. Siguiente fase en `proposed`.
+
+## Nunca sin aprobación expresa
+
+Merge a `main`, push si la política lo exige, publicar vídeos, APIs de pago no autorizadas, ops destructivas, secretos en docs, afirmar éxito sin ejecutar.

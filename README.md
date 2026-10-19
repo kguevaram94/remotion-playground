@@ -37,7 +37,9 @@ Referencia: `output/s4-19-interruptores/video.mp4`. Procedimiento: [docs/generar
 | `npm test` | Pruebas |
 | `npm run typecheck` | TypeScript |
 
-Docs: [generar-short](docs/generar-short.md) · [usage](docs/usage.md) · [ARCHITECTURE](docs/ARCHITECTURE.md) · [DECISIONS](docs/DECISIONS.md) · [ROADMAP](ROADMAP.md) · [troubleshooting](docs/troubleshooting.md) · [AGENTS.md](AGENTS.md) · [tarea activa](tasks/active.md)
+Docs: [generar-short](docs/generar-short.md) · [usage](docs/usage.md) · [ARCHITECTURE](docs/ARCHITECTURE.md) · [DECISIONS](docs/DECISIONS.md) · [ROADMAP](ROADMAP.md) · [troubleshooting](docs/troubleshooting.md) · [AGENTS.md](AGENTS.md) · [tarea activa](tasks/active.md) · [aprobaciones](tasks/approvals.md)
+
+**Colaboración:** ChatGPT (plan/revisión) · Cursor (implementación) · GitHub (fuente de verdad). Protocolo y estados en [AGENTS.md](AGENTS.md); no sincroniza chats automáticamente.
 
 ## Composiciones Remotion
 

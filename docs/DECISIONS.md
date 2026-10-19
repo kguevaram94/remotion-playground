@@ -54,6 +54,13 @@ Formato: fecha · decisión · contexto · alternativa · consecuencia.
 - **Alternativa descartada:** Agente con alcance abierto en cada chat.
 - **Consecuencia:** Cambios de arquitectura/fase requieren aprobación humana explícita.
 
+## D008 — Protocolo ChatGPT + Cursor + GitHub
+
+- **Fecha:** 2026-10-19
+- **Decisión:** Desarrollo por fases con roles fijos: ChatGPT (plan/revisión), Cursor (implementación), GitHub + archivos versionados (fuente de verdad). Estados: `proposed` → `approved` → `in_progress` → `review_required` → `accepted` (o `blocked`). Código terminado ≠ aceptación humana.
+- **Alternativas descartadas:** Sync automático entre chats; que el agente marque fases como aceptadas; alcance abierto entre fases.
+- **Consecuencia:** Antes de fase importante hace falta `approved` en `tasks/approvals.md` o autorización expresa en Cursor; al cerrar, informe + `review_required` y siguiente fase en `proposed`. Sin merge a `main`, publish, APIs de pago no autorizadas ni ops destructivas sin OK humano. Sin secretos en docs de coordinación.
+
 ---
 
 Al descartar o adoptar algo nuevo: añadir **D00N** aquí y enlazar desde el PR / `tasks/approvals.md`.

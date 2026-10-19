@@ -6,6 +6,8 @@ alwaysApply: false
 
 # Fábrica de Shorts
 
+Respetar `tasks/active.md` y el gate de `tasks/approvals.md` (ver `governance.mdc` / `AGENTS.md`).
+
 ## Formato oficial
 
 Beat: `hook` → `instruction` → `countdown` → `explanation` → `reveal` → `outro` (CTA comentar).
@@ -21,7 +23,7 @@ Plantilla: `data/templates/script-logic-lateral.json`. Referencia: `output/s4-19
 - Animar con `useCurrentFrame` / `interpolate` / `spring`.
 - Audio mock etiquetado (`isTestAudio`, banner).
 - No tocar contratos de `HelloRemotion` ni `ScriptVideo`.
-- Respetar `tasks/active.md`; arquitectura en `docs/ARCHITECTURE.md`.
+- Arquitectura en `docs/ARCHITECTURE.md`.
 
 ## Nuevo formato (checklist)
 
@@ -30,11 +32,12 @@ Plantilla: `data/templates/script-logic-lateral.json`. Referencia: `output/s4-19
 3. Validador
 4. Componente + rama en `ShortVideo.tsx`
 5. Tests
-6. Entrada en `docs/DECISIONS.md`
+6. Entrada en `docs/DECISIONS.md` + evidencias en `tasks/approvals.md`
 
 ## Prohibido
 
 - Motion Canvas / Anime.js
 - GSAP/Three/Rive sin `@remotion/*` + decisión documentada
-- Loguear API keys
+- Loguear API keys / secretos en docs
 - Ampliar alcance fuera de la tarea activa
+- Afirmar render/test OK sin haberlo ejecutado

@@ -1,6 +1,16 @@
 # Arquitectura — fábrica de Shorts
 
-Arquitectura técnica acordada. Cambios estructurales requieren entrada en `docs/DECISIONS.md` y aprobación en `tasks/approvals.md`.
+Arquitectura técnica acordada. Cambios estructurales requieren entrada en `docs/DECISIONS.md` y aprobación en `tasks/approvals.md` (estados `approved` / `accepted`; ver `AGENTS.md`).
+
+## Colaboración (proceso, no runtime)
+
+| Pieza | Rol |
+| --- | --- |
+| ChatGPT | Planificación y revisión (humano media; sin sync de chats) |
+| Cursor | Implementación acotada a `tasks/active.md` |
+| GitHub | Fuente de verdad (código, CI, historial) |
+
+La coordinación vive en archivos versionados (`ROADMAP.md`, `tasks/*`, este doc, `DECISIONS.md`). No forma parte del pipeline de render.
 
 ## Resumen
 
