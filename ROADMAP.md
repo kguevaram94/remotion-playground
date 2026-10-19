@@ -6,11 +6,12 @@ Protocolo: `AGENTS.md` (ChatGPT planifica/revisa · Cursor implementa · GitHub 
 
 ## Prioridad actual
 
-1. **P5 pulido logic-lateral** — `accepted` (2026-10-19). `T-POLISH-001` + `T-QC-LOUDNORM-001` `accepted` (limitación audiovisual documentada en `tasks/approvals.md`).
-2. **P6 / `T-MULTIFORMAT-001`:** `accepted` (2026-10-19). A+B+C+D `accepted`. Incorporación técnica de familias; no validación audiovisual de todos los formatos.
-3. **P7 / `T-STUDIO-001`:** `accepted` (2026-10-19). Studio/preview documentado y estable; audio Studio depende de `public/shorts/<id>/`; validación AV real pendiente. P8 permanece `blocked`.
-4. P3: `accepted` (2026-10-19, informe de revisión).
-5. P4: `accepted` (2026-10-19, evidencia CI run 39237385007).
+1. **`T-AV-QC-001`:** validación audiovisual real de las 4 familias — `accepted` (2026-10-19, OpenAI Cedar). P8 permanece `blocked`.
+2. **P5 pulido logic-lateral** — `accepted` (2026-10-19). `T-POLISH-001` + `T-QC-LOUDNORM-001` `accepted`.
+3. **P6 / `T-MULTIFORMAT-001`:** `accepted` (2026-10-19). A+B+C+D `accepted`.
+4. **P7 / `T-STUDIO-001`:** `accepted` (2026-10-19). Studio/preview estable; AV → `T-AV-QC-001` `accepted`.
+5. P3: `accepted` (2026-10-19, informe de revisión).
+6. P4: `accepted` (2026-10-19, evidencia CI run 39237385007).
 
 ## Fases
 
@@ -54,12 +55,14 @@ P0 ──► P1 ──► P5 ──► P8 (futuro / blocked)
 | Campo | Valor |
 | --- | --- |
 | ID | — (ninguna implementación activa) |
-| Fase | P0–P7 `accepted` · P8 `blocked` |
+| Fase | P0–P7 `accepted` · `T-AV-QC-001` `accepted` · P8 `blocked` |
 | Estado | Esperando decisión humana; P8 no iniciado |
-| Última cerrada | `T-STUDIO-001` / P7 `accepted` (2026-10-19) |
-| Nota P7 | Audio Studio = `public/shorts/<id>/`; AV real pendiente |
-| Nota P6 | Incorporación técnica de familias; no AV de todos los formatos |
-| Nota P5 | Limitación audiovisual documentada |
+| Última cerrada | `T-AV-QC-001` `accepted` (2026-10-19) |
+| Nota AV | 4 familias renderizadas (Cedar) + inspección humana aceptada |
+| Nota P7 | `accepted`; audio Studio = `public/shorts/<id>/` |
+| Nota P6 | Incorporación técnica + AV de evidencia vía `T-AV-QC-001` |
+| Nota P5 | Limitación BGM documentada |
+| P8 | `blocked` (sin cambios) |
 
 ## Fuera de alcance (hasta nueva decisión)
 

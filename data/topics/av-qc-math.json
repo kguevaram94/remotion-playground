@@ -1,0 +1,151 @@
+{
+  "id": "av-qc-math",
+  "title": "TÍTULO DEL RETO MATH — edita y pasa con --input",
+  "language": "es",
+  "niche": "math",
+  "format": "math-puzzle",
+  "family": "math",
+  "targetDurationSeconds": 28,
+  "aspectRatio": "9:16",
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "hook": "Resuelve la operación antes de que acabe la cuenta atrás.",
+  "narration": "Concatenación de las narraciones de cada escena (el pipeline también las une).",
+  "scenes": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSeconds": 3,
+      "narration": "¿Cuánto da esta operación? Sin calculadora.",
+      "onScreenText": "MATEMÁTICAS\nSIN CALCULADORA",
+      "subtitleText": "Resuelve sin calculadora",
+      "transition": "zoom",
+      "visual": {
+        "template": "hook",
+        "badge": "MATEMÁTICAS",
+        "emphasis": "Sin calculadora"
+      }
+    },
+    {
+      "id": "puzzle",
+      "type": "puzzle",
+      "durationSeconds": 4,
+      "narration": "Siete más cinco. ¿Cuál es el resultado?",
+      "onScreenText": "7 + 5 = ?",
+      "subtitleText": "Siete más cinco",
+      "transition": "fade",
+      "visual": {
+        "template": "math-puzzle",
+        "expression": "7 + 5 = ?",
+        "operands": [
+          7,
+          5
+        ],
+        "operator": "+",
+        "steps": []
+      }
+    },
+    {
+      "id": "think",
+      "type": "countdown",
+      "durationSeconds": 5,
+      "narration": "Cinco segundos. Suma en voz alta.",
+      "onScreenText": "¿CUÁNTO ES?",
+      "subtitleText": "Cuenta atrás",
+      "transition": "none",
+      "visual": {
+        "template": "countdown",
+        "seconds": 5,
+        "label": "¿Cuánto es?"
+      }
+    },
+    {
+      "id": "method",
+      "type": "explanation",
+      "durationSeconds": 4,
+      "narration": "Siete más cinco es doce. Puedes contar cinco desde siete: ocho, nueve, diez, once, doce.",
+      "onScreenText": "7 → +5 → 12",
+      "subtitleText": "Cuenta cinco desde siete",
+      "transition": "slide-up",
+      "visual": {
+        "template": "math-puzzle",
+        "expression": "7 + 5",
+        "operands": [
+          7,
+          5
+        ],
+        "operator": "+",
+        "result": 12,
+        "steps": [
+          "Parte de 7",
+          "Suma 5",
+          "Llegas a 12"
+        ]
+      }
+    },
+    {
+      "id": "reveal",
+      "type": "reveal",
+      "durationSeconds": 5,
+      "narration": "La respuesta es doce. Siete más cinco igual a doce.",
+      "onScreenText": "7 + 5 = 12",
+      "subtitleText": "Respuesta: doce",
+      "transition": "fade",
+      "visual": {
+        "template": "math-puzzle",
+        "expression": "7 + 5 = ?",
+        "operands": [
+          7,
+          5
+        ],
+        "operator": "+",
+        "result": 12,
+        "revealAnswer": "7+5=12",
+        "steps": [
+          "7 + 5 = 12"
+        ]
+      }
+    },
+    {
+      "id": "outro",
+      "type": "outro",
+      "durationSeconds": 4,
+      "narration": "¿Lo resolviste a tiempo? Cuéntalo en los comentarios.",
+      "onScreenText": "¿LO RESOLVISTE?",
+      "subtitleText": "Comenta tu resultado",
+      "transition": "fade",
+      "visual": {
+        "template": "text",
+        "headline": "¿LO RESOLVISTE?",
+        "body": "Cuéntalo en los comentarios",
+        "accent": "Deja tu respuesta abajo ↓"
+      }
+    }
+  ],
+  "solution": {
+    "summary": "7 + 5 = 12",
+    "explanation": "Suma de enteros: 7 + 5 produce 12.",
+    "answerKey": {
+      "type": "math",
+      "equation": "7+5=12",
+      "left": 12,
+      "right": 12,
+      "result": 12,
+      "operands": [
+        7,
+        5
+      ],
+      "operator": "+"
+    },
+    "validationStatus": "auto_validated"
+  },
+  "callToAction": "¿Lo resolviste? Cuéntalo en los comentarios.",
+  "sources": [
+    "Plantilla oficial familia math (T-MULTIFORMAT-001 entrega B)."
+  ],
+  "createdAt": "2026-10-19T17:00:00.000Z",
+  "schemaVersion": 1
+}

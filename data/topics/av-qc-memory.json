@@ -1,0 +1,202 @@
+{
+  "id": "av-qc-memory",
+  "title": "TÍTULO DEL RETO MEMORY — edita y pasa con --input",
+  "language": "es",
+  "niche": "memory",
+  "format": "memory-challenge",
+  "family": "memory",
+  "targetDurationSeconds": 28,
+  "aspectRatio": "9:16",
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "hook": "Memoriza los símbolos. Uno desaparecerá.",
+  "narration": "Concatenación de las narraciones de cada escena (el pipeline también las une).",
+  "scenes": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSeconds": 3,
+      "narration": "Memoriza estos cuatro símbolos. Uno va a desaparecer.",
+      "onScreenText": "MEMORIA\nUNO DESAPARECE",
+      "subtitleText": "Memoriza: uno desaparece",
+      "transition": "zoom",
+      "visual": {
+        "template": "hook",
+        "badge": "MEMORIA",
+        "emphasis": "Uno desaparecerá"
+      }
+    },
+    {
+      "id": "puzzle",
+      "type": "puzzle",
+      "durationSeconds": 5,
+      "narration": "Mira bien forma y color: triángulo azul, círculo amarillo, cuadrado verde y estrella rosa.",
+      "onScreenText": "MEMORIZA",
+      "subtitleText": "Forma y color",
+      "transition": "fade",
+      "visual": {
+        "template": "memory-challenge",
+        "items": [
+          {
+            "id": "a",
+            "symbol": "▲",
+            "color": "#38bdf8"
+          },
+          {
+            "id": "b",
+            "symbol": "●",
+            "color": "#fbbf24"
+          },
+          {
+            "id": "c",
+            "symbol": "■",
+            "color": "#34d399"
+          },
+          {
+            "id": "d",
+            "symbol": "★",
+            "color": "#fb7185"
+          }
+        ],
+        "phase": "show"
+      }
+    },
+    {
+      "id": "hide",
+      "type": "countdown",
+      "durationSeconds": 3,
+      "narration": "Se ocultan. Guarda la imagen en la mente.",
+      "onScreenText": "OCULTOS",
+      "subtitleText": "Se ocultan",
+      "transition": "none",
+      "visual": {
+        "template": "memory-challenge",
+        "items": [
+          {
+            "id": "a",
+            "symbol": "▲",
+            "color": "#38bdf8"
+          },
+          {
+            "id": "b",
+            "symbol": "●",
+            "color": "#fbbf24"
+          },
+          {
+            "id": "c",
+            "symbol": "■",
+            "color": "#34d399"
+          },
+          {
+            "id": "d",
+            "symbol": "★",
+            "color": "#fb7185"
+          }
+        ],
+        "phase": "hide"
+      }
+    },
+    {
+      "id": "ask",
+      "type": "hint",
+      "durationSeconds": 4,
+      "narration": "¿Cuál falta? Solo quedan tres.",
+      "onScreenText": "¿CUÁL FALTA?",
+      "subtitleText": "¿Cuál falta?",
+      "transition": "fade",
+      "visual": {
+        "template": "memory-challenge",
+        "items": [
+          {
+            "id": "a",
+            "symbol": "▲",
+            "color": "#38bdf8"
+          },
+          {
+            "id": "b",
+            "symbol": "●",
+            "color": "#fbbf24"
+          },
+          {
+            "id": "d",
+            "symbol": "★",
+            "color": "#fb7185"
+          }
+        ],
+        "missingId": "c",
+        "phase": "ask"
+      }
+    },
+    {
+      "id": "reveal",
+      "type": "reveal",
+      "durationSeconds": 5,
+      "narration": "Faltaba el cuadrado verde.",
+      "onScreenText": "■ VERDE",
+      "subtitleText": "El cuadrado verde",
+      "transition": "fade",
+      "visual": {
+        "template": "memory-challenge",
+        "items": [
+          {
+            "id": "a",
+            "symbol": "▲",
+            "color": "#38bdf8"
+          },
+          {
+            "id": "b",
+            "symbol": "●",
+            "color": "#fbbf24"
+          },
+          {
+            "id": "c",
+            "symbol": "■",
+            "color": "#34d399"
+          },
+          {
+            "id": "d",
+            "symbol": "★",
+            "color": "#fb7185"
+          }
+        ],
+        "missingId": "c",
+        "phase": "reveal"
+      }
+    },
+    {
+      "id": "outro",
+      "type": "outro",
+      "durationSeconds": 4,
+      "narration": "¿Lo recordaste? Cuéntalo en los comentarios.",
+      "onScreenText": "¿LO RECORDISTE?",
+      "subtitleText": "Comenta si acertaste",
+      "transition": "fade",
+      "visual": {
+        "template": "text",
+        "headline": "¿LO RECORDISTE?",
+        "body": "Cuéntalo en los comentarios",
+        "accent": "Deja tu respuesta abajo ↓"
+      }
+    }
+  ],
+  "solution": {
+    "summary": "Faltaba el cuadrado verde (id c).",
+    "explanation": "Tras ocultar los símbolos, el elemento ausente es el cuadrado verde.",
+    "answerKey": {
+      "type": "memory",
+      "missingId": "c",
+      "symbol": "■",
+      "color": "#34d399"
+    },
+    "validationStatus": "auto_validated"
+  },
+  "callToAction": "¿Lo recordaste? Cuéntalo en los comentarios.",
+  "sources": [
+    "Plantilla oficial familia memory (T-MULTIFORMAT-001 entrega C)."
+  ],
+  "createdAt": "2026-10-19T17:15:00.000Z",
+  "schemaVersion": 1
+}

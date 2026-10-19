@@ -1,0 +1,159 @@
+{
+  "id": "av-qc-logic-lateral",
+  "title": "TÍTULO DEL ACERTIJO — edita y pasa con --input",
+  "language": "es",
+  "niche": "logic",
+  "format": "logic-puzzle",
+  "targetDurationSeconds": 32,
+  "aspectRatio": "9:16",
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "hook": "HOOK corto del acertijo (1–2 frases).",
+  "narration": "Concatenación de las narraciones de cada escena (el pipeline también las une).",
+  "scenes": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSeconds": 4,
+      "narration": "Presenta el reto en una frase.",
+      "onScreenText": "TÍTULO EN PANTALLA\nRESTRICCIÓN CLAVE",
+      "subtitleText": "Frase corta para karaoke",
+      "transition": "zoom",
+      "visual": {
+        "template": "logic-room",
+        "switches": [
+          "A",
+          "B",
+          "C"
+        ],
+        "bulb": "off",
+        "layout": "split-room",
+        "showRuleCards": false
+      }
+    },
+    {
+      "id": "rules",
+      "type": "instruction",
+      "durationSeconds": 5,
+      "narration": "Explica las reglas (qué puedes y qué no).",
+      "onScreenText": "Regla 1\nRegla 2",
+      "subtitleText": "Las reglas",
+      "transition": "slide-up",
+      "visual": {
+        "template": "logic-room",
+        "switches": [
+          "A",
+          "B",
+          "C"
+        ],
+        "bulb": "hidden",
+        "layout": "split-room",
+        "showRuleCards": true
+      }
+    },
+    {
+      "id": "think",
+      "type": "countdown",
+      "durationSeconds": 5,
+      "narration": "Piénsalo. Tienes cinco segundos.",
+      "onScreenText": "¿CUÁL ES EL TRUCO?",
+      "subtitleText": "Cuenta atrás",
+      "transition": "none",
+      "visual": {
+        "template": "countdown",
+        "seconds": 5,
+        "label": "¿Cuál es el truco?",
+        "background": "logic-room"
+      }
+    },
+    {
+      "id": "step1",
+      "type": "explanation",
+      "durationSeconds": 6,
+      "narration": "Explica el método paso a paso.",
+      "onScreenText": "1. PASO UNO\n2. PASO DOS\n3. PASO TRES",
+      "subtitleText": "El método",
+      "transition": "fade",
+      "visual": {
+        "template": "switch-sequence",
+        "steps": [
+          {
+            "switch": "A",
+            "state": "on"
+          },
+          {
+            "switch": "A",
+            "state": "off"
+          },
+          {
+            "switch": "B",
+            "state": "on"
+          }
+        ]
+      }
+    },
+    {
+      "id": "reveal",
+      "type": "reveal",
+      "durationSeconds": 8,
+      "narration": "Revela la solución con los tres estados observables.",
+      "onScreenText": "ESTADO 1 = X\nESTADO 2 = Y\nESTADO 3 = Z",
+      "subtitleText": "La solución",
+      "transition": "fade",
+      "visual": {
+        "template": "bulb-state-reveal",
+        "states": [
+          {
+            "state": "on",
+            "answer": "B"
+          },
+          {
+            "state": "off-warm",
+            "answer": "A"
+          },
+          {
+            "state": "off-cold",
+            "answer": "C"
+          }
+        ]
+      }
+    },
+    {
+      "id": "outro",
+      "type": "outro",
+      "durationSeconds": 5,
+      "narration": "Cierre con la clave y CTA: ¿Lo habías resuelto? Cuéntalo en los comentarios.",
+      "onScreenText": "¿LO RESOLVISTE?",
+      "subtitleText": "Comenta tu método",
+      "transition": "fade",
+      "visual": {
+        "template": "text",
+        "headline": "¿LO RESOLVISTE?",
+        "body": "Cuéntalo en los comentarios",
+        "accent": "Deja tu método abajo ↓"
+      }
+    }
+  ],
+  "solution": {
+    "summary": "Resumen de una línea de la solución.",
+    "explanation": "Explicación completa. Incluye supuestos si los hay.",
+    "answerKey": {
+      "type": "three-switches",
+      "mapping": {
+        "on": "B",
+        "off-warm": "A",
+        "off-cold": "C"
+      }
+    },
+    "validationStatus": "partial"
+  },
+  "callToAction": "¿Lo habías resuelto? Cuéntalo en los comentarios.",
+  "sources": [
+    "Fuente o nota sobre el acertijo."
+  ],
+  "createdAt": "2026-10-18T10:21:00.000Z",
+  "schemaVersion": 1
+}

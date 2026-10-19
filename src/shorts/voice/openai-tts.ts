@@ -8,6 +8,7 @@ export const OPENAI_TTS_VOICES = [
   'alloy',
   'ash',
   'ballad',
+  'cedar',
   'coral',
   'echo',
   'fable',

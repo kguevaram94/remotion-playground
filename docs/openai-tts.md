@@ -74,6 +74,7 @@ También puedes oír demos en la web de OpenAI (Playground / docs de Audio), per
 
 | Nombre | Sensación típica |
 | --- | --- |
+| `cedar` | Voz autorizada en evidencia AV (`T-AV-QC-001`) |
 | `coral` | Cálida, clara — **por defecto** |
 | `nova` | Femenina, fresca |
 | `sage` | Suave, calmada |

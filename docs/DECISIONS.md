@@ -123,7 +123,15 @@ Formato: fecha · decisión · contexto · alternativa · consecuencia.
 - **Decisión:** Tres vías documentadas y estables: (1) Remotion Studio (`npm run dev`) con default ShortVideo = plantilla logic-lateral visual; (2) CLI `short:preview` a escala configurada; (3) `video-preview.mp4` post-proceso. Helper `short:studio-props` exporta props de un job para Studio. Sin tocar contratos `HelloRemotion` / `ScriptVideo` ni beats A–D.
 - **Alternativas descartadas:** Studio vacío con pantalla placeholder; mezclar preview CLI con post-proceso; deps nuevas; publicar desde Studio.
 - **Consecuencia:** Docs en `docs/studio-preview.md`. P8 sigue `blocked`. Default Studio ≠ job con voz real. **Audio en Studio depende de archivos en `public/shorts/<id>/`** (si faltan, Studio va mudo).
-- **Aceptación:** `T-STUDIO-001` / P7 → `accepted` 2026-10-19 (humano, chat Cursor; re-verificación test/typecheck/`short:studio-props` con `s4-19-interruptores`). Validación audiovisual real permanece **pendiente**.
+- **Aceptación:** `T-STUDIO-001` / P7 → `accepted` 2026-10-19 (humano, chat Cursor; re-verificación test/typecheck/`short:studio-props` con `s4-19-interruptores`). Validación audiovisual → `T-AV-QC-001` / D016.
+
+## D016 — Validación audiovisual real (T-AV-QC-001)
+
+- **Fecha:** 2026-10-19
+- **Decisión:** Procedimiento reproducible de render + QC técnico + inspección AV humana para las cuatro familias (`logic-lateral`, `math`, `memory`, `illusion`) usando copias `data/topics/av-qc-*.json` (fixtures oficiales intactos). Doc: `docs/av-qc.md`. Voz de evidencia autorizada: OpenAI TTS `cedar` (allowlist en `openai-tts.ts`). Separación explícita: `auto_validated` / `report.ok` / `publishEligibility` ≠ OK audiovisual; illusion sigue `partial`. P8 no se inicia.
+- **Alternativas descartadas:** Tratar validate-only P6 como AV; mock como evidencia de producción; modificar plantillas aceptadas; iniciar YouTube.
+- **Consecuencia:** Jobs de evidencia en `output/av-qc-*/`. Limitaciones documentadas (BGM vacío, placeholders de plantilla, tipografía memory `RECORDISTE`). P8 sigue `blocked`.
+- **Aceptación:** `T-AV-QC-001` → `accepted` 2026-10-19 (humano, chat Cursor; revisión de los cuatro MP4 Cedar).
 
 ---
 

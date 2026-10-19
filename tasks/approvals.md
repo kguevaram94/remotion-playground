@@ -30,8 +30,8 @@ Código terminado ≠ `accepted`.
 | P4 | CI GitHub Actions | `accepted` | `.github/workflows/ci.yml`; run [39237385007](https://github.com/kguevaram94/remotion-playground/actions/runs/39237385007) en commit `fd74e44abe169808faf90132ce52960df33dd7ef` (success: `npm ci`, `npm run typecheck`, `npm test`) | humano (chat Cursor: aceptación explícita con evidencia CI) | 2026-10-19 |
 | P5 | Pulido logic-lateral | `accepted` | `T-POLISH-001` + `T-QC-LOUDNORM-001` `accepted`. BGM=0 pistas; sin validación audiovisual MP4 no-mock | humano (chat Cursor; código/tests/typecheck; limitación AV doc.) | 2026-10-19 |
 | P6 | Más familias plantilla | `accepted` | A+B+C+D `accepted`. Incorporación técnica (validate/tests); no AV de todos los formatos | humano (chat Cursor: aceptación D + cierre P6) | 2026-10-19 |
-| P7 | Studio/preview estable | `accepted` | `T-STUDIO-001` aceptación abajo; re-verificación 2026-10-19 (test/typecheck/studio-props); AV pendiente | humano (chat Cursor: aceptación explícita sujeta a comprobaciones) | 2026-10-19 |
-| P8 | Publicación YouTube | `blocked` | Descartado por ahora (`ROADMAP` / D-future) | — | — |
+| P7 | Studio/preview estable | `accepted` | `T-STUDIO-001` aceptación abajo; re-verificación 2026-10-19 (test/typecheck/studio-props); AV pendiente → propuesta `T-AV-QC-001` | humano (chat Cursor: aceptación explícita sujeta a comprobaciones) | 2026-10-19 |
+| P8 | Publicación YouTube | `blocked` | Descartado por ahora (`ROADMAP` / D-future). **No** iniciado por `T-AV-QC-001` | — | — |
 
 ## Tablero de tareas
 
@@ -42,7 +42,8 @@ Código terminado ≠ `accepted`.
 | `T-POLISH-001` | P5 | Pulido logic-lateral (SFX, BGM curada, thumb Satori, loudnorm narración→MP4) | `accepted` | Aceptado 2026-10-19 (código/tests/typecheck; limitación AV documentada). Sin commit/push |
 | `T-QC-LOUDNORM-001` | P5 | Gate QC loudnorm + publishEligibility | `accepted` | Aceptado 2026-10-19 (auditoría final 7/7 PASS; 72 tests; typecheck OK) |
 | `T-MULTIFORMAT-001` | P6 | Multiformato (entregas A–D) | A+B+C+D: `accepted` · P6: `accepted` | Cierre 2026-10-19; P8 `blocked` |
-| `T-STUDIO-001` | P7 | Studio / preview workflow estable | `accepted` | Aceptado 2026-10-19; audio Studio = `public/shorts/<id>/`; AV pendiente; P8 `blocked` |
+| `T-STUDIO-001` | P7 | Studio / preview workflow estable | `accepted` | Aceptado 2026-10-19; audio Studio = `public/shorts/<id>/`; AV → `T-AV-QC-001` `accepted`; P8 `blocked` |
+| `T-AV-QC-001` | post-P7 / pre-P8 | Validación audiovisual real (4 familias) | `accepted` | Aceptado 2026-10-19 (chat Cursor); 4× MP4 Cedar; P8 `blocked` |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -60,8 +61,238 @@ Código terminado ≠ `accepted`.
 
 ## Tarea activa / alcance aprobado
 
-> Última tarea cerrada: `T-STUDIO-001` · P7 · **`accepted`**.  
-> P0–P6 = `accepted`. P7 = `accepted`. P8 = `blocked`. Sin implementación siguiente autorizada. Sin YouTube.
+> Última tarea cerrada: `T-AV-QC-001` · **`accepted`** (2026-10-19).  
+> P0–P7 = `accepted`. P8 = `blocked`. Sin implementación siguiente autorizada. Sin YouTube.
+
+### `T-AV-QC-001` · post-P7 / pre-P8 · `accepted`
+
+#### Aceptación humana (2026-10-19)
+
+Estado: **`accepted`**. Humano (chat Cursor: `accepted`) tras revisión de los cuatro MP4.
+
+- Ciclo: `proposed` → `approved` → `in_progress` → `review_required` → **`accepted`**.
+- Voz de evidencia: OpenAI **Cedar**.
+- Limitaciones conservadas: BGM vacío; placeholders logic-lateral; typo memory «RECORDISTE»; stack math; P8 `blocked`.
+- **No autorizado en este acto:** P8 / YouTube; commit/push/merge; siguiente implementación.
+
+#### Aprobación humana de inicio (2026-10-19)
+
+- **Aprobado por:** humano (chat Cursor: `approved` + `OpenAI Cedar`).
+- **Voz:** `VOICE_PROVIDER=openai-tts`, `VOICE_NAME=cedar` (allowlist + `.env`).
+- **P8:** permanece `blocked`.
+
+#### Informe de revisión — `T-AV-QC-001` (2026-10-19)
+
+**Cambios**
+
+- Topics: `data/topics/av-qc-{logic-lateral,math,memory,illusion}.json`
+- Jobs: `output/av-qc-*/` (video.mp4, report.json, frames/, …)
+- Doc: `docs/av-qc.md`; D016; enlaces README / openai-tts (`cedar`)
+- Código mínimo: `cedar` en `OPENAI_TTS_VOICES` (`src/shorts/voice/openai-tts.ts`)
+- Templates oficiales / P5 / QC / beats: **intactos**
+
+**Comandos**
+
+```bash
+VOICE_NAME=cedar VOICE_PROVIDER=openai-tts npm run generar-short -- --input data/topics/av-qc-logic-lateral.json
+VOICE_NAME=cedar VOICE_PROVIDER=openai-tts npm run generar-short -- --input data/topics/av-qc-math.json
+VOICE_NAME=cedar VOICE_PROVIDER=openai-tts npm run generar-short -- --input data/topics/av-qc-memory.json
+VOICE_NAME=cedar VOICE_PROVIDER=openai-tts npm run generar-short -- --input data/topics/av-qc-illusion.json
+npm test          # 21 files / 102 passed
+npm run typecheck # OK
+```
+
+**Resultados por familia**
+
+| Job | Familia | validation | report.ok | loudnorm | eligible | MP4 | Duración |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `av-qc-logic-lateral` | logic-lateral | `partial` | true | verified | true | `output/av-qc-logic-lateral/video.mp4` | ~19.6s · 1080×1920 |
+| `av-qc-math` | math | `auto_validated` | true | verified | true | `output/av-qc-math/video.mp4` | ~23.9s · 1080×1920 |
+| `av-qc-memory` | memory | `auto_validated` | true | verified | true | `output/av-qc-memory/video.mp4` | ~21.6s · 1080×1920 |
+| `av-qc-illusion` | illusion | **`partial`** | true | verified | true | `output/av-qc-illusion/video.mp4` | ~22.6s · 1080×1920 |
+
+Voz en los cuatro: `gpt-4o-mini-tts/cedar`, no mock. Warning común: BGM vacío.
+
+**Inspección visual (agente, frames)**
+
+| Familia | Hallazgo frames | Severidad |
+| --- | --- | --- |
+| logic-lateral | Hook con interruptores/habitación; reveal bombilla ENCENDIDA=B; outro CTA comentar. Textos placeholder de plantilla. | limitation (placeholders) |
+| math | Puzzle `7+5=?`; reveal `7+5=12`; respuesta «doce». Stack de ecuación repetida. | minor |
+| memory | show 4 símbolos → hide → ask (falta verde) → reveal cuadrado verde. Outro typo «RECORDISTE». | minor (typo fixture) |
+| illusion | Müller-Lyer puzzle; reveal con guías + «¡IGUALES!» / misma longitud. Status `partial` conservado. | OK perceptual (humano debe confirmar) |
+
+**Audio**
+
+- Técnico: loudnorm provenance OK; `finalAudio` OK; sin banner mock en metadatos.
+- **Escucha / revisión humana de los 4 MP4:** aceptada 2026-10-19 (chat Cursor).
+
+**Limitaciones**
+
+- Sin BGM; no se valida mezcla.
+- `eligible=true` ≠ autorización de publicar.
+- Typo memory en fixture aceptado: no corregido en esta tarea (propuesta aparte si se desea).
+- P8 `blocked`.
+
+**Estado final:** `accepted` (2026-10-19). P8 permanece `blocked`. Sin siguiente tarea autorizada.
+
+---
+
+### `T-AV-QC-001` · detalle de propuesta (histórico `proposed`)
+
+#### Resumen
+
+Validación audiovisual real de la fábrica: un MP4 por familia (`logic-lateral`, `math`, `memory`, `illusion`) vía pipeline existente + inspección humana visual/auditiva + evidencias. **No** es publicación (P8).
+
+#### Diagnóstico del repositorio (2026-10-19, sin renders)
+
+| Capacidad | Estado verificado |
+| --- | --- |
+| Git | `main` @ `34c9faa` = `origin/main`; working tree limpio |
+| Plantillas 4 familias | `data/templates/script-{logic-lateral,math,memory,illusion}.json` |
+| Topics por familia | Solo logic-lateral en `data/topics/`; **no** hay topics math/memory/illusion |
+| Pipeline | `generar-short` → `npm run short`; fases hasta `quality_check` + `report.json` |
+| MP4 logic-lateral | Existe `output/s4-19-interruptores/video.mp4` (referencia) |
+| MP4 math/memory/illusion | **No** existen; jobs `t-multiformat-d-accept-*` solo validate (`validation.json`) |
+| SFX | `public/sfx/{tick,ding,pop,whoosh}.wav` presentes |
+| BGM | `songs/catalog.json` → `tracks: []` (warning esperado) |
+| Voz env | `.env` tiene `VOICE_PROVIDER=openai-tts` + clave; macOS `say` disponible (p. ej. Flo/Eddy es_ES) |
+| FFmpeg sistema | No en PATH; fallback Remotion en `src/shorts/media/ffmpeg.ts` |
+| QC | `report.ok` + `publishEligibility`; loudnorm por provenance; mock nunca elegible |
+| Illusion | `validationStatus: partial`; nunca `auto_validated` (D014) |
+| P7 / P8 | P7 `accepted`; P8 `blocked` |
+
+#### Separación de responsabilidades (vinculante)
+
+| Capa | Qué demuestra | Qué **no** demuestra |
+| --- | --- | --- |
+| Validación schema/narrativa (`short:validate`, `validation.json`) | Beat, puzzle, answerKey / reglas de familia | Que el vídeo se vea o suene bien |
+| QC técnico (`report.json`) | MP4 existe/tamaño, resolución, SRT bounds, loudnorm provenance, SFX, BGM warning | Inspección humana AV; audio re-extraído del contenedor |
+| `solution.validationStatus` / `auto_validated` | Coherencia declarativa del acertijo | Percepción / UX / sync |
+| Inspección AV humana (esta tarea) | Checklist visual + auditiva sobre MP4 real | Autorización de publicar |
+| Autorización de publicar | Decisión humana explícita (+ P8 si algún día se aprueba) | — |
+
+`publishEligibility.eligible=true` ≠ OK audiovisual. Illusion **no** puede pasar a `auto_validated`.
+
+#### Procedimiento de renderizado propuesto (tras `approved`)
+
+1. **Preparar copias** (no editar fixtures aceptados):
+
+```bash
+cp data/templates/script-logic-lateral.json data/topics/av-qc-logic-lateral.json
+cp data/templates/script-math.json data/topics/av-qc-math.json
+cp data/templates/script-memory.json data/topics/av-qc-memory.json
+cp data/templates/script-illusion.json data/topics/av-qc-illusion.json
+# Editar solo id → av-qc-logic-lateral | av-qc-math | av-qc-memory | av-qc-illusion
+```
+
+2. **Provider de voz (elegir uno, documentar):**
+   - Preferido sin coste: `VOICE_PROVIDER=macos-say` (voz es_ES existente).
+   - Alternativa gratis: `VOICE_PROVIDER=file` tras `short:record`.
+   - OpenAI TTS: solo con OK humano de gasto (ya hay clave en `.env`).
+   - Mock: solo si se acepta banner + `eligible=false` (no cuenta como narración de producción).
+
+3. **Assets previos:**
+
+```bash
+test -f public/sfx/tick.wav || npm run sfx:generate
+# BGM: catálogo vacío → continuar; anotar limitación
+```
+
+4. **Render por familia** (pipeline existente):
+
+```bash
+npm run generar-short -- --input data/topics/av-qc-logic-lateral.json
+npm run generar-short -- --input data/topics/av-qc-math.json
+npm run generar-short -- --input data/topics/av-qc-memory.json
+npm run generar-short -- --input data/topics/av-qc-illusion.json
+```
+
+5. **Tests de regresión** (no sustituyen AV):
+
+```bash
+npm test && npm run typecheck
+```
+
+6. **Inspección humana** con checklists abajo; capturar fotogramas relevantes (hook / countdown / reveal / outro como mínimo).
+
+7. **Registrar evidencias** en esta sección (tabla por familia).
+
+#### Comandos reales identificados
+
+| Comando | Uso |
+| --- | --- |
+| `npm run generar-short -- --input <json>` | Pipeline completo (voz→SRT→render→post→QC) |
+| `npm run short -- --input <json>` | Igual vía CLI |
+| `npm run short:validate -- --input <json>` / `--id` | Solo validación |
+| `npm run short:voice` / `short:render` / `short:post` / `short:resume` | Fases parciales |
+| `npm run short:preview -- --id <id>` | Preview media res |
+| `npm run short:studio-props -- --id <id>` | Props Studio (requiere `public/shorts/<id>/` para audio) |
+| `npm run sfx:generate` | Regenerar SFX procedurales |
+| `npm run dev` | Studio interactivo (no sustituye MP4 full) |
+
+#### Requisitos / bloqueos por familia
+
+| Familia | Fixture origen | Validación tipica | Narración / assets | Notas AV |
+| --- | --- | --- | --- | --- |
+| logic-lateral | `script-logic-lateral.json` | `partial` (three-switches) | SFX countdown/reveal; BGM opcional | Referencia histórica `s4-19-interruptores` |
+| math | `script-math.json` | `auto_validated` | Legibilidad ecuación + reveal `7+5=12` | `auto_validated` ≠ OK visual |
+| memory | `script-memory.json` | `auto_validated` | Fases visuales show→hide→ask→reveal en beats puzzle/countdown/hint/reveal | Verificar claridad de cada fase |
+| illusion | `script-illusion.json` | **`partial`** (siempre) | Reveal con `compareMode`+`showGuides` | Percepción humana obligatoria |
+
+#### Checklist visual (humano)
+
+- [ ] Formato 9:16; dimensiones ~1080×1920 (o documentar desviación)
+- [ ] Textos legibles (contraste, tamaño, sin overflow)
+- [ ] Encuadre / composición; sin elementos cortados
+- [ ] Countdown y transiciones comprensibles
+- [ ] Beats en orden de familia; sync percibido voz↔escena
+- [ ] Reveal claro
+- [ ] Sin pantallas vacías / artefactos graves
+- [ ] Outro con CTA a comentar (voz + on-screen)
+- [ ] Sin banner «AUDIO DE PRUEBA» si se usó voz no-mock
+
+#### Checklist de audio (humano)
+
+- [ ] Narración presente e inteligible
+- [ ] Sync voz–imagen aceptable
+- [ ] Sin cortes al inicio/final de escenas relevantes
+- [ ] Volumen percibido OK; loudnorm: revisar `report.checks.narrationLoudnorm` + provenance (no re-extraer salvo decisión futura)
+- [ ] Música: ausente si catálogo vacío (esperado) o balanceada si hay pista
+- [ ] SFX audibles donde aplique (tick / ding / whoosh / pop)
+- [ ] Sin silencios largos inesperados ni clipping obvio
+
+#### Checklist por familia
+
+- **logic-lateral:** reto/reglas coherentes; secuencia interruptores/bombilla; reveal correcto.
+- **math:** problema legible; respuesta correcta en reveal; explicación sigue el método.
+- **memory:** show → hide → ask → reveal perceptibles; elemento faltante claro.
+- **illusion:** efecto óptico se percibe; guías en reveal comprensibles; status sigue `partial`.
+
+#### Evidencias a conservar (por job)
+
+- Job id · familia · path fixture origen (copia topic)
+- Comandos ejecutados · provider de voz · resultado `npm test` / `typecheck`
+- `validation.json` (level/status) · `report.json` (`ok`, blocking, warnings, `publishEligibility`)
+- Path `video.mp4` (+ opcional `video-preview.mp4`, `thumbnail.png`)
+- Fotogramas clave · veredicto humano (pass / pass-with-notes / fail)
+- Defectos: descripción, severidad (`blocker` / `major` / `minor` / `limitation`)
+
+#### Cambios de pipeline (solo si hicieran falta — propuesta separada)
+
+No implementar en `T-AV-QC-001`. Ejemplos a aparcar: helper de extracción de frames; plantilla de ficha AV; re-QC de jobs antiguos; loudnorm del mix final; curación BGM. Cada uno = tarea `proposed` aparte.
+
+#### Criterios de aceptación
+
+Ver checklist en `tasks/active.md` (`T-AV-QC-001`). Cierre solo con `accepted` humano tras inspección AV real.
+
+#### Estado de aprobación
+
+`proposed` — 2026-10-19 (agente, chat Cursor). Esperando humano → `approved` para ejecutar renders.
+
+**No autorizado aún:** renders, cambios de código/fixtures, P8, commit/push/merge, APIs de pago nuevas.
+
+---
 
 ### `T-STUDIO-001` · P7 · `accepted`
 
