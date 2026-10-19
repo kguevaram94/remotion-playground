@@ -9,6 +9,13 @@ import {
 } from 'node:fs';
 import path from 'node:path';
 
+export type PublishNarrationResult = {
+  /** Path relative to public/ for Remotion staticFile */
+  publicFile: string;
+  /** Full SHA-1 of the published bytes */
+  sha1: string;
+};
+
 /**
  * Copy narration into public/ with a content hash in the filename.
  * Remotion caches assets by URL; a fixed `narration.wav` path kept serving
@@ -17,9 +24,10 @@ import path from 'node:path';
 export const publishNarrationAudio = (
   jobId: string,
   sourceAudioPath: string,
-): string => {
+): PublishNarrationResult => {
   const buf = readFileSync(sourceAudioPath);
-  const hash = createHash('sha1').update(buf).digest('hex').slice(0, 12);
+  const sha1 = createHash('sha1').update(buf).digest('hex');
+  const hash = sha1.slice(0, 12);
   const dirRel = path.join('shorts', jobId);
   const dirAbs = path.join(process.cwd(), 'public', dirRel);
   mkdirSync(dirAbs, {recursive: true});
@@ -42,7 +50,10 @@ export const publishNarrationAudio = (
   // Stable symlink-like copy for debugging (optional peek)
   copyFileSync(sourceAudioPath, path.join(dirAbs, 'narration-latest.wav'));
 
-  return path.join(dirRel, fileName).replace(/\\/g, '/');
+  return {
+    publicFile: path.join(dirRel, fileName).replace(/\\/g, '/'),
+    sha1,
+  };
 };
 
 export const clearPublishedNarration = (jobId: string): void => {

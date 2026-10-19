@@ -67,6 +67,7 @@ Formato: fecha · decisión · contexto · alternativa · consecuencia.
 - **Decisión (gates T-POLISH-001):** SFX procedural (`generate-sfx.mjs`); BGM solo vía `songs/catalog.json` con licencia verificable (sin packs dudosos ni compras sin OK); thumbnail Satori único pulido (sin plantillas por familia); loudnorm de **narración** aplicado antes del render y embebido en el MP4 (sin master del mix voz+BGM+SFX).
 - **Alternativas descartadas:** Packs SFX externos; usar `songs/output*.mp3` sin licencia; thumbnails multi-familia; loudnorm solo como sidecar post-hoc; loudnorm del mix final en P5.
 - **Consecuencia:** Catálogo BGM puede quedar vacío (0 pistas) hasta aportes licenciados; QC avisa. Mock no recibe loudnorm «final». Beat logic-lateral intacto.
+- **Enmienda (loudnorm QC):** El QC valida **provenance de render** (`render-narration.json` / `job.render.narrationProvenance`: kind + sha1 del audio publicado), no la mera existencia de `narration-loudnorm.wav`. `post_process` no debe crear ese WAV después del MP4. Un check `ok` = provenance verificada; **no** implica re-extracción del audio del contenedor MP4.
 
 ---
 

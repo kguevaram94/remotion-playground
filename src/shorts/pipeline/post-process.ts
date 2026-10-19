@@ -3,7 +3,6 @@ import {existsSync, copyFileSync} from 'node:fs';
 import type {AppConfig} from '../config/env';
 import {
   extractFrame,
-  loudnormAudio,
   makePreviewMp4,
   probeMedia,
 } from '../media/ffmpeg';
@@ -68,29 +67,22 @@ export const runPostProcess = async (
       job.warnings.push('No se pudo generar video-preview.mp4');
     }
 
-    // 4) Loudnorm sidecar should already exist from voice/render; ensure once more
+    // 4) Loudnorm sidecar: only list if already produced before render.
+    // Never create narration-loudnorm.wav post-hoc — that would let QC
+    // mistake a sidecar for the audio actually embedded in video.mp4.
     if (
-      job.artifacts.narrationAudio &&
-      existsSync(job.artifacts.narrationAudio) &&
-      !job.audioIsTest
+      job.artifacts.narrationLoudnorm &&
+      existsSync(job.artifacts.narrationLoudnorm)
     ) {
-      const normalized =
-        job.artifacts.narrationLoudnorm &&
-        existsSync(job.artifacts.narrationLoudnorm)
-          ? job.artifacts.narrationLoudnorm
-          : path.join(jobDir, 'narration-loudnorm.wav');
-      if (
-        !existsSync(normalized) &&
-        loudnormAudio(job.artifacts.narrationAudio, normalized)
-      ) {
-        job.artifacts.narrationLoudnorm = normalized;
-      }
-      if (
-        job.artifacts.narrationLoudnorm &&
-        existsSync(job.artifacts.narrationLoudnorm)
-      ) {
-        artifacts.push(job.artifacts.narrationLoudnorm);
-      }
+      artifacts.push(job.artifacts.narrationLoudnorm);
+    } else if (
+      !job.audioIsTest &&
+      job.artifacts.narrationAudio &&
+      existsSync(job.artifacts.narrationAudio)
+    ) {
+      job.warnings.push(
+        'narration-loudnorm.wav ausente tras el render; no se genera en post-process (el MP4 no puede reclamarse como normalizado)',
+      );
     }
 
     // 5) Probe summary for metadata

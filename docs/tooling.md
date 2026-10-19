@@ -8,7 +8,7 @@ Remotion exige animaciones **deterministas por fotograma** (`useCurrentFrame`). 
 | --- | --- | --- |
 | **Remotion Skills / best practices** | Sí (docs + skill del repo) | Fuente de verdad para animar y renderizar |
 | **@remotion/paths** | Sí | SVG paths: `evolvePath` para agua/tuberías, trazos |
-| **FFmpeg** (`npx remotion ffmpeg/ffprobe` o sistema) | Sí | Post-proceso: preview, frames, loudnorm, QC |
+| **FFmpeg** (`npx remotion ffmpeg/ffprobe` o sistema) | Sí | Loudnorm de narración (pre-render); post-proceso: preview, frames, QC |
 | **Satori** + **resvg** | Sí | Thumbnails PNG sin Chromium extra |
 | **@remotion/transitions** | Disponible | Preferimos `SceneFade` nativo (más simple para Shorts) |
 | **Three.js / R3F / @remotion/three** | Preparado, no activo | Útil para ilusiones 3D futuras; `gl: angle` ya configurado |
@@ -21,8 +21,8 @@ Remotion exige animaciones **deterministas por fotograma** (`useCurrentFrame`). 
 
 ```text
 guion → validación → voz (+ loudnorm narración) → SRT
-      → Remotion render (usa WAV loudnorm si no es mock; bundle cache)
-      → post-proceso FFmpeg+Satori → QC ffprobe → output/
+      → Remotion render (publica WAV loudnorm si no es mock; guarda provenance)
+      → post-proceso FFmpeg+Satori (no regenera loudnorm) → QC (provenance) → output/
 ```
 
 Artefactos nuevos por trabajo:
@@ -30,8 +30,11 @@ Artefactos nuevos por trabajo:
 - `thumbnail.png` — portada vertical (Satori; tipografía/badge/hook pulidos)
 - `frame-reveal.jpg` — fotograma cerca de la revelación
 - `video-preview.mp4` — preview ligero
-- `narration-loudnorm.wav` — narración normalizada **antes del render** (si no es mock); el MP4 embebe esta pista
+- `narration-loudnorm.wav` — narración normalizada **antes del render** (si no es mock); publicada a Remotion
+- `render-narration.json` — provenance del audio publicado (kind + sha1); el QC lo exige
 - `probe.json` — metadatos ffprobe
+
+El QC **no** aprueba loudnorm solo porque exista el WAV: exige provenance de render (`kind=loudnorm`). Generar el sidecar en post-process está prohibido.
 
 BGM: solo pistas en `songs/catalog.json` (ver `songs/README.md`). Sin catálogo curado → warning y vídeo sin música.
 

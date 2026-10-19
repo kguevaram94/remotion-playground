@@ -80,6 +80,17 @@ export type JobRecord = {
     width?: number;
     height?: number;
     preview?: boolean;
+    /**
+     * Audio bytes published to Remotion immediately before renderMedia.
+     * QC must trust this provenance — not a sidecar created in post_process.
+     */
+    narrationProvenance?: {
+      sourcePath: string;
+      kind: 'loudnorm' | 'raw' | 'mock';
+      sha1: string;
+      publicFile: string;
+      recordedAt: string;
+    };
   };
   validation?: {
     level?: string;

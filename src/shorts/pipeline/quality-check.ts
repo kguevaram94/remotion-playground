@@ -3,7 +3,10 @@ import path from 'node:path';
 import type {AppConfig} from '../config/env';
 import {listCuratedSongFiles} from '../media/bg-music';
 import {probeMedia} from '../media/ffmpeg';
-import {resolveNarrationForRender} from '../media/narration-loudnorm';
+import {
+  evaluateNarrationLoudnormQc,
+  type NarrationRenderProvenance,
+} from '../media/narration-loudnorm';
 import {parseSrt} from '../subtitles/srt';
 import type {JobRecord, JobStore} from '../storage/job-store';
 
@@ -12,6 +15,24 @@ export type QualityReport = {
   blocking: string[];
   warnings: string[];
   checks: Record<string, {ok: boolean; detail?: string}>;
+};
+
+const resolveNarrationProvenance = (
+  store: JobStore,
+  job: JobRecord,
+): NarrationRenderProvenance | null => {
+  if (job.render?.narrationProvenance) {
+    return job.render.narrationProvenance;
+  }
+  const sidecar = path.join(store.jobDir(job.id), 'render-narration.json');
+  if (!existsSync(sidecar)) return null;
+  try {
+    return JSON.parse(
+      readFileSync(sidecar, 'utf8'),
+    ) as NarrationRenderProvenance;
+  } catch {
+    return null;
+  }
 };
 
 export const runQualityCheck = (
@@ -144,34 +165,23 @@ export const runQualityCheck = (
       report.warnings.push(
         'El render usa audio de prueba; no publicar como narración final',
       );
-      report.checks.narrationLoudnorm = {
-        ok: true,
-        detail: 'omitido (mock)',
-      };
     } else {
       report.checks.finalAudio = {ok: true};
-      const loudnormOk = Boolean(
-        job.artifacts.narrationLoudnorm &&
-          existsSync(job.artifacts.narrationLoudnorm),
-      );
-      const renderPath = resolveNarrationForRender({
-        narrationAudio: job.artifacts.narrationAudio,
-        narrationLoudnorm: job.artifacts.narrationLoudnorm,
-        isTestAudio: false,
-      });
-      const usesLoudnorm =
-        loudnormOk && renderPath === job.artifacts.narrationLoudnorm;
-      report.checks.narrationLoudnorm = {
-        ok: usesLoudnorm,
-        detail: usesLoudnorm
-          ? job.artifacts.narrationLoudnorm
-          : 'faltante o no usado en render',
-      };
-      if (!usesLoudnorm) {
-        report.warnings.push(
-          'Narración loudnorm ausente o no seleccionada para el MP4',
-        );
-      }
+    }
+
+    const provenance = resolveNarrationProvenance(store, job);
+    const loudnormQc = evaluateNarrationLoudnormQc({
+      audioIsTest: Boolean(job.audioIsTest),
+      provenance,
+      narrationLoudnorm: job.artifacts.narrationLoudnorm,
+      narrationAudio: job.artifacts.narrationAudio,
+    });
+    report.checks.narrationLoudnorm = {
+      ok: loudnormQc.ok,
+      detail: `${loudnormQc.status}: ${loudnormQc.detail}`,
+    };
+    if (loudnormQc.warning) {
+      report.warnings.push(loudnormQc.warning);
     }
 
     const curated = listCuratedSongFiles();

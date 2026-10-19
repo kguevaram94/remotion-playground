@@ -7,7 +7,8 @@ import {resolveJobBackgroundMusic} from '../media/bg-music';
 import {getOrCreateServeUrl} from '../media/bundle-cache';
 import {
   ensureNarrationLoudnorm,
-  resolveNarrationForRender,
+  selectNarrationSourceForRender,
+  type NarrationRenderProvenance,
 } from '../media/narration-loudnorm';
 import {publishNarrationAudio} from '../media/public-audio';
 import {parseSrt} from '../subtitles/srt';
@@ -73,6 +74,7 @@ export const runRenderVideo = async (
     }
 
     let audioPublicFile: string | null = null;
+    let narrationProvenance: NarrationRenderProvenance | undefined;
     if (
       job.artifacts.narrationAudio &&
       existsSync(job.artifacts.narrationAudio) &&
@@ -92,20 +94,26 @@ export const runRenderVideo = async (
       }
     }
 
-    const narrationForRender = resolveNarrationForRender({
+    const selected = selectNarrationSourceForRender({
       narrationAudio: job.artifacts.narrationAudio,
       narrationLoudnorm: job.artifacts.narrationLoudnorm,
       isTestAudio: Boolean(job.audioIsTest),
     });
-    if (narrationForRender) {
-      audioPublicFile = publishNarrationAudio(job.id, narrationForRender);
-      const usingLoudnorm =
-        !job.audioIsTest &&
-        job.artifacts.narrationLoudnorm === narrationForRender;
+    if (selected.path && selected.kind) {
+      const published = publishNarrationAudio(job.id, selected.path);
+      audioPublicFile = published.publicFile;
+      narrationProvenance = {
+        sourcePath: selected.path,
+        kind: selected.kind,
+        sha1: published.sha1,
+        publicFile: published.publicFile,
+        recordedAt: new Date().toISOString(),
+      };
+      store.writeJson(job.id, 'render-narration.json', narrationProvenance);
       process.stdout.write(
         `[shorts] Audio público: ${audioPublicFile}` +
           ` (voz=${job.providerMeta.voiceModel ?? config.voiceModel}` +
-          `${usingLoudnorm ? ', loudnorm' : ''})\n`,
+          `, kind=${selected.kind})\n`,
       );
     }
 
@@ -172,6 +180,7 @@ export const runRenderVideo = async (
       width: evenWidth,
       height: evenHeight,
       preview,
+      narrationProvenance,
     };
 
     store.setPhase(job, 'rendering', {

@@ -84,7 +84,7 @@ npm run short -- --id s4-19-interruptores --mode render
 | Subtítulos karaoke (frase fija, palabra en amarillo) | `SubtitleTrack` + `subtitle-sentences` |
 | Música de fondo (catálogo curado `songs/catalog.json`) | `bg-music` → `ShortVideo` |
 | SFX tick / whoosh / pop / ding (procedural) | `public/sfx/` + componentes Remotion |
-| Narración loudnorm en el MP4 (no mock) | `narration-loudnorm` → render |
+| Narración loudnorm en el MP4 (no mock) | `narration-loudnorm` → render + `render-narration.json` (provenance) |
 | Thumbnail + preview | post-proceso FFmpeg/Satori |
 
 ## 5. Estructura de salida
@@ -94,13 +94,14 @@ output/<id>/
   script.json
   scenes.json
   narration.wav
-  narration-loudnorm.wav   # si voz no-mock; usada en el render
+  narration-loudnorm.wav   # si voz no-mock; generada antes del render
+  render-narration.json    # provenance (kind+sha1) del audio publicado a Remotion
   voice-meta.json
   subtitles.srt
   video.mp4
   video-preview.mp4
   thumbnail.png
-  report.json
+  report.json              # QC: narrationLoudnorm exige provenance, no solo el WAV
 ```
 
 ## 6. Checklist de calidad

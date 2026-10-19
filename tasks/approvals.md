@@ -39,7 +39,7 @@ Código terminado ≠ `accepted`.
 | --- | --- | --- | --- | --- |
 | `T-GOV-001` | P3 | Protocolo colaboración + docs gobernanza | `accepted` | Aceptado 2026-10-19 con base en el informe de revisión |
 | `T-CI-001` | P4 | CI test + typecheck | `accepted` | Aceptado 2026-10-19 con evidencia CI run 39237385007 (commit `fd74e44`) |
-| `T-POLISH-001` | P5 | Pulido logic-lateral (SFX, BGM curada, thumb Satori, loudnorm narración→MP4) | `review_required` | Entrega lista; espera `accepted` humano. Sin commit/push |
+| `T-POLISH-001` | P5 | Pulido logic-lateral (SFX, BGM curada, thumb Satori, loudnorm narración→MP4) | `review_required` | Remediación loudnorm QC (provenance) incluida; espera `accepted` humano. Sin commit/push |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -169,3 +169,15 @@ Además (en implementación, según alcance):
 - **Comandos:** `npm run sfx:generate` OK · `npm test` → 15 files / 50 tests passed · `npm run typecheck` OK.
 - **Limitación:** 0 pistas BGM licenciadas; sin render TTS de pago en esta entrega.
 - **Siguiente (proposed):** tras `accepted` P5 — P6 u otra tarea según humano. Sin commit/push/merge por el agente.
+
+#### Remediación auditoría loudnorm (2026-10-19, chat Cursor)
+
+Hallazgo: `post_process` podía crear `narration-loudnorm.wav` **después** del MP4; el QC solo comprobaba existencia/selección actual → falso positivo.
+
+- **Orden corregido:** voice (loudnorm) → render (`selectNarrationSourceForRender` + `publishNarrationAudio` + `render-narration.json` provenance) → post (**sin** generar loudnorm) → QC (`evaluateNarrationLoudnormQc` por provenance).
+- **QC:** `verified_provenance` / `unverified` / `failed` / `mock_omitted`; no declara contenido MP4 re-extraído.
+- **Tests:** post-render case, selección de audio, publish bytes = loudnorm.
+- **Docs:** enmienda D009; `docs/tooling.md` / `docs/generar-short.md`.
+- **Comandos (remediación):** `npm test` → 15 files / **60** tests passed · `npm run typecheck` OK.
+- **Estado:** `review_required` (no `accepted`). Sin commit/push/merge.
+- **Pendiente humano:** revisión audiovisual opcional (extraer audio del MP4 y contrastar sha1) con job real no-mock.
