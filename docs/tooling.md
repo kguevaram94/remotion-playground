@@ -29,7 +29,8 @@ Artefactos nuevos por trabajo:
 
 - `thumbnail.png` — portada vertical (Satori; tipografía/badge/hook pulidos)
 - `frame-reveal.jpg` — fotograma cerca de la revelación
-- `video-preview.mp4` — preview ligero
+- `video-preview.mp4` — preview ligero (post-proceso; ver [studio-preview.md](studio-preview.md))
+- `studio-props.json` — props ShortVideo exportadas con `npm run short:studio-props` para Remotion Studio
 - `narration-loudnorm.wav` — narración normalizada **antes del render** (si no es mock); publicada a Remotion
 - `render-narration.json` — provenance del audio publicado (kind + sha1); el QC lo exige
 - `probe.json` — metadatos ffprobe

@@ -49,6 +49,7 @@
     "short:script": "tsx src/cli/short.ts --mode script",
     "short:render": "tsx src/cli/short.ts --mode render",
     "short:preview": "tsx src/cli/short.ts --mode preview",
+    "short:studio-props": "tsx src/cli/studio-props.ts",
     "short:resume": "tsx src/cli/short.ts --mode resume",
     "short:validate": "tsx src/cli/short.ts --mode validate",
     "short:voice": "tsx src/cli/short.ts --mode voice",

@@ -45,6 +45,7 @@ Sin APIs externas:
 npm run short:script -- "Mueve una cerilla para corregir esta ecuación"
 npm run short:render -- --input output/9-puntos/script.json
 npm run short:preview -- --id 9-puntos
+npm run short:studio-props -- --id 9-puntos   # props para Remotion Studio
 npm run short:resume -- --id 9-puntos
 npm run short:validate -- --id 9-puntos
 npm run short:voice -- --id puntos --voice Paulina
@@ -52,8 +53,10 @@ npm run short:post -- --id puntos
 npm test
 npm run typecheck
 npm run lint
-npm run dev   # Remotion Studio (incluye ShortVideo)
+npm run dev   # Remotion Studio (ShortVideo = plantilla logic-lateral por defecto)
 ```
+
+Studio / preview (tres vías): [studio-preview.md](studio-preview.md).
 
 Post-proceso genera `thumbnail.png`, `video-preview.mp4`, `frame-reveal.jpg` y `probe.json`.
 Matriz de herramientas: [tooling.md](tooling.md).

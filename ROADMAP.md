@@ -7,9 +7,10 @@ Protocolo: `AGENTS.md` (ChatGPT planifica/revisa · Cursor implementa · GitHub 
 ## Prioridad actual
 
 1. **P5 pulido logic-lateral** — `accepted` (2026-10-19). `T-POLISH-001` + `T-QC-LOUDNORM-001` `accepted` (limitación audiovisual documentada en `tasks/approvals.md`).
-2. **P6 / `T-MULTIFORMAT-001`:** A+B+C `accepted`; entrega **D** (illusion) `review_required`; P6 sigue `proposed`. Alternativas: P7 (Studio) o P8 (`blocked`).
-3. P3: `accepted` (2026-10-19, informe de revisión).
-4. P4: `accepted` (2026-10-19, evidencia CI run 39237385007).
+2. **P6 / `T-MULTIFORMAT-001`:** `accepted` (2026-10-19). A+B+C+D `accepted`. Incorporación técnica de familias; no validación audiovisual de todos los formatos.
+3. **P7 / `T-STUDIO-001`:** `review_required` (2026-10-19). P8 permanece `blocked`.
+4. P3: `accepted` (2026-10-19, informe de revisión).
+5. P4: `accepted` (2026-10-19, evidencia CI run 39237385007).
 
 ## Fases
 
@@ -21,8 +22,8 @@ Protocolo: `AGENTS.md` (ChatGPT planifica/revisa · Cursor implementa · GitHub 
 | P3 | Gobernanza ChatGPT + Cursor + GitHub | — | P0 | `accepted` |
 | P4 | CI GitHub Actions (`test` + `typecheck`) | — | P0 | `accepted` |
 | P5 | Pulido logic-lateral (SFX, música, thumbnail, loudnorm) | P1 | P1 | `accepted` |
-| P6 | Más familias de plantilla (math, memory, illusion) al nivel logic-lateral | P1, P2 | P2 | `proposed` |
-| P7 | Studio / preview workflow documentado y estable | P0 | P2 | `proposed` |
+| P6 | Más familias de plantilla (math, memory, illusion) al nivel logic-lateral | P1, P2 | P2 | `accepted` |
+| P7 | Studio / preview workflow documentado y estable | P0 | P2 | `review_required` |
 | P8 | Publicación YouTube (metadata, upload, schedule) | P5 | P3 | `blocked` |
 
 Estados: `proposed` · `approved` · `in_progress` · `review_required` · `accepted` · `blocked`  
@@ -33,7 +34,7 @@ Estados: `proposed` · `approved` · `in_progress` · `review_required` · `acce
 ```text
 P0 ──► P1 ──► P5 ──► P8 (futuro / blocked)
  │      │
- │      └──► P6
+ │      └──► P6 (accepted)
  ├──► P2
  ├──► P3
  └──► P4
@@ -47,26 +48,22 @@ P0 ──► P1 ──► P5 ──► P8 (futuro / blocked)
 4. Estado `review_required` → humano marca `accepted`.
 5. Siguiente fase queda en `proposed` hasta nuevo `approved` (o autorización expresa en chat Cursor).
 
-## Primera propuesta de siguiente trabajo
-
-Tras `accepted` P5 — propuesta registrada en `proposed` hasta autorización humana:
+## Trabajo en curso
 
 | Campo | Valor |
 | --- | --- |
-| ID | `T-MULTIFORMAT-001` |
-| Fase | P6 |
-| Estado | P6 `proposed` · A+B+C `accepted` · D `review_required` |
-| Objetivo | Contrato (A); math (B); memory (C); illusion (D), sin alterar beats logic-lateral / math / memory |
-| Depende de | P1, P2, P5, A+B+C `accepted` |
-| Gate | D en revisión humana. Cierre P6 requiere `accepted` de D + decisión explícita |
-| Entregas | A+B+C `accepted` · D illusion (`review_required`) |
-| Nota A/B/C | Comprobaciones = validate only (no render / no inspección AV). Fixtures ≠ cobertura exhaustiva de casos límite. Narrativa illusion pendiente (D) |
-| Nota P5 | Aceptación con limitación audiovisual documentada (sin MP4 no-mock auditado) |
+| ID | `T-STUDIO-001` |
+| Fase | P7 |
+| Estado | P7 `review_required` · P8 `blocked` |
+| Objetivo | Studio / preview workflow documentado y estable |
+| Depende de | P0 `accepted`; P6 `accepted` |
+| Nota P6 | Incorporación técnica de familias; no AV de todos los formatos |
+| Nota P5 | Limitación audiovisual documentada |
 
 ## Fuera de alcance (hasta nueva decisión)
 
 - Motion Canvas / Anime.js como motor paralelo.
 - Generación de componentes Remotion por LLM.
 - Upload automático a YouTube sin gate humano.
-- Cambiar el beat oficial logic-lateral sin actualizar plantilla + docs + approvals.
+- Cambiar el beat oficial logic-lateral (u otros beats aceptados) sin actualizar plantilla + docs + approvals.
 - Merge automático a `main` o publicación de vídeos sin aprobación expresa.

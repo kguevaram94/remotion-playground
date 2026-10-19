@@ -36,6 +36,13 @@ QC sigue funcionando con checks de archivos. Para resolución/fps/duración exac
 brew install ffmpeg
 ```
 
+## Remotion Studio vacío o sin audio
+
+- `npm run dev` carga por defecto la plantilla **logic-lateral** (solo visual). Si no ves escenas, elige la composición `ShortVideo`.
+- Para un job concreto: `npm run short:studio-props -- --id <id>` y luego `npx remotion studio --props=output/<id>/studio-props.json`.
+- Sin narración en `public/shorts/<id>/`, Studio irá mudo (esperado si el job no publicó audio).
+- Detalle: [studio-preview.md](studio-preview.md).
+
 ## Remotion / Chrome headless
 
 El render usa `@remotion/renderer`. En el primer render puede descargar Chromium. Necesitas red la primera vez.

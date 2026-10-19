@@ -49,6 +49,7 @@ import {
   TwoDoorsScene,
 } from '../components/TwoDoors';
 import {shortColors} from '../theme';
+import {buildStudioShortVideoDefaults} from '../studio-defaults';
 
 export type ShortVideoProps = {
   jobId: string;
@@ -65,16 +66,9 @@ export type ShortVideoProps = {
   isTestAudio: boolean;
 };
 
-export const shortVideoDefaultProps: ShortVideoProps = {
-  jobId: 'demo',
-  script: null,
-  audioPublicFile: null,
-  musicPublicFile: null,
-  musicVolume: 0.12,
-  subtitles: [],
-  subtitleWords: [],
-  isTestAudio: false,
-};
+/** Studio defaults: plantilla oficial logic-lateral (visual; sin audio). */
+export const shortVideoDefaultProps: ShortVideoProps =
+  buildStudioShortVideoDefaults();
 
 export const calculateShortVideoMetadata: CalculateMetadataFunction<
   ShortVideoProps

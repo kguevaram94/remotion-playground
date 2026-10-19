@@ -29,8 +29,8 @@ Código terminado ≠ `accepted`.
 | P3 | Gobernanza ChatGPT+Cursor+GitHub | `accepted` | `AGENTS.md`, `ROADMAP.md`, `tasks/*`, `.cursor/rules/governance.mdc`, `.cursor/rules/shorts.mdc`, `docs/DECISIONS.md` D007–D008; informe de revisión `T-GOV-001` | humano (chat Cursor: aceptación explícita con base en informe) | 2026-10-19 |
 | P4 | CI GitHub Actions | `accepted` | `.github/workflows/ci.yml`; run [39237385007](https://github.com/kguevaram94/remotion-playground/actions/runs/39237385007) en commit `fd74e44abe169808faf90132ce52960df33dd7ef` (success: `npm ci`, `npm run typecheck`, `npm test`) | humano (chat Cursor: aceptación explícita con evidencia CI) | 2026-10-19 |
 | P5 | Pulido logic-lateral | `accepted` | `T-POLISH-001` + `T-QC-LOUDNORM-001` `accepted`. BGM=0 pistas; sin validación audiovisual MP4 no-mock | humano (chat Cursor; código/tests/typecheck; limitación AV doc.) | 2026-10-19 |
-| P6 | Más familias plantilla | `proposed` | A+B+C `accepted`; D `review_required` | humano (D approved 2026-10-19) | 2026-10-19 |
-| P7 | Studio/preview estable | `proposed` | Depende P0 | — | — |
+| P6 | Más familias plantilla | `accepted` | A+B+C+D `accepted`. Incorporación técnica (validate/tests); no AV de todos los formatos | humano (chat Cursor: aceptación D + cierre P6) | 2026-10-19 |
+| P7 | Studio/preview estable | `review_required` | `T-STUDIO-001` informe abajo | humano (approved); agente → review_required | 2026-10-19 |
 | P8 | Publicación YouTube | `blocked` | Descartado por ahora (`ROADMAP` / D-future) | — | — |
 
 ## Tablero de tareas
@@ -41,7 +41,8 @@ Código terminado ≠ `accepted`.
 | `T-CI-001` | P4 | CI test + typecheck | `accepted` | Aceptado 2026-10-19 con evidencia CI run 39237385007 (commit `fd74e44`) |
 | `T-POLISH-001` | P5 | Pulido logic-lateral (SFX, BGM curada, thumb Satori, loudnorm narración→MP4) | `accepted` | Aceptado 2026-10-19 (código/tests/typecheck; limitación AV documentada). Sin commit/push |
 | `T-QC-LOUDNORM-001` | P5 | Gate QC loudnorm + publishEligibility | `accepted` | Aceptado 2026-10-19 (auditoría final 7/7 PASS; 72 tests; typecheck OK) |
-| `T-MULTIFORMAT-001` | P6 | Multiformato (entregas A–D) | A+B+C: `accepted` · D: `review_required` | Informe D abajo; P6 sigue `proposed` |
+| `T-MULTIFORMAT-001` | P6 | Multiformato (entregas A–D) | A+B+C+D: `accepted` · P6: `accepted` | Cierre 2026-10-19; P8 `blocked` |
+| `T-STUDIO-001` | P7 | Studio / preview workflow estable | `review_required` | Informe abajo; P8 `blocked` |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -59,19 +60,82 @@ Código terminado ≠ `accepted`.
 
 ## Tarea activa / alcance aprobado
 
-> Tarea activa: `T-MULTIFORMAT-001` · entrega **D** · **`review_required`**.  
-> A+B+C = `accepted`. D = `review_required`. P6 = `proposed`. P5 / QC = `accepted`.
+> Tarea activa: `T-STUDIO-001` · P7 · **`review_required`**.  
+> P6 = `accepted`. P7 = `review_required`. P8 = `blocked`. P5 / QC = `accepted`.
 
-### `T-MULTIFORMAT-001` · P6 · entrega D `review_required` (A+B+C `accepted`)
+### `T-STUDIO-001` · P7 · `review_required`
 
-#### Aprobación humana — entrega D (2026-10-19)
+#### Aprobación humana — P7 / T-STUDIO-001 (2026-10-19)
+
+- **Alcance autorizado:** Studio/preview documentado y estable (docs, defaults ShortVideo en Studio, helper `studio-props`, tests); sin YouTube; sin alterar beats ni HelloRemotion/ScriptVideo; sin deps; sin P5/QC; sin commit/push/merge.
+- **Aprobado por:** humano (chat Cursor: `approved`).
+- **Estado:** `approved` → `in_progress` → **`review_required`**.
+
+#### Informe de revisión — `T-STUDIO-001` / P7
+
+- **Cambios:**
+  - Nuevo: `docs/studio-preview.md`, `src/shorts/remotion/studio-defaults.ts`, `studio-props.ts`, `src/cli/studio-props.ts`, `tests/unit/studio-preview.test.ts`
+  - `ShortVideo` defaultProps ← plantilla logic-lateral (visual)
+  - `package.json` script `short:studio-props`
+  - Docs: README, usage, tooling, troubleshooting, ARCHITECTURE, D015
+- **Decisiones:** tres vías (Studio / CLI preview / post preview); Studio no vacío; helper props desde job.
+- **Comandos:**
+  - `npm test` → 21 files / **102** tests passed · `typecheck` OK
+  - `npm run short:studio-props -- --id s4-19-interruptores` → `studio-props.json` (audio+music)
+- **Limitaciones:** default Studio sin voz; no render/AV de aceptación; P8 blocked.
+- **Estado propuesto:** `review_required`; P7 no `accepted` hasta humano.
+- **Siguiente:** humano acepta P7; P8 sigue `blocked` hasta nueva decisión.
+
+---
+
+### `T-MULTIFORMAT-001` · P6 · entrega D `accepted` · fase P6 `accepted`
+
+#### Aceptación humana — entrega D + cierre P6 (2026-10-19)
+
+Estado D: **`accepted`**. Estado P6: **`accepted`** (humano, chat Cursor 2026-10-19).
+
+La revisión humana acepta el alcance entregado y cierra la fase:
+
+- Fixture `data/templates/script-illusion.json`.
+- Beat específico de illusion (`hook` → `puzzle` → `countdown` → `explanation` → `reveal` → `outro`).
+- Validaciones geométrica (`validateOpticalIllusion`) y narrativa (`validateIllusionNarrative`).
+- Reveal exige `compareMode=true` y `showGuides=true`.
+- Illusion **nunca** puede obtener `auto_validated` (siempre `partial` / `pending_review`).
+- Tests y typecheck superados en la verificación de aceptación.
+- Regresión validate: illusion=`partial`; math/memory=`auto_validated`; logic-lateral=`partial`.
+- Beats aceptados de A/B/C **no** modificados en este cierre.
+
+**Significado de P6 (vinculante):** incorporación **técnica** de las familias (plantillas, beats, validadores, componentes, tests). **No** implica validación audiovisual de todos los formatos.
+
+**Limitaciones documentadas (vinculantes):**
+
+- Comprobaciones = **`--mode validate`**, no render ni inspección audiovisual.
+- Fixtures / camino feliz ≠ cobertura exhaustiva de edge cases.
+- Illusion: revisión humana perceptual pendiente (status `partial` por diseño).
+- P5/QC intactos. Sin deps nuevas. Sin publish YouTube.
+
+**Aceptado por:** humano (chat Cursor).  
+**No autorizado en este acto:** implementar P7; tocar P5/QC; alterar beats; commit/push/merge; YouTube.
+
+#### Verificación de aceptación (ejecutada 2026-10-19, validate only)
+
+```bash
+npm test          # 20 files / 99 tests passed
+npm run typecheck # OK
+# illusion → partial
+# math → auto_validated
+# memory → auto_validated
+# logic-lateral → partial (esperado)
+```
+
+#### Aprobación humana — inicio entrega D (2026-10-19)
 
 - **Alcance autorizado:** familia illusion (JSON, beat propio, builder, validador `partial`/`pending_review` + compareMode/showGuides, componente, tests, docs).
-- **No autorizado:** cerrar P6; alterar beats logic-lateral / math / memory; P5/QC; deps; YouTube; commit/push/merge.
 - **Aprobado por:** humano (chat Cursor: `approved`).
-- **Estado D:** `approved` → `in_progress` → **`review_required`**.
+- **Estado D (ciclo):** `approved` → `in_progress` → `review_required` → **`accepted`**.
+- **Estado P6 (ciclo):** `proposed` → **`accepted`** (mismo acto de aceptación D + cierre explícito).
 
-#### Informe de revisión — `T-MULTIFORMAT-001` / entrega D
+#### Informe de revisión — `T-MULTIFORMAT-001` / entrega D (pre-aceptación)
 
 - **Cambios:**
   - Nuevo: `data/templates/script-illusion.json`, `tests/unit/illusion-family.test.ts`
@@ -85,9 +149,8 @@ Código terminado ≠ `accepted`.
   - validate `script-memory.json` → `auto_validated`
   - validate `script-math.json` → `auto_validated`
   - validate `script-logic-lateral.json` → OK (`partial`)
-- **Limitaciones:** no render/AV; percepción subjetiva; fixture ≠ edge cases; P6 no se cierra solo.
-- **Estado propuesto:** D `review_required`; P6 `proposed`.
-- **Siguiente:** humano acepta D; luego decisión explícita de cierre P6 si aplica.
+- **Estado tras aceptación:** D `accepted`; P6 `accepted`; P7 `proposed`; P8 `blocked`.
+- **Siguiente:** espera `approved` humano explícito antes de implementar P7.
 
 ### `T-MULTIFORMAT-001` · P6 · entrega C `accepted` (A+B `accepted`)
 
@@ -109,7 +172,7 @@ La revisión humana acepta el alcance entregado:
 
 - Las comprobaciones realizadas corresponden a **validación** (`--mode validate`), **no** a render ni inspección audiovisual.
 - Alcance de la validación memory: el fixture / tests del camino feliz **no demuestran cobertura exhaustiva de casos límite**.
-- Illusion (D) pendiente. Beats de logic-lateral, math y memory intactos en este cierre. P5/QC intactos.
+- En el momento de la aceptación C: Illusion (D) pendiente. *(D y P6 quedaron `accepted` el 2026-10-19.)* Beats de logic-lateral, math y memory intactos en este cierre. P5/QC intactos.
 
 **Aceptado por:** humano (chat Cursor).  
 **No autorizado en este acto:** implementar D; cerrar P6; commit/push/merge; alterar beats logic-lateral / math / memory; tocar P5/QC.

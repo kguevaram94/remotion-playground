@@ -114,7 +114,15 @@ Formato: fecha · decisión · contexto · alternativa · consecuencia.
   3. Müller-Lyer + `answerKey.lengthsEqual`: tamaños de línea coherentes en reveal.
   4. **Nunca** `auto_validated` — percepción subjetiva → siempre `partial` o `pending_review`.
 - **Alternativas descartadas:** Beat logic-lateral; `auto_validated` por igualdad geométrica; reveal sin guías de comparación.
-- **Consecuencia:** P6 sigue `proposed` hasta aceptación humana de D y decisión de cierre. Beats A–C intactos. P5/QC intactos. Regresiones = validate only.
+- **Consecuencia:** Beats A–C intactos. P5/QC intactos. Regresiones = validate only.
+- **Aceptación:** entrega D → `accepted` 2026-10-19; fase **P6 → `accepted`** en el mismo acto (humano, chat Cursor). P6 = incorporación técnica de familias, **no** validación audiovisual de todos los formatos. Illusion conserva revisión humana perceptual. P8 `blocked`.
+
+## D015 — Studio / preview workflow (P7 · T-STUDIO-001)
+
+- **Fecha:** 2026-10-19
+- **Decisión:** Tres vías documentadas y estables: (1) Remotion Studio (`npm run dev`) con default ShortVideo = plantilla logic-lateral visual; (2) CLI `short:preview` a escala configurada; (3) `video-preview.mp4` post-proceso. Helper `short:studio-props` exporta props de un job para Studio. Sin tocar contratos `HelloRemotion` / `ScriptVideo` ni beats A–D.
+- **Alternativas descartadas:** Studio vacío con pantalla placeholder; mezclar preview CLI con post-proceso; deps nuevas; publicar desde Studio.
+- **Consecuencia:** Docs en `docs/studio-preview.md`. P8 sigue `blocked`. Default Studio ≠ job con voz real.
 
 ---
 

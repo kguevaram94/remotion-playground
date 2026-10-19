@@ -30,14 +30,15 @@ Referencia: `output/s4-19-interruptores/video.mp4`. Procedimiento: [docs/generar
 | `npm run short:script -- "título"` | Solo guion |
 | `npm run short:render -- --id <id>` | Re-render |
 | `npm run short:voice -- --id <id>` | Regenerar voz + subtítulos + vídeo |
-| `npm run short:preview -- --id <id>` | Preview a menor resolución |
+| `npm run short:preview -- --id <id>` | Preview Remotion a menor resolución |
+| `npm run short:studio-props -- --id <id>` | Exportar props del job para Studio |
 | `npm run short:resume -- --id <id>` | Reanudar fases pendientes |
 | `npm run short:validate -- --id <id>` | Validar acertijo |
-| `npm run dev` | Remotion Studio |
+| `npm run dev` | Remotion Studio (ShortVideo = logic-lateral por defecto) |
 | `npm test` | Pruebas |
 | `npm run typecheck` | TypeScript |
 
-Docs: [generar-short](docs/generar-short.md) · [usage](docs/usage.md) · [ARCHITECTURE](docs/ARCHITECTURE.md) · [DECISIONS](docs/DECISIONS.md) · [ROADMAP](ROADMAP.md) · [troubleshooting](docs/troubleshooting.md) · [AGENTS.md](AGENTS.md) · [tarea activa](tasks/active.md) · [aprobaciones](tasks/approvals.md)
+Docs: [generar-short](docs/generar-short.md) · [studio-preview](docs/studio-preview.md) · [usage](docs/usage.md) · [ARCHITECTURE](docs/ARCHITECTURE.md) · [DECISIONS](docs/DECISIONS.md) · [ROADMAP](ROADMAP.md) · [troubleshooting](docs/troubleshooting.md) · [AGENTS.md](AGENTS.md) · [tarea activa](tasks/active.md) · [aprobaciones](tasks/approvals.md)
 
 **Colaboración:** ChatGPT (plan/revisión) · Cursor (implementación) · GitHub (fuente de verdad). Protocolo y estados en [AGENTS.md](AGENTS.md); no sincroniza chats automáticamente.
 

@@ -52,11 +52,13 @@ título / --input JSON
 `ShortVideo` (registrada en `src/Composition.tsx`) recibe props declarativas:
 
 - `script` — `VideoScript` completo
-- `subtitles` — cues ya parseados
-- `audioSrc` — URL `file://` al WAV
+- `subtitles` / `subtitleWords` — cues ya parseados
+- `audioPublicFile` / `musicPublicFile` — rutas relativas a `public/` (`staticFile`)
 - `isTestAudio` — muestra banner si el audio es mock
 
-**Contrato:** no se ejecuta código generado por el modelo; solo datos JSON tipados (`scene.schema.ts` / `script.schema.ts`).
+**Studio (P7):** `shortVideoDefaultProps` carga la plantilla logic-lateral (visual). Para un job: `npm run short:studio-props`. Guía: [studio-preview.md](studio-preview.md).
+
+**Contrato:** no se ejecuta código generado por el modelo; solo datos JSON tipados (`scene.schema.ts` / `script.schema.ts`). No alterar `HelloRemotion` / `ScriptVideo`.
 
 Animaciones: `useCurrentFrame()` + `interpolate` / `spring`. FFmpeg y Satori van en **post-proceso**, no dentro de la composición.
 
