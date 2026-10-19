@@ -1,0 +1,40 @@
+---
+description: Reglas de la fábrica de YouTube Shorts (Remotion)
+globs: src/shorts/**/*,data/templates/**/*,data/topics/**/*,tests/**/*,docs/generar-short.md,docs/ARCHITECTURE.md,docs/DECISIONS.md
+alwaysApply: false
+---
+
+# Fábrica de Shorts
+
+## Formato oficial
+
+Beat: `hook` → `instruction` → `countdown` → `explanation` → `reveal` → `outro` (CTA comentar).
+
+Visuales: `logic-room`, `switch-sequence`, `bulb-state-reveal`, `countdown`, `text`.
+
+Plantilla: `data/templates/script-logic-lateral.json`. Referencia: `output/s4-19-interruptores/`.
+
+## Obligatorio
+
+- Soluciones vía `puzzle-validator.ts` o `partial` / `pending_review`.
+- Datos JSON + componentes en `src/shorts/remotion/components/` (nunca JSX generado por IA).
+- Animar con `useCurrentFrame` / `interpolate` / `spring`.
+- Audio mock etiquetado (`isTestAudio`, banner).
+- No tocar contratos de `HelloRemotion` ni `ScriptVideo`.
+- Respetar `tasks/active.md`; arquitectura en `docs/ARCHITECTURE.md`.
+
+## Nuevo formato (checklist)
+
+1. Schema en `scene.schema.ts`
+2. Plantilla + `templates/select.ts`
+3. Validador
+4. Componente + rama en `ShortVideo.tsx`
+5. Tests
+6. Entrada en `docs/DECISIONS.md`
+
+## Prohibido
+
+- Motion Canvas / Anime.js
+- GSAP/Three/Rive sin `@remotion/*` + decisión documentada
+- Loguear API keys
+- Ampliar alcance fuera de la tarea activa

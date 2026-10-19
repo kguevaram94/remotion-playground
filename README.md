@@ -37,7 +37,7 @@ Referencia: `output/s4-19-interruptores/video.mp4`. Procedimiento: [docs/generar
 | `npm test` | Pruebas |
 | `npm run typecheck` | TypeScript |
 
-Docs: [generar-short](docs/generar-short.md) · [usage](docs/usage.md) · [architecture](docs/architecture.md) · [troubleshooting](docs/troubleshooting.md) · [AGENTS.md](AGENTS.md)
+Docs: [generar-short](docs/generar-short.md) · [usage](docs/usage.md) · [ARCHITECTURE](docs/ARCHITECTURE.md) · [DECISIONS](docs/DECISIONS.md) · [ROADMAP](ROADMAP.md) · [troubleshooting](docs/troubleshooting.md) · [AGENTS.md](AGENTS.md) · [tarea activa](tasks/active.md)
 
 ## Composiciones Remotion
 
