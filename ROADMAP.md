@@ -49,17 +49,17 @@ P0 ──► P1 ──► P5 ──► P8 (futuro / blocked)
 
 ## Primera propuesta de siguiente trabajo
 
-Tras aceptar P3/P4:
+Tras aceptar P3/P4 — **alcance definitivo** en `tasks/approvals.md` (`T-POLISH-001`); aún `proposed`:
 
-| Campo | Valor propuesto |
+| Campo | Valor |
 | --- | --- |
 | ID | `T-POLISH-001` |
 | Fase | P5 |
-| Estado | `proposed` |
+| Estado | `proposed` (gates SFX=A, BGM=B, thumb=A, loudnorm=B fijados; falta `approved`) |
 | Objetivo | Calidad de producción del short logic-lateral de referencia |
-| Alcance tentativo | SFX, BGM, thumbnail, loudnorm / QC audio-visual; docs de uso |
-| Fuera de alcance | Nuevos formatos; YouTube upload; cambios de beat oficial |
-| Gate | Requiere `approved` en `tasks/approvals.md` o OK explícito en Cursor |
+| Alcance | SFX procedural; BGM 3–8 pistas con licencia verificable; thumbnail Satori; loudnorm de narración usado en el MP4 |
+| Fuera de alcance | Nuevos formatos; mix loudnorm integral; YouTube upload; packs SFX; deps/pago sin OK |
+| Gate | Requiere `approved` del alcance definitivo en `tasks/approvals.md` o OK explícito en Cursor |
 
 ## Fuera de alcance (hasta nueva decisión)
 

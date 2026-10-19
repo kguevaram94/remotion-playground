@@ -39,7 +39,7 @@ Código terminado ≠ `accepted`.
 | --- | --- | --- | --- | --- |
 | `T-GOV-001` | P3 | Protocolo colaboración + docs gobernanza | `accepted` | Aceptado 2026-10-19 con base en el informe de revisión |
 | `T-CI-001` | P4 | CI test + typecheck | `accepted` | Aceptado 2026-10-19 con evidencia CI run 39237385007 (commit `fd74e44`) |
-| `T-POLISH-001` | P5 | Pulido logic-lateral (SFX, música, thumb, loudnorm) | `proposed` | **No iniciar** hasta `approved` |
+| `T-POLISH-001` | P5 | Pulido logic-lateral (SFX, BGM curada, thumb Satori, loudnorm narración→MP4) | `proposed` | Gates humanos fijados 2026-10-19; **no iniciar** hasta `approved` del alcance definitivo |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -59,7 +59,101 @@ Código terminado ≠ `accepted`.
 
 ### `T-POLISH-001` · P5 · `proposed`
 
-- **Objetivo (borrador):** elevar calidad del short logic-lateral de referencia (SFX, BGM, thumbnail, loudnorm) sin cambiar el beat oficial.
-- **Fuera de alcance (borrador):** nuevos formatos; upload YouTube; merge a main automático.
-- **Depende de:** P3/P4 en `accepted` (recomendado) y autorización humana.
-- **Pruebas previstas:** `npm test`, `npm run typecheck`, render de plantilla logic-lateral si se autoriza voz/render.
+Estado: **`proposed`**. Alcance definitivo abajo tras gates humanos (2026-10-19).  
+**No implementar** hasta `approved` en este archivo o autorización expresa en chat Cursor.  
+Código terminado ≠ `accepted`: al cerrar → `review_required` y espera humana.
+
+#### Objetivo
+
+Elevar la calidad de producción del short **logic-lateral** de referencia en cuatro ejes acordados: SFX procedural, BGM con licencias verificables, thumbnail Satori pulido, y narración loudnorm usada en el MP4 final — **sin** cambiar el beat oficial.
+
+#### Gates humanos (cerrados para esta propuesta)
+
+| Gate | Decisión | Detalle operativo |
+| --- | --- | --- |
+| 1 · SFX | **A — Procedural** | Mantener `scripts/generate-sfx.mjs`; pulir volumen, timing y cues. Sin packs externos. |
+| 2 · BGM | **B — Biblioteca curada (3–8 pistas)** | Solo pistas con licencia verificable; documentar fuente, licencia, condiciones y atribución. Excluir no verificables. Sin compra/servicios de pago sin autorización. |
+| 3 · Thumbnail | **A — Pulir Satori** | Tipografía, contraste, badge y hook. Sin plantillas por familia de formato. |
+| 4 · Loudnorm | **B — Narración → MP4** | Normalizar narración y que el `video.mp4` use ese audio. Sin normalización integral del mix (voz+BGM+SFX). |
+
+#### Alcance (sí)
+
+1. **SFX:** Ajuste de volumen/timing/cues en componentes logic-lateral + generador procedural; QC que verifique presencia de SFX esperados cuando aplique.
+2. **BGM:** Curar **3–8** pistas en `songs/` (o subconjunto seleccionado por el picker); `songs/README.md` (o equivalente) con fuente/licencia/condiciones/atribución; el picker **no** elige pistas fuera del set curado; excluir del pool las no verificables (p. ej. actuales `outputXXX.mp3` sin licencia documentada).
+3. **Thumbnail:** Mejoras visuales en `renderThumbnailPng` (tipografía, contraste, badge, hook); tests de smoke/regresión del PNG.
+4. **Loudnorm:** Aplicar loudnorm a la narración **antes** (o de forma que el render consuma el WAV normalizado) de modo que `video.mp4` embeba esa pista; conservar original si es útil para debug; QC/report que confirme uso de audio normalizado cuando no es mock.
+5. **Docs:** Actualizar `docs/generar-short.md` / `docs/tooling.md` (y `docs/DECISIONS.md` con entrada propuesta al cerrar) para reflejar política BGM + loudnorm en MP4.
+6. **Tests + QC:** Unitarios/integración acotados + checks en `quality-check` para los cambios.
+
+#### Fuera de alcance (no)
+
+- Cambiar el beat oficial logic-lateral (`hook` → `instruction` → `countdown` → `explanation` → `reveal` → `outro` CTA).
+- Nuevos formatos / familias de plantilla (P6).
+- Plantillas de thumbnail por familia.
+- Packs SFX externos.
+- Loudnorm / master del **mix final** (voz+BGM+SFX) — queda para decisión futura.
+- Publicación o upload automático a YouTube (P8).
+- Servicios de pago o compra de assets sin autorización expresa.
+- Dependencias npm nuevas sin justificación en el informe de revisión.
+- Merge a `main`, push, o marcar `accepted` por el agente.
+
+#### Archivos afectados previstos
+
+| Área | Paths previstos |
+| --- | --- |
+| SFX | `scripts/generate-sfx.mjs`, `src/shorts/remotion/components/Sfx.tsx`, componentes que disparan cues (p. ej. `CountdownTimer`, `SwitchSequence`, `BulbStateReveal`, `LogicScene` / ramas en `ShortVideo.tsx`) |
+| BGM | `src/shorts/media/bg-music.ts`, `songs/` (curación + exclusiones), `songs/README.md` (nuevo), posiblemente `tests/unit/bg-music.test.ts` |
+| Thumbnail | `src/shorts/media/thumbnail.ts`, `tests/unit/thumbnail.test.ts` |
+| Loudnorm | `src/shorts/media/ffmpeg.ts`, `src/shorts/pipeline/generate-voice.ts` y/o `render-video.ts` y/o `post-process.ts` (reordenar para que el render use WAV normalizado), `src/shorts/storage/job-store.ts` si hace falta metadata, `src/shorts/pipeline/quality-check.ts` |
+| Docs / gobernanza | `docs/generar-short.md`, `docs/tooling.md`, `docs/DECISIONS.md` (entrada al cerrar), este archivo + `tasks/active.md` al pasar a `in_progress` |
+| Tests | `tests/unit/ffmpeg.test.ts`, `tests/unit/bg-music.test.ts`, `tests/unit/thumbnail.test.ts`; ampliar o añadir según implementación |
+
+No se tocan contratos de `HelloRemotion` ni `ScriptVideo`.
+
+#### Dependencias
+
+- P0–P4: `accepted`.
+- Autorización humana del **alcance definitivo** (`proposed` → `approved`).
+- **BGM:** disponibilidad de 3–8 pistas con licencia verificable (si ninguna de las actuales es verificable, el set curado puede quedar vacío hasta que el humano aporte pistas o autorice fuentes concretas; el pipeline debe degradar con warning, no inventar licencias).
+- Voz/render de evidencia: solo si el humano autoriza uso de provider ya configurado en `.env` (sin APIs de pago nuevas).
+
+#### Criterios de aceptación
+
+- [ ] Beat logic-lateral intacto; sin formatos nuevos.
+- [ ] SFX siguen siendo procedurales (`sfx:generate`); volumen/timing/cues pulidos en el formato de referencia; sin packs externos.
+- [ ] Biblioteca BGM = 3–8 pistas **o** menos si aún no hay suficientes con licencia verificable; cada pista incluida tiene fuente/licencia/condiciones/atribución documentadas; ninguna pista no verificable entra en el picker.
+- [ ] Thumbnail Satori mejora tipografía/contraste/badge/hook; sin sistema multi-plantilla por familia.
+- [ ] Tras voz no-mock, existe narración normalizada y el **render del MP4** usa ese audio (no solo un sidecar post-hoc).
+- [ ] Audio mock sigue etiquetado (`isTestAudio` / banner / warnings); loudnorm no se presenta como narración final en mock.
+- [ ] QC/report refleja checks relevantes (BGM curada / ausencia documentada; thumbnail; audio normalizado usado en render cuando aplica).
+- [ ] `npm test` y `npm run typecheck` pasan.
+- [ ] Docs de uso actualizados; decisión registrada o propuesta en `docs/DECISIONS.md` al entregar.
+- [ ] Entrega en `review_required`; **no** `accepted` hasta OK humano. Sin YouTube publish, sin dependencias nuevas injustificadas, sin compra de assets.
+
+#### Pruebas previstas
+
+```bash
+npm test
+npm run typecheck
+```
+
+Además (en implementación, según alcance):
+
+- Unit: BGM picker solo ve set curado / excluye no listadas; thumbnail smoke (dimensiones/PNG); loudnorm helper o contrato “render usa WAV normalizado” (mock-friendly).
+- QC: asserts/warnings nuevos cubiertos por test o por inspección de `report.json` en fixture si aplica.
+- **Render de evidencia** (opcional, requiere OK humano en chat): plantilla logic-lateral con voz ya autorizada en `.env`, o mock etiquetado si solo se valida cableado; comparar que no hay banner de prueba cuando se use TTS real.
+
+#### Riesgos y pendientes
+
+- Origen/licencia de los MP3 actuales en `songs/` puede ser no verificable → hay que **excluirlos** del pool; P5 puede entregar política + docs + código de filtrado con 0–N pistas hasta que el humano aporte assets licenciados.
+- Mover loudnorm antes del render cambia el orden de fases/artefactos; riesgo de caché de audio público en `public/shorts/` — hay que invalidar/republicar narración normalizada.
+- Sin autorización de render/TTS de pago, la evidencia auditiva del loudnorm en MP4 real puede quedar limitada a mock + unit tests.
+- No marcar `approved`/`accepted` el agente; espera humana explícita.
+
+#### Condiciones generales (vinculantes)
+
+- Beat oficial intacto · sin formatos nuevos · sin publish YouTube · sin servicios de pago no autorizados · sin deps nuevas sin justificar · tests/QC incluidos · revisión humana antes de `accepted`.
+
+#### Estado de aprobación
+
+`proposed` — esperando **aprobación explícita del alcance definitivo** por el humano.

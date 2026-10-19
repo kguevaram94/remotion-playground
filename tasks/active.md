@@ -16,7 +16,7 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 `proposed` (sin trabajo activo)
 
 > P3 (`T-GOV-001`) y P4 (`T-CI-001`) quedaron `accepted` el 2026-10-19.  
-> P5 (`T-POLISH-001`) sigue en `proposed` en `tasks/approvals.md`. **No implementar** hasta `approved` o autorización expresa en chat.
+> P5 (`T-POLISH-001`): alcance definitivo propuesto en `tasks/approvals.md` (gates SFX=A, BGM=B, thumb=A, loudnorm=B). Sigue `proposed`. **No implementar** hasta `approved` o autorización expresa en chat.
 
 ## Objetivo
 
@@ -49,8 +49,9 @@ Cualquier cambio de producto hasta nueva tarea aprobada.
 
 ## Riesgos y cuestiones pendientes
 
-- Esperando aprobación humana de `T-POLISH-001` / P5 (u otra tarea).
+- Esperando aprobación humana del **alcance definitivo** de `T-POLISH-001` / P5 (u otra tarea).
 
 ## Notas de progreso
 
-- Gobernanza (P3) y CI (P4) cerradas. Idle hasta el siguiente `approved`. P5 no iniciada.
+- Gobernanza (P3) y CI (P4) cerradas. Idle hasta el siguiente `approved`.
+- Propuesta P5 actualizada con gates humanos; implementación no iniciada.
