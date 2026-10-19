@@ -26,8 +26,8 @@ Código terminado ≠ `accepted`.
 | P0 | Pipeline base | `accepted` | `src/shorts/pipeline/`, `npm run short`, tests integración | legado | 2026-Q1 |
 | P1 | Formato logic-lateral | `accepted` | `data/templates/script-logic-lateral.json`, `output/s4-19-interruptores/video.mp4` | legado | 2026-Q1 |
 | P2 | Validadores | `accepted` | `puzzle-validator.ts`, `tests/unit/puzzle-validator.test.ts` | legado | 2026-Q1 |
-| P3 | Gobernanza ChatGPT+Cursor+GitHub | `review_required` | `AGENTS.md`, `ROADMAP.md`, `tasks/*`, `.cursor/rules/governance.mdc`, `.cursor/rules/shorts.mdc`, `docs/DECISIONS.md` D007–D008 | _pendiente humano_ | — |
-| P4 | CI GitHub Actions | `review_required` | `.github/workflows/ci.yml` | _pendiente humano_ | — |
+| P3 | Gobernanza ChatGPT+Cursor+GitHub | `accepted` | `AGENTS.md`, `ROADMAP.md`, `tasks/*`, `.cursor/rules/governance.mdc`, `.cursor/rules/shorts.mdc`, `docs/DECISIONS.md` D007–D008 | humano (chat Cursor: «ok») | 2026-10-19 |
+| P4 | CI GitHub Actions | `accepted` | `.github/workflows/ci.yml` | humano (chat Cursor: «ok») | 2026-10-19 |
 | P5 | Pulido logic-lateral | `proposed` | Ver propuesta `T-POLISH-001` abajo | — | — |
 | P6 | Más familias plantilla | `proposed` | Depende P1/P2 + decisión de alcance | — | — |
 | P7 | Studio/preview estable | `proposed` | Depende P0 | — | — |
@@ -37,8 +37,8 @@ Código terminado ≠ `accepted`.
 
 | ID | Fase | Título | Estado | Notas |
 | --- | --- | --- | --- | --- |
-| `T-GOV-001` | P3 | Protocolo colaboración + docs gobernanza | `review_required` | Autorizado en chat Cursor para docs; falta `accepted` |
-| `T-CI-001` | P4 | CI test + typecheck | `review_required` | Workflow ya en repo; falta `accepted` |
+| `T-GOV-001` | P3 | Protocolo colaboración + docs gobernanza | `accepted` | Cerrado 2026-10-19 (chat Cursor: «ok») |
+| `T-CI-001` | P4 | CI test + typecheck | `accepted` | Cerrado 2026-10-19 junto con P3 |
 | `T-POLISH-001` | P5 | Pulido logic-lateral (SFX, música, thumb, loudnorm) | `proposed` | **No iniciar** hasta `approved` |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
