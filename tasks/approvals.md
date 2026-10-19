@@ -27,7 +27,7 @@ Código terminado ≠ `accepted`.
 | P1 | Formato logic-lateral | `accepted` | `data/templates/script-logic-lateral.json`, `output/s4-19-interruptores/video.mp4` | legado | 2026-Q1 |
 | P2 | Validadores | `accepted` | `puzzle-validator.ts`, `tests/unit/puzzle-validator.test.ts` | legado | 2026-Q1 |
 | P3 | Gobernanza ChatGPT+Cursor+GitHub | `accepted` | `AGENTS.md`, `ROADMAP.md`, `tasks/*`, `.cursor/rules/governance.mdc`, `.cursor/rules/shorts.mdc`, `docs/DECISIONS.md` D007–D008; informe de revisión `T-GOV-001` | humano (chat Cursor: aceptación explícita con base en informe) | 2026-10-19 |
-| P4 | CI GitHub Actions | `review_required` | `.github/workflows/ci.yml` (evidencia de ejecución CI pendiente de verificar) | _pendiente humano_ | — |
+| P4 | CI GitHub Actions | `accepted` | `.github/workflows/ci.yml`; run [39237385007](https://github.com/kguevaram94/remotion-playground/actions/runs/39237385007) en commit `fd74e44abe169808faf90132ce52960df33dd7ef` (success: `npm ci`, `npm run typecheck`, `npm test`) | humano (chat Cursor: aceptación explícita con evidencia CI) | 2026-10-19 |
 | P5 | Pulido logic-lateral | `proposed` | Ver propuesta `T-POLISH-001` abajo | — | — |
 | P6 | Más familias plantilla | `proposed` | Depende P1/P2 + decisión de alcance | — | — |
 | P7 | Studio/preview estable | `proposed` | Depende P0 | — | — |
@@ -38,7 +38,7 @@ Código terminado ≠ `accepted`.
 | ID | Fase | Título | Estado | Notas |
 | --- | --- | --- | --- | --- |
 | `T-GOV-001` | P3 | Protocolo colaboración + docs gobernanza | `accepted` | Aceptado 2026-10-19 con base en el informe de revisión |
-| `T-CI-001` | P4 | CI test + typecheck | `review_required` | No aceptar hasta verificar evidencia de CI |
+| `T-CI-001` | P4 | CI test + typecheck | `accepted` | Aceptado 2026-10-19 con evidencia CI run 39237385007 (commit `fd74e44`) |
 | `T-POLISH-001` | P5 | Pulido logic-lateral (SFX, música, thumb, loudnorm) | `proposed` | **No iniciar** hasta `approved` |
 
 ## Cómo aprobar el **inicio** de una fase/tarea

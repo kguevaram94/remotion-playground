@@ -15,9 +15,8 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 `proposed` (sin trabajo activo)
 
-> P3 (`T-GOV-001`) quedó `accepted` el 2026-10-19 con base en el informe de revisión.  
-> P4 (`T-CI-001`) sigue en `review_required` hasta verificar evidencia de CI.  
-> Siguiente candidata: `T-POLISH-001` / P5 — `proposed` en `tasks/approvals.md`. **No implementar** hasta `approved` o autorización expresa en chat.
+> P3 (`T-GOV-001`) y P4 (`T-CI-001`) quedaron `accepted` el 2026-10-19.  
+> P5 (`T-POLISH-001`) sigue en `proposed` en `tasks/approvals.md`. **No implementar** hasta `approved` o autorización expresa en chat.
 
 ## Objetivo
 
@@ -37,8 +36,7 @@ Cualquier cambio de producto hasta nueva tarea aprobada.
 
 ## Dependencias
 
-- P0–P3: `accepted`
-- P4: `review_required` (CI pendiente de verificar)
+- P0–P4: `accepted`
 - P5: `proposed` (ver `tasks/approvals.md`)
 
 ## Criterios de aceptación
@@ -51,9 +49,8 @@ Cualquier cambio de producto hasta nueva tarea aprobada.
 
 ## Riesgos y cuestiones pendientes
 
-- P4: verificar evidencia de CI antes de `accepted`.
 - Esperando aprobación humana de `T-POLISH-001` / P5 (u otra tarea).
 
 ## Notas de progreso
 
-- Gobernanza (P3) cerrada. Idle hasta el siguiente `approved`. P5 no iniciada.
+- Gobernanza (P3) y CI (P4) cerradas. Idle hasta el siguiente `approved`. P5 no iniciada.
