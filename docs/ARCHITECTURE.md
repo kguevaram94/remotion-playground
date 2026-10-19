@@ -69,6 +69,27 @@ Visuales: `logic-room`, `switch-sequence`, `bulb-state-reveal`, `countdown`, `te
 Plantilla: `data/templates/script-logic-lateral.json`.
 Referencia render: `output/s4-19-interruptores/`.
 
+## Contrato multiformato (entrega A · `T-MULTIFORMAT-001`)
+
+Familias registradas en `src/shorts/templates/registry.ts` (`TemplateFamily` en `templates/types.ts`):
+
+| `family` | `format` típico | Notas |
+| --- | --- | --- |
+| `logic-lateral` | `logic-puzzle` | Beat oficial exacto; referencia de producción |
+| `logic-puzzle` | `logic-puzzle` | Genérico (p. ej. nine-dots); sin secuencia logic-lateral |
+| `math` | `math-puzzle` | Beat específico: entrega B |
+| `memory` | `memory-challenge` | Beat específico: entrega C |
+| `illusion` | `optical-illusion` | Beat específico: entrega D |
+| `find-different` | `find-different` | Scaffolding existente |
+
+- Campo JSON opcional `family` (Zod). Si falta, `resolveFamily` / `inferFamilyId` infieren de `format` + visuales (`logic-room` / `switch-sequence` / `bulb-state-reveal` → `logic-lateral`).
+- Familia desconocida → error explícito (`UnknownTemplateFamilyError` / rechazo Zod).
+- **Beat común** (`beat-check.ts`): presencia de `hook`, `reveal`, `outro` (sin imponer orden).
+- **Beat de familia:** solo si la familia declara `exactSequence` (hoy: logic-lateral). CTA comentar = `preferCommentCta` (aviso, no bloqueo).
+- Validación de acertijo por familia: `validateFamilyPuzzle` en `puzzle-validator.ts` (separada del beat checker).
+
+Scripts legacy sin `family` siguen siendo válidos (sin migración).
+
 ## Validación de acertijos
 
 La validación es **código**, no autoevaluación del LLM:
@@ -80,6 +101,8 @@ La validación es **código**, no autoevaluación del LLM:
 - Memoria (IDs)
 - Ilusiones (parcial / revisión humana)
 - Logic-lateral / three-switches (plantilla + checks de dominio)
+
+Orquestación: `validateScriptPuzzles` → familia resuelta → beat común → beat de familia → validador específico.
 
 Política: `SHORTS_HUMAN_REVIEW_POLICY` (`warn_and_continue` | bloqueo según config).
 

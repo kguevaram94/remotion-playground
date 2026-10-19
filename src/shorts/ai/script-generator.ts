@@ -12,6 +12,7 @@ import {
   buildThreeSwitchesScript,
   isThreeSwitchesTitle,
 } from '../templates/three-switches';
+import {resolveFamilyId} from '../templates/registry';
 import {createLlmProvider, type LlmProvider} from './provider';
 
 export type GenerateScriptInput = {
@@ -54,25 +55,32 @@ export const generateFromTemplate = (
     targetDurationSeconds: config.targetDurationSeconds,
   };
 
+  let script: VideoScript;
   switch (format) {
     case 'logic-puzzle':
       if (isThreeSwitchesTitle(title)) {
-        return buildThreeSwitchesScript(title, id, opts);
+        script = buildThreeSwitchesScript(title, id, opts);
+      } else if (/9|nueve|puntos|dots/i.test(title)) {
+        script = buildNineDotsScript(title, id, opts);
+      } else {
+        script = buildLogicPuzzleFromTitle(title, id, opts);
       }
-      if (/9|nueve|puntos|dots/i.test(title)) {
-        return buildNineDotsScript(title, id, opts);
-      }
-      return buildLogicPuzzleFromTitle(title, id, opts);
+      break;
     case 'math-puzzle':
-      return buildMathPuzzleScript(title, id, opts);
+      script = buildMathPuzzleScript(title, id, opts);
+      break;
     case 'optical-illusion':
-      return buildOpticalIllusionScript(title, id, opts);
+      script = buildOpticalIllusionScript(title, id, opts);
+      break;
     case 'memory-challenge':
-      return buildMemoryChallengeScript(title, id, opts);
+      script = buildMemoryChallengeScript(title, id, opts);
+      break;
     case 'find-different':
     default:
-      return buildFindDifferentScript(title, id, opts);
+      script = buildFindDifferentScript(title, id, opts);
+      break;
   }
+  return {...script, family: resolveFamilyId(script)};
 };
 
 export const generateScript = async (

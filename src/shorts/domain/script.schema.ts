@@ -18,6 +18,16 @@ export const formatSchema = z.enum([
   'memory-challenge',
 ]);
 
+/** Familias de plantilla (multiformato). Opcional en scripts legacy. */
+export const templateFamilyIdSchema = z.enum([
+  'logic-lateral',
+  'math',
+  'memory',
+  'illusion',
+  'find-different',
+  'logic-puzzle',
+]);
+
 export const resolutionSchema = z.object({
   width: z.number().int().positive(),
   height: z.number().int().positive(),
@@ -38,6 +48,8 @@ export const videoScriptSchema = z.object({
   language: z.string().min(2),
   niche: nicheSchema,
   format: formatSchema,
+  /** Si se omite, se infiere de `format` + visuales (retrocompatible). */
+  family: templateFamilyIdSchema.optional(),
   targetDurationSeconds: z.number().positive(),
   aspectRatio: z.literal('9:16'),
   fps: z.number().int().positive(),
@@ -54,6 +66,8 @@ export const videoScriptSchema = z.object({
 
 export type VideoScript = z.infer<typeof videoScriptSchema>;
 export type Solution = z.infer<typeof solutionSchema>;
+export type TemplateFamilyId = z.infer<typeof templateFamilyIdSchema>;
+export type Format = z.infer<typeof formatSchema>;
 
 export const parseVideoScript = (data: unknown): VideoScript => {
   return videoScriptSchema.parse(data);

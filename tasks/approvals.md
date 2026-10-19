@@ -29,7 +29,7 @@ Código terminado ≠ `accepted`.
 | P3 | Gobernanza ChatGPT+Cursor+GitHub | `accepted` | `AGENTS.md`, `ROADMAP.md`, `tasks/*`, `.cursor/rules/governance.mdc`, `.cursor/rules/shorts.mdc`, `docs/DECISIONS.md` D007–D008; informe de revisión `T-GOV-001` | humano (chat Cursor: aceptación explícita con base en informe) | 2026-10-19 |
 | P4 | CI GitHub Actions | `accepted` | `.github/workflows/ci.yml`; run [39237385007](https://github.com/kguevaram94/remotion-playground/actions/runs/39237385007) en commit `fd74e44abe169808faf90132ce52960df33dd7ef` (success: `npm ci`, `npm run typecheck`, `npm test`) | humano (chat Cursor: aceptación explícita con evidencia CI) | 2026-10-19 |
 | P5 | Pulido logic-lateral | `accepted` | `T-POLISH-001` + `T-QC-LOUDNORM-001` `accepted`. BGM=0 pistas; sin validación audiovisual MP4 no-mock | humano (chat Cursor; código/tests/typecheck; limitación AV doc.) | 2026-10-19 |
-| P6 | Más familias plantilla | `proposed` | Depende P1/P2 + decisión de alcance | — | — |
+| P6 | Más familias plantilla | `proposed` | Entrega A `accepted` (2026-10-19); B/C/D y P6 siguen `proposed` | humano (aceptó A; fase P6 no cerrada) | 2026-10-19 |
 | P7 | Studio/preview estable | `proposed` | Depende P0 | — | — |
 | P8 | Publicación YouTube | `blocked` | Descartado por ahora (`ROADMAP` / D-future) | — | — |
 
@@ -41,6 +41,7 @@ Código terminado ≠ `accepted`.
 | `T-CI-001` | P4 | CI test + typecheck | `accepted` | Aceptado 2026-10-19 con evidencia CI run 39237385007 (commit `fd74e44`) |
 | `T-POLISH-001` | P5 | Pulido logic-lateral (SFX, BGM curada, thumb Satori, loudnorm narración→MP4) | `accepted` | Aceptado 2026-10-19 (código/tests/typecheck; limitación AV documentada). Sin commit/push |
 | `T-QC-LOUDNORM-001` | P5 | Gate QC loudnorm + publishEligibility | `accepted` | Aceptado 2026-10-19 (auditoría final 7/7 PASS; 72 tests; typecheck OK) |
+| `T-MULTIFORMAT-001` | P6 | Multiformato (entregas A–D) | A: `accepted` · B/C/D: `proposed` | A aceptada 2026-10-19; P6 sigue `proposed`; B requiere nuevo `approved` |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -58,7 +59,276 @@ Código terminado ≠ `accepted`.
 
 ## Tarea activa / alcance aprobado
 
-> Sin implementación `in_progress`. P5 / `T-POLISH-001` / `T-QC-LOUDNORM-001` = `accepted` (2026-10-19). Siguiente fase/tarea (p. ej. P6): `proposed` hasta nuevo `approved`.
+> Sin implementación `in_progress`. Entrega **A** de `T-MULTIFORMAT-001` = **`accepted`** (2026-10-19).  
+> B, C, D = `proposed`. P6 = `proposed`. P5 / QC loudnorm = `accepted`.  
+> No iniciar B hasta nuevo `approved` humano.
+
+### `T-MULTIFORMAT-001` · P6 · entrega A `accepted` (B/C/D `proposed`)
+
+#### Aceptación humana — entrega A (2026-10-19)
+
+Estado: **`accepted`** (humano, chat Cursor 2026-10-19).
+
+La revisión humana confirma el alcance acordado:
+
+- Contrato multiformato y resolución de familias implementados.
+- Campo `family` opcional y compatibilidad con logic-lateral.
+- Beat oficial de logic-lateral sin cambios.
+- Sin modificaciones de P5/QC ni nuevas dependencias.
+- `npm test`: 79 tests passed.
+- `npm run typecheck`: OK.
+- Regresión de **validate** ejecutada correctamente.
+
+**Limitaciones documentadas (vinculantes):**
+
+- La regresión realizada fue de **`--mode validate`**, **no** un render ni una inspección audiovisual.
+- Queda pendiente la **validación narrativa específica** de math, memory e illusion (entregas B–D).
+- `buildFromTitle` no registrado en el registry (generación en `script-generator.ts`).
+
+**Aceptado por:** humano (chat Cursor).  
+**No autorizado en este acto:** implementar B/C/D; cerrar P6 como `accepted`; commit/push/merge; alterar beat logic-lateral; tocar P5/QC.
+
+#### Aprobación humana — inicio entrega A (2026-10-19)
+
+- **Alcance autorizado:** solo entrega A (contrato, registry, `family` opcional, validación compartida/específica, beat checker de reglas comunes, tests/regresión logic-lateral, docs del contrato).
+- **No autorizado:** B, C, D; cambiar beat oficial logic-lateral; deps; YouTube; commit/push/merge; P6 → `accepted`.
+- **Gate del beat:** no imponer a todas las familias la secuencia interna de logic-lateral; el contrato expresa reglas comunes y permite beats por familia cuando se aprueben B/C/D; CTA comentar = convención compartida opcional (sin forzar interacción artificial ni alterar el formato oficial).
+- **Aprobado por:** humano (chat Cursor).
+- **Estado A (ciclo):** `approved` → `in_progress` → `review_required` → **`accepted`**.
+
+#### Informe de revisión — `T-MULTIFORMAT-001` / entrega A (pre-aceptación)
+
+- **Cambios:**
+  - Nuevos: `src/shorts/templates/types.ts`, `registry.ts`, `src/shorts/domain/beat-check.ts`, `tests/unit/template-family.test.ts`
+  - Schema: `family` opcional (`script.schema.ts`)
+  - Validación: `validateFamilyPuzzle` + orquestación en `puzzle-validator.ts`; `validate-script.ts` persiste `family` resuelta
+  - Generación: `script-generator.ts` adjunta `family` inferida
+  - Docs: ARCHITECTURE, DECISIONS D011, generar-short; gobernanza ROADMAP / active / approvals
+- **Decisiones de diseño:**
+  - Beat común = presencia `hook`+`reveal`+`outro` (sin orden)
+  - `exactSequence` solo `logic-lateral`
+  - `preferCommentCta` = warning, no fail
+  - Inferencia: visuales logic-lateral → `logic-lateral`; resto por `format`
+  - `buildFromTitle` **no** en registry (evita ciclo `registry`↔`select`↔`puzzle-validator`); builders siguen en `script-generator`
+- **Comandos ejecutados:**
+  - `npm test` → 17 files / **79** tests passed
+  - `npm run typecheck` → OK
+  - `npm run short -- --input data/templates/script-logic-lateral.json --mode validate --id t-multiformat-a-regression` → Validación OK (`partial`, esperado three-switches); `script.family === "logic-lateral"`
+- **Resultados:** criterios de A cumplidos en lo verificable por código/tests/regresión **validate** (sin render, sin inspección audiovisual, sin publish).
+- **Diferencias vs alcance aprobado:** ninguna funcional de B/C/D; matización: `buildFromTitle` tipado pero no registrado.
+- **Limitaciones:** validación narrativa math/memory/illusion pendiente B–D; regresión = validate only; artifact `output/t-multiformat-a-regression/`.
+- **Evidencias:** paths arriba; tests `template-family.test.ts`; D011.
+- **Estado tras aceptación:** entrega A `accepted`; B/C/D `proposed`; P6 `proposed`.
+- **Siguiente:** espera `approved` humano explícito antes de implementar B.
+
+Estado previo del diseño: **`proposed`** (agente, 2026-10-19).
+
+#### Hallazgos de inspección (2026-10-19)
+
+**Git:** `main` limpio y sync con `origin/main` (`39e49a5`). Sin cambios locales ajenos a sobrescribir.
+
+**Ya existe (scaffolding, no al nivel logic-lateral):**
+
+| Pieza | Estado |
+| --- | --- |
+| `formatSchema` | Enum: `find-different`, `math-puzzle`, `optical-illusion`, `logic-puzzle`, `memory-challenge` |
+| Visuales Zod | `math-puzzle`, `memory-challenge`, `optical-illusion` (+ logic-lateral específicos) |
+| Builders | `buildMathPuzzleScript`, `buildMemoryChallengeScript`, `buildOpticalIllusionScript` (1 puzzle hardcodeado c/u) |
+| `detectFormat` / `generateFromTemplate` | Routing por título → builder |
+| Componentes Remotion | `MathPuzzle`, `MemoryChallenge`, `OpticalIllusion` cableados en `ShortVideo` |
+| Validadores | Existen; illusion → `partial`; matchsticks math → parcial/frágil |
+| Plantilla JSON oficial | Solo `data/templates/script-logic-lateral.json` |
+
+**Reutilizable (pipeline / shared):** fases `run.ts`, schemas base de escena, voz/SRT/render/post/QC, `Hook`/`CountdownTimer`/`text`/`Sfx`/`theme`, job-store, `--input` → `parseVideoScript`.
+
+**Específico logic-lateral:** beat `hook→instruction→countdown→explanation→reveal→outro` CTA; visuales `logic-room` / `switch-sequence` / `bulb-state-reveal`; `three-switches.ts`; referencia `output/s4-19-interruptores/`.
+
+**Gap:** no hay contrato `TemplateFamily` común; beats de stubs ≠ beat oficial; sin JSON de referencia por familia; calidad visual/validación insuficiente para “al nivel logic-lateral”.
+
+#### Arquitectura propuesta
+
+```text
+                    ┌─────────────────────────────┐
+  título / --input  │  FamilyResolver             │
+                    │  (format + optional family) │
+                    └─────────────┬───────────────┘
+                                  │
+         ┌────────────────────────┼────────────────────────┐
+         ▼                        ▼                        ▼
+   TemplateFamily           TemplateFamily           TemplateFamily
+   logic-lateral *          math                     memory / illusion
+   (referencia; no tocar    (entrega B)              (C / D)
+    beat en P6)
+         │                        │                        │
+         └────────────┬───────────┴────────────┬───────────┘
+                      ▼                        ▼
+              videoScriptSchema          puzzle-validator
+              (scenes + visuals)         shared + per-family
+                      ▼
+              ShortVideo → VisualRouter → componentes repo
+```
+
+\* logic-lateral sigue siendo el formato de referencia; P6 no altera su beat.
+
+##### 1. Contrato TypeScript común
+
+Nuevo módulo propuesto `src/shorts/templates/types.ts`:
+
+```ts
+export type TemplateFamilyId =
+  | 'logic-lateral'
+  | 'math'
+  | 'memory'
+  | 'illusion';
+
+export type TemplateBuildOptions = {
+  language: string;
+  fps: number;
+  width: number;
+  height: number;
+  targetDurationSeconds: number;
+};
+
+export type BeatSpec = {
+  /** Orden obligatorio de scene.type para esta familia. */
+  requiredSceneTypes: Array<
+    'hook' | 'instruction' | 'puzzle' | 'countdown' | 'hint' | 'explanation' | 'reveal' | 'outro'
+  >;
+  /** Si true, outro debe incluir CTA a comentar (voz + onScreenText). */
+  requireCommentCta: boolean;
+};
+
+export type TemplateFamily = {
+  id: TemplateFamilyId;
+  /** Valor(es) de VideoScript.format compatibles. */
+  formats: Array<z.infer<typeof formatSchema>>;
+  beat: BeatSpec;
+  /** Visual templates permitidos en puzzle/reveal/explanation. */
+  allowedVisualTemplates: string[];
+  buildFromTitle: (title: string, id: string, opts: TemplateBuildOptions) => VideoScript;
+  /** Path relativo a data/templates/ del JSON de referencia (si existe). */
+  referenceTemplatePath?: string;
+  validateVisual: (visual: Visual, script: VideoScript) => PuzzleValidationResult;
+};
+```
+
+Registro: `TEMPLATES: Record<TemplateFamilyId, TemplateFamily>` + `resolveFamily(script | title | format)`.
+
+**Decisión pendiente (gate humano en entrega A):** ¿math/memory/illusion adoptan el **mismo beat** que logic-lateral (recomendado para paridad de producto) o beats propios documentados? La propuesta asume **mismo beat** + CTA comentar, con `puzzle` opcional donde logic-lateral usa `instruction`+visual de reglas.
+
+##### 2. Esquema JSON discriminado por familia
+
+Aditivo, sin romper jobs existentes:
+
+- Opción preferida: campo opcional `family` en `videoScriptSchema` (`z.enum([...]).optional()`); si ausente, inferir desde `format` + visuales (logic-puzzle + bulb-state-reveal → logic-lateral).
+- Mantener `format` actual para compatibilidad.
+- Discriminación de **visuales** ya existe (`visualSchema` discriminatedUnion por `template`).
+- Añadir JSON de referencia:
+  - `data/templates/script-math.json`
+  - `data/templates/script-memory.json`
+  - `data/templates/script-illusion.json`
+- `--input` sigue pasando por `parseVideoScript`; sin cambios de CLI obligatorios.
+
+##### 3. Validación compartida vs específica
+
+| Capa | Qué valida |
+| --- | --- |
+| Compartida | `parseVideoScript` Zod; beat (`BeatSpec`); presencia CTA si `requireCommentCta`; duración mínima de escenas; `solution.validationStatus` coherente |
+| logic-lateral | `validateBulbStateReveal` + checks actuales (sin cambio de reglas) |
+| math | aritmética / cerillas (endurecer matchsticks; evitar eval frágil); `auto_validated` o `partial` |
+| memory | `missingId` / `sequence` ∈ items; fases coherentes show→hide→ask→reveal |
+| illusion | geometría declarada + **siempre** `partial` o `pending_review` (percepción subjetiva) |
+
+`validateScriptPuzzles` delega a `family.validateVisual` tras resolver familia.
+
+##### 4. Resolución de plantilla en el pipeline
+
+1. Si `--input` con script completo → parse → `resolveFamily(script)` → validar beat+puzzle (no regenerar).
+2. Si título + `aiProvider=template` → `detectFormat` / `resolveFamily(title)` → `family.buildFromTitle`.
+3. Si LLM → prompts por familia (futuro; fuera de entrega A mínima) + parse + misma validación.
+
+No tocar orden de fases del job ni provenance loudnorm/QC de P5.
+
+##### 5. Organización de componentes y assets
+
+```text
+src/shorts/remotion/components/
+  shared/     # (opcional refactor liviano) Hook, Countdown, text wrappers — solo si hace falta
+  logic/      # LogicRoom, SwitchSequence, BulbStateReveal (sin mover en A si rompe imports)
+  math/       # MathPuzzle (+ subvariantes cerillas si crecen)
+  memory/     # MemoryChallenge
+  illusion/   # OpticalIllusion
+```
+
+Entrega A puede **no** mover archivos (solo contrato + registry) para minimizar diff. Movimientos de carpetas = decisión humana en B/C/D.
+
+Assets: sin packs nuevos; SFX procedural compartido; BGM catálogo P5 (0 pistas OK). Thumbnail sigue layout único (D009) hasta nueva decisión.
+
+##### 6. Estrategia de pruebas
+
+| Nivel | Cobertura |
+| --- | --- |
+| Unit contrato | registry, `resolveFamily`, beat checker, inferencia sin `family` |
+| Unit validadores | math / memory / illusion casos ok+fail; logic-lateral regresión (`three-switches.test.ts`) |
+| Unit schema | JSON fixtures parsean; scripts logic-lateral históricos parsean |
+| Integración | pipeline con `--input` fixture por familia hasta `validating` (mock voice); logic-lateral fixture no cambia |
+| Smoke render | opcional post-`approved` por familia; no TTS de pago sin OK |
+
+##### 7. Compatibilidad logic-lateral
+
+- No cambiar beat ni visuales oficiales.
+- Jobs en `output/` / templates existentes: sin migración obligatoria (`family` opcional).
+- Tests `three-switches`, schema logic-lateral, QC loudnorm: deben seguir pasando sin cambios de comportamiento.
+- `HelloRemotion` / `ScriptVideo` intactos.
+
+#### Orden de entrega (incremental)
+
+| ID | Entrega | Contenido | Criterios de aceptación (independientes) |
+| --- | --- | --- | --- |
+| **A** | Contrato multiformato | `TemplateFamily` + registry + `resolveFamily` + beat checker + `family?` en schema + tests de regresión logic-lateral + docs DECISIONS | (1) logic-lateral builds/tests verdes sin cambio de beat; (2) resolver infiere familia desde scripts actuales; (3) `npm test` + `typecheck` OK; (4) sin deps nuevas; (5) sin JSON nuevos obligatorios aún |
+| **B** | Familia math | JSON referencia + pulir builder/componente/validador + tests + doc generar-short | (1) `--input data/templates/script-math.json` valida; (2) al menos 1 puzzle `auto_validated`; (3) beat+CTA según A; (4) regresión logic-lateral OK |
+| **C** | Familia memory | Igual patrón memory | (1) fixture JSON valida; (2) missingId/sequence `auto_validated`; (3) fases visuales coherentes; (4) regresión A+B + logic-lateral |
+| **D** | Familia illusion | Igual patrón illusion | (1) fixture JSON valida; (2) status `partial`/`pending_review` documentado; (3) guías compareMode; (4) regresión A–C + logic-lateral |
+
+Cada entrega: `proposed` → `approved` (humano) → `in_progress` → `review_required` → `accepted` (humano). Se puede aprobar solo A primero.
+
+#### Archivos que previsiblemente cambiarían (post-aprobación)
+
+- `src/shorts/templates/types.ts` (nuevo), `select.ts`, builders por familia, `script-generator.ts`
+- `src/shorts/domain/script.schema.ts`, `puzzle-validator.ts` (± split)
+- `data/templates/script-{math,memory,illusion}.json` + README
+- Componentes Remotion existentes (pulido; sin JSX LLM)
+- `tests/unit/*`, `tests/integration/*`
+- `docs/ARCHITECTURE.md`, `docs/DECISIONS.md`, `docs/generar-short.md`
+- Gobernanza: `tasks/*`, `ROADMAP.md`
+
+#### Riesgos
+
+- Unificar beats puede requerir reescribir stubs actuales (aceptable: no son referencia de producción).
+- Matchstick validation hoy frágil → riesgo de falsos `auto_validated`.
+- Illusion nunca será fully auto → política humana explícita.
+- Refactor de carpetas Remotion puede generar churn de imports → diferir a B+ si no es necesario.
+- Ampliar LLM prompts por familia sin gate → fuera de A.
+
+#### Pruebas necesarias (cuando haya `approved`)
+
+```bash
+npm test
+npm run typecheck
+# por entrega, además:
+# npm run generar-short -- --input data/templates/script-logic-lateral.json  # regresión
+# npm run generar-short -- --input data/templates/script-math.json           # desde B
+```
+
+#### Condiciones generales (vinculantes)
+
+- Beat logic-lateral intacto · sin JSX/TSX por LLM · sin deps sin autorización · sin YouTube/pago · sin commit/push/merge sin pedido · P6/`T-MULTIFORMAT-001` no pasan a `approved`/`accepted` por el agente.
+
+#### Estado de aprobación
+
+`proposed` — 2026-10-19. Esperando revisión humana.
+
+---
 
 ### `T-QC-LOUDNORM-001` · P5 · `accepted`
 

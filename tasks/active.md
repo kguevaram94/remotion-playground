@@ -8,42 +8,45 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 ## Identificador y fase
 
-- **ID:** `T-POLISH-001`
-- **Fase ROADMAP:** `P5`
+- **ID:** `T-MULTIFORMAT-001` · entrega **A** (contrato multiformato) — cerrada
+- **Fase ROADMAP:** `P6` (sigue `proposed`)
 
 ## Estado de aprobación
 
 `accepted`
 
-> Aceptado por humano en chat Cursor 2026-10-19 con limitación audiovisual documentada.  
-> Base: auditoría de código, tests y typecheck. **No** se afirma validación de MP4 real con voz no-mock ni inspección auditiva.  
-> **Sin** tarea de implementación `in_progress`. Siguiente fase/tarea: `proposed` (p. ej. P6) hasta nuevo `approved`.  
-> Relacionado: `T-QC-LOUDNORM-001` ya `accepted` (2026-10-19).
+> Entrega **A** aceptada por humano (chat Cursor 2026-10-19).  
+> B, C, D permanecen `proposed`. P6 permanece `proposed`.  
+> **Sin** implementación `in_progress`. No iniciar B hasta nuevo `approved`.
 
-## Objetivo
+## Objetivo (A — cerrado)
 
-Elevar la calidad de producción del short logic-lateral de referencia: SFX procedural, BGM curada, thumbnail Satori, loudnorm de narración en el MP4 — sin cambiar el beat oficial.
+Contrato TypeScript multiformato, registro/resolución de familias, campo `family` opcional retrocompatible, validación compartida vs específica, beat checker de reglas comunes, tests/regresión logic-lateral y docs.
 
-## Alcance (cerrado)
+## Alcance entregado y aceptado (A)
 
-Implementado y aceptado según `tasks/approvals.md` (gates SFX=A, BGM=B, thumb=A, loudnorm=B) + remediación provenance + gate `T-QC-LOUDNORM-001`.
+Implementado según `tasks/approvals.md` (contrato, registry, `family` opcional, beat común, validadores separados, docs D011).
 
 ## Limitaciones de aceptación (vinculantes)
 
-- Aceptación por auditoría de código / tests / typecheck.
-- **No** se afirma render MP4 real con voz no-mock ni revisión auditiva del resultado.
-- Catálogo BGM: 0 pistas licenciadas (política + código OK; warning esperado).
+- Regresión = **`--mode validate`** sobre `script-logic-lateral.json`. **No** se afirma render MP4 ni inspección audiovisual.
+- Validación narrativa específica de **math / memory / illusion** queda pendiente (entregas B–D).
+- `buildFromTitle` no registrado en `TEMPLATE_FAMILIES` (generación en `script-generator.ts`).
+- P5 / QC no modificados; beat oficial logic-lateral intacto.
 
-## Criterios de aceptación
+## Criterios de aceptación (entrega A)
 
-- [x] Alcance P5 entregado y revisado (código + tests + typecheck).
-- [x] Remediación loudnorm provenance incluida.
-- [x] Gate QC loudnorm (`T-QC-LOUDNORM-001`) `accepted`.
-- [x] Limitación audiovisual documentada en `tasks/approvals.md`.
+- [x] Scripts logic-lateral sin `family` funcionan sin migración.
+- [x] Scripts con `family` explícito se resuelven correctamente.
+- [x] Familias desconocidas → error explícito.
+- [x] Validadores compartidos y específicos separados.
+- [x] Pipeline / P5 sin cambios de comportamiento de QC.
+- [x] `npm test` (79 tests) y `npm run typecheck` OK.
+- [x] Regresión validate de `script-logic-lateral.json` OK.
+- [x] Diff acotado a A; sin deps; sin publish.
 - [x] Humano marca `accepted` (2026-10-19).
 
 ## Notas de cierre
 
-- P5 / `T-POLISH-001` → `accepted`.
-- Siguiente trabajo (P6 u otro): queda en `proposed` hasta autorización humana explícita.
+- Entrega A → `accepted`. Siguiente: B (math) en `proposed` hasta autorización humana explícita.
 - Sin commit/push/merge/publicación en este cierre documental.

@@ -1,5 +1,7 @@
-import type {VideoScript} from './script.schema';
+import type {VideoScript, TemplateFamilyId} from './script.schema';
 import type {Scene, Visual} from './scene.schema';
+import {checkCommonBeat, checkFamilyBeat} from './beat-check';
+import {resolveFamily} from '../templates/registry';
 
 export type ValidationLevel = 'auto_validated' | 'partial' | 'pending_review' | 'failed';
 
@@ -372,47 +374,70 @@ export const validateCountSquaresAnswer = (
   return ok('auto_validated', [], {expected});
 };
 
-export const validateScriptPuzzles = (script: VideoScript): PuzzleValidationResult => {
-  const visual = findPuzzleVisual(script.scenes);
-  if (!visual) {
-    return fail(['No hay escena puzzle/reveal con visual']);
-  }
-
+/**
+ * Validador específico por familia (visual / answerKey).
+ * Separado del beat checker compartido (`beat-check.ts`).
+ */
+export const validateFamilyPuzzle = (
+  familyId: TemplateFamilyId,
+  script: VideoScript,
+  visual: Visual,
+): PuzzleValidationResult => {
   let result: PuzzleValidationResult;
-  switch (script.format) {
+
+  switch (familyId) {
     case 'find-different':
       result = validateFindDifferent(visual);
       break;
-    case 'math-puzzle':
+    case 'math':
       result = validateMathPuzzle(visual);
       break;
-    case 'optical-illusion':
+    case 'illusion':
       result = validateOpticalIllusion(visual);
       break;
-    case 'logic-puzzle':
+    case 'memory':
+      result = validateMemoryChallenge(visual);
+      break;
+    case 'logic-lateral':
       if (visual.template === 'bulb-state-reveal') {
         result = validateBulbStateReveal(visual);
-      } else if (visual.template === 'logic-puzzle') {
+      } else {
+        result = ok('pending_review', [
+          `Visual ${visual.template}: logic-lateral espera bulb-state-reveal en reveal`,
+        ]);
+      }
+      break;
+    case 'logic-puzzle':
+      if (visual.template === 'logic-puzzle') {
         result = validateLogicPuzzle(visual);
+      } else if (visual.template === 'bulb-state-reveal') {
+        // Script mal etiquetado: aún validamos el visual
+        result = validateBulbStateReveal(visual);
       } else {
         result = ok('pending_review', [
           `Visual ${visual.template}: sin validador automático para logic-puzzle`,
         ]);
       }
       break;
-    case 'memory-challenge':
-      result = validateMemoryChallenge(visual);
-      break;
-    default:
-      result = ok('pending_review', ['Formato sin validador']);
+    default: {
+      const _exhaustive: never = familyId;
+      void _exhaustive;
+      result = ok('pending_review', ['Familia sin validador']);
+    }
   }
 
-  // Extra: counting squares via solution.answerKey
   const answerKey = script.solution.answerKey as
     | {type?: string; gridSize?: number; count?: number}
     | undefined;
-  if (answerKey?.type === 'count-squares' && answerKey.gridSize && answerKey.count !== undefined) {
-    const squareCheck = validateCountSquaresAnswer(answerKey.gridSize, answerKey.count);
+  if (
+    answerKey?.type === 'count-squares' &&
+    answerKey.gridSize &&
+    answerKey.count !== undefined
+  ) {
+    const squareCheck = validateCountSquaresAnswer(
+      answerKey.gridSize,
+      answerKey.count,
+    );
     if (!squareCheck.ok) return squareCheck;
     result = {
       ...result,
@@ -423,4 +448,52 @@ export const validateScriptPuzzles = (script: VideoScript): PuzzleValidationResu
   }
 
   return result;
+};
+
+/**
+ * Orquesta: resolución de familia → beat común → beat de familia → validador específico.
+ */
+export const validateScriptPuzzles = (
+  script: VideoScript,
+): PuzzleValidationResult => {
+  const family = resolveFamily(script);
+
+  const commonBeat = checkCommonBeat(script, family.beat.common);
+  if (!commonBeat.ok) {
+    return fail(commonBeat.errors, commonBeat.warnings, {
+      family: family.id,
+      beat: commonBeat.details,
+    });
+  }
+
+  const familyBeat = checkFamilyBeat(script, family.beat);
+  if (!familyBeat.ok) {
+    return fail(familyBeat.errors, familyBeat.warnings, {
+      family: family.id,
+      familyBeat: familyBeat.details,
+    });
+  }
+
+  const visual = findPuzzleVisual(script.scenes);
+  if (!visual) {
+    return fail(['No hay escena puzzle/reveal con visual'], familyBeat.warnings, {
+      family: family.id,
+    });
+  }
+
+  const result = validateFamilyPuzzle(family.id, script, visual);
+  return {
+    ...result,
+    warnings: [
+      ...commonBeat.warnings,
+      ...familyBeat.warnings,
+      ...result.warnings,
+    ],
+    details: {
+      ...result.details,
+      family: family.id,
+      commonBeat: commonBeat.details,
+      familyBeat: familyBeat.details,
+    },
+  };
 };

@@ -57,6 +57,12 @@ Topic stub: `data/topics/_plantilla-logic-lateral.json`.
 
 > Variante nine-dots (cuadrícula): sigue en `data/templates/script-plantilla.json` / `output/puntos/`.
 
+### Campo opcional `family` (contrato multiformato · entrega A)
+
+El guion puede incluir `"family": "logic-lateral"` (u otra familia conocida). Si se omite, el pipeline **infiere** la familia (`format` + visuales). Familias desconocidas se rechazan con error explícito. No hace falta migrar plantillas existentes.
+
+Familias registradas: `logic-lateral`, `logic-puzzle`, `math`, `memory`, `illusion`, `find-different`. El beat oficial de logic-lateral no cambia; otras familias aún no tienen plantilla de producción (entregas B–D). Detalle: `docs/ARCHITECTURE.md` · `docs/DECISIONS.md` D011.
+
 ## 2. Solo título (plantilla automática)
 
 La fábrica detecta el formato por título y genera guion (p. ej. interruptores/bombilla → three-switches).

@@ -7,7 +7,7 @@ Protocolo: `AGENTS.md` (ChatGPT planifica/revisa · Cursor implementa · GitHub 
 ## Prioridad actual
 
 1. **P5 pulido logic-lateral** — `accepted` (2026-10-19). `T-POLISH-001` + `T-QC-LOUDNORM-001` `accepted` (limitación audiovisual documentada en `tasks/approvals.md`).
-2. **Siguiente:** P6 (más formatos), P7 (Studio) o P8 (publicación) según decisión humana — quedan en `proposed` / `blocked` hasta nuevo `approved`.
+2. **P6 / `T-MULTIFORMAT-001`:** entrega **A** `accepted` (2026-10-19); B/C/D y la fase P6 siguen `proposed` (B requiere nuevo `approved`). Alternativas: P7 (Studio) o P8 (`blocked`).
 3. P3: `accepted` (2026-10-19, informe de revisión).
 4. P4: `accepted` (2026-10-19, evidencia CI run 39237385007).
 
@@ -49,16 +49,18 @@ P0 ──► P1 ──► P5 ──► P8 (futuro / blocked)
 
 ## Primera propuesta de siguiente trabajo
 
-Tras `accepted` P5 — siguiente en `proposed` hasta autorización humana:
+Tras `accepted` P5 — propuesta registrada en `proposed` hasta autorización humana:
 
 | Campo | Valor |
 | --- | --- |
-| ID | P6 (o tarea que el humano autorice) |
+| ID | `T-MULTIFORMAT-001` |
 | Fase | P6 |
-| Estado | `proposed` |
-| Objetivo | Más familias de plantilla (math, memory, illusion) al nivel logic-lateral |
-| Depende de | P1, P2 (`accepted`); P5 (`accepted`) |
-| Gate | Requiere `approved` en `tasks/approvals.md` o OK explícito en chat Cursor |
+| Estado | P6 `proposed` · entrega A `accepted` · B/C/D `proposed` |
+| Objetivo | Contrato multiformato (A, cerrado); luego math/memory/illusion al nivel logic-lateral si se aprueban B–D, sin alterar el beat oficial |
+| Depende de | P1, P2 (`accepted`); P5 (`accepted`); A `accepted` |
+| Gate | A `accepted` 2026-10-19. B/C/D y cierre de P6 requieren nuevo `approved` / aceptación por entrega |
+| Entregas | A contrato (`accepted`) · B math · C memory · D illusion (`proposed`) |
+| Nota A | Regresión = validate only (no render / no inspección AV). Validación narrativa math/memory/illusion pendiente B–D |
 | Nota P5 | Aceptación con limitación audiovisual documentada (sin MP4 no-mock auditado) |
 
 ## Fuera de alcance (hasta nueva decisión)

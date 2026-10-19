@@ -1,6 +1,7 @@
 import type {AppConfig} from '../config/env';
 import {parseVideoScript} from '../domain/script.schema';
 import {validateScriptPuzzles} from '../domain/puzzle-validator';
+import {resolveFamilyId} from '../templates/registry';
 import type {JobRecord, JobStore} from '../storage/job-store';
 
 export const runValidateScript = (
@@ -19,6 +20,8 @@ export const runValidateScript = (
     if (!raw) throw new Error('No hay script.json para validar');
 
     const script = parseVideoScript(raw);
+    // Persistencia aditiva: scripts sin family siguen parseando; tras validar queda resuelta.
+    script.family = resolveFamilyId(script);
     const result = validateScriptPuzzles(script);
 
     script.solution.validationStatus = result.level;

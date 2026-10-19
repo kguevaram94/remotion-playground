@@ -77,6 +77,13 @@ Formato: fecha · decisión · contexto · alternativa · consecuencia.
 - **Consecuencia:** Existencia de `video.mp4` ≠ publicable. `eligible=true` = controles automáticos definidos; **no** es validación audiovisual humana ni inspección del audio del contenedor MP4. Jobs antiguos sin provenance válida se revalidan a mano (ver `docs/generar-short.md` / troubleshooting).
 - **Aceptación:** `T-QC-LOUDNORM-001` → `accepted` 2026-10-19 (humano, chat Cursor; auditoría final 7/7 PASS). `T-POLISH-001` / P5 siguen en `review_required`.
 
+## D011 — Contrato multiformato (entrega A)
+
+- **Fecha:** 2026-10-19
+- **Decisión (`T-MULTIFORMAT-001` A):** Introducir `TemplateFamily` + registry + campo opcional `family` en `VideoScript`. Inferencia determinista si falta. Beat checker **común** (presencia hook/reveal/outro) separado de validadores de acertijo por familia. No imponer la secuencia logic-lateral a math/memory/illusion; esas familias declaran `exactSequence` solo cuando se aprueben B/C/D. CTA comentar = convención (`preferCommentCta`, warning).
+- **Alternativas descartadas:** Forzar el mismo beat interno que logic-lateral a todas las familias; exigir `family` en scripts legacy; mezclar beat y puzzle en un solo módulo.
+- **Consecuencia:** Scripts logic-lateral actuales sin `family` siguen válidos. P6 / B–D permanecen `proposed` hasta nuevo `approved`. Sin deps nuevas ni cambio de QC P5.
+
 ---
 
 Al descartar o adoptar algo nuevo: añadir **D00N** aquí y enlazar desde el PR / `tasks/approvals.md`.
