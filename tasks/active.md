@@ -8,54 +8,55 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 ## Identificador y fase
 
-- **ID:** `T-POLISH-001`
+- **ID:** `T-QC-LOUDNORM-001`
 - **Fase ROADMAP:** `P5`
 
 ## Estado de aprobación
 
 `review_required`
 
-> Remediation loudnorm QC (auditoría) lista. Esperando revisión humana. **No** marcar `accepted` el agente.
+> Gate loudnorm + publishEligibility implementado. Esperando revisión humana. **No** marcar `accepted` el agente.
 
 ## Objetivo
 
-Cerrar hallazgos de auditoría de `T-POLISH-001` sobre loudnorm: el QC no debe aprobar un MP4 solo porque exista `narration-loudnorm.wav`; debe demostrarse (provenance) que el render publicó la narración normalizada.
+Definir y aplicar el gate de calidad de loudnorm: bloquear el QC técnico cuando la voz es real y el check obligatorio falla; distinguir elegibilidad de publicación; mantener `mock_omitted` como excepción de pruebas no publicable.
 
 ## Alcance
 
-- Provenance de audio en render (`render-narration.json` / `job.render.narrationProvenance`).
-- QC basado en provenance (no existencia post-hoc del WAV).
-- Eliminar generación de loudnorm en `post_process`.
-- Tests unitarios/integración de selección + caso post-render.
-- Docs (tooling, generar-short, DECISIONS enmienda D009).
+- Voz real + loudnorm `failed` / `unverified` / no normalizado → blocking → `report.ok=false` → fase `quality_check` failed.
+- `publishEligibility.eligible` + `reasons` en `report.json`.
+- Mock nunca publicable aunque pase QC técnico.
+- BGM vacío: warning solo (no bloquea QC ni elegibilidad por defecto).
+- Sin migración automática de jobs antiguos; documentar revalidación.
+- Tests + docs; conservar provenance de `T-POLISH-001`.
 
 ## Fuera de alcance
 
-Respetado: sin formatos nuevos, sin mix loudnorm integral, sin YouTube, sin TTS/pago, sin deps nuevas, sin commit/push/merge, sin marcar P5 `accepted`.
+Respetado: sin pago/YouTube/deps/beat/formatos/commit/push/merge/`accepted` automático.
 
 ## Archivos afectados previstos
 
-- `src/shorts/media/narration-loudnorm.ts`, `public-audio.ts`
-- `src/shorts/pipeline/render-video.ts`, `post-process.ts`, `quality-check.ts`
-- `src/shorts/storage/job-store.ts`
-- `tests/unit/narration-loudnorm.test.ts`
-- `docs/tooling.md`, `docs/generar-short.md`, `docs/DECISIONS.md`
+- `src/shorts/pipeline/quality-check.ts`
+- `tests/unit/quality-check.test.ts`
+- `docs/generar-short.md`, `docs/tooling.md`, `docs/troubleshooting.md`, `docs/DECISIONS.md` (D010)
 - `tasks/active.md`, `tasks/approvals.md`
 
 ## Dependencias
 
-- P0–P4: `accepted`
-- Alcance P5 / remediación autorizada en chat Cursor 2026-10-19
+- Remediación loudnorm / provenance de `T-POLISH-001` (en código).
+- Autorización humana 2026-10-19 en chat Cursor.
 
 ## Criterios de aceptación
 
-- [x] QC falla / unverified si loudnorm solo aparece post-render o falta provenance.
-- [x] Render registra kind + sha1 del audio publicado.
-- [x] `post_process` no crea `narration-loudnorm.wav`.
-- [x] Mock sigue omitido y etiquetado.
-- [x] Tests cubren post-render, selección y publicación=loudnorm.
+- [x] Voz real + loudnorm fallido/unverified → blocking, `report.ok=false`, fase failed.
+- [x] `publishEligibility` en report; mock nunca `eligible:true`.
+- [x] Voz real elegible solo con gate loudnorm + demás controles técnicos.
+- [x] Docs: `eligible=true` ≠ validación audiovisual humana ni inspección del audio del MP4.
+- [x] BGM vacío no bloquea QC ni elegibilidad por defecto.
+- [x] Sin migración automática; docs de revalidación de jobs antiguos.
+- [x] Tests de propuesta + mock nunca elegible + bloqueo voz real.
+- [x] `npm test` y `npm run typecheck` OK.
 - [ ] Revisión humana; **no** `accepted` automático.
-- [ ] Evidencia audiovisual opcional (extracción audio del MP4) pendiente de OK humano.
 
 ## Pruebas que deben ejecutarse
 
@@ -64,15 +65,15 @@ npm test
 npm run typecheck
 ```
 
-Ejecutados (remediación): **60 tests OK**, typecheck OK.
+Ejecutados: **16 files / 72 tests OK**, typecheck OK.
 
 ## Riesgos y cuestiones pendientes
 
-- Provenance demuestra publicación a Remotion, **no** re-extracción del audio del contenedor MP4.
-- Sin render TTS de pago no hay evidencia auditiva de producción.
-- Catálogo BGM sigue en 0 pistas (limitación previa).
+- Jobs antiguos `completed` sin provenance válida no se reevalúan solos (documentado).
+- `mode=post` / `--mode voice` para revalidar.
 
 ## Notas de progreso
 
-- Auditoría: voice → (loudnorm) → render (publish + provenance) → post (sin loudnorm) → QC (provenance).
-- Entrega remediation en `review_required`.
+- Git pre-flight: `main` limpio, sync con `origin/main` (`a4001a7`).
+- Implementación: `applyNarrationLoudnormGate` + `computePublishEligibility` + `report.publishEligibility`.
+- Entrega en `review_required`.

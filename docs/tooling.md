@@ -36,7 +36,11 @@ Artefactos nuevos por trabajo:
 
 El QC **no** aprueba loudnorm solo porque exista el WAV: exige provenance de render (`kind=loudnorm`). Generar el sidecar en post-process está prohibido.
 
-BGM: solo pistas en `songs/catalog.json` (ver `songs/README.md`). Sin catálogo curado → warning y vídeo sin música.
+Con voz real, fallo de loudnorm (`failed` / `unverified` / no normalizado) es **blocking**: `report.ok=false` y la fase `quality_check` falla. `mock_omitted` puede pasar el QC técnico, pero `publishEligibility.eligible` será siempre `false` para mock.
+
+`report.publishEligibility` (gate automático) ≠ revisión audiovisual humana y **no** demuestra inspección del audio del MP4. Un MP4 en disco no basta para `eligible=true`.
+
+BGM: solo pistas en `songs/catalog.json` (ver `songs/README.md`). Sin catálogo curado → warning y vídeo sin música (no bloquea QC ni elegibilidad por defecto).
 
 ## Comandos
 

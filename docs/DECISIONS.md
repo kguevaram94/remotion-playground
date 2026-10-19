@@ -69,6 +69,13 @@ Formato: fecha · decisión · contexto · alternativa · consecuencia.
 - **Consecuencia:** Catálogo BGM puede quedar vacío (0 pistas) hasta aportes licenciados; QC avisa. Mock no recibe loudnorm «final». Beat logic-lateral intacto.
 - **Enmienda (loudnorm QC):** El QC valida **provenance de render** (`render-narration.json` / `job.render.narrationProvenance`: kind + sha1 del audio publicado), no la mera existencia de `narration-loudnorm.wav`. `post_process` no debe crear ese WAV después del MP4. Un check `ok` = provenance verificada; **no** implica re-extracción del audio del contenedor MP4.
 
+## D010 — Gate QC loudnorm + elegibilidad de publicación
+
+- **Fecha:** 2026-10-19
+- **Decisión (`T-QC-LOUDNORM-001`):** Con voz real, loudnorm `failed` / `unverified` / no normalizado es **blocking** del QC técnico (`report.ok=false`, fase `quality_check` failed). `mock_omitted` puede pasar el QC técnico si no hay otros bloqueos. `report.publishEligibility` (`eligible` + `reasons`) es un gate automático distinto: mock **nunca** elegible; voz real solo con loudnorm verificado + QC técnico OK. Catálogo BGM vacío sigue siendo warning (no bloquea QC ni elegibilidad por defecto).
+- **Alternativas descartadas:** Tratar fallo loudnorm solo como warning; igualar `report.ok` con “publicable”; migrar automáticamente jobs antiguos `completed`.
+- **Consecuencia:** Existencia de `video.mp4` ≠ publicable. `eligible=true` = controles automáticos definidos; **no** es validación audiovisual humana ni inspección del audio del contenedor MP4. Jobs antiguos sin provenance válida se revalidan a mano (ver `docs/generar-short.md` / troubleshooting).
+
 ---
 
 Al descartar o adoptar algo nuevo: añadir **D00N** aquí y enlazar desde el PR / `tasks/approvals.md`.

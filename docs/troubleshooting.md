@@ -42,7 +42,22 @@ El render usa `@remotion/renderer`. En el primer render puede descargar Chromium
 
 ## Audio de prueba
 
-El banner amarillo y `report.json` marcan audio mock. No publiques ese MP4 como narración final. Cambia `VOICE_PROVIDER`.
+El banner amarillo y `report.json` marcan audio mock. `publishEligibility.eligible` será `false` (`audio_mock` / `mock_omitted`). No publiques ese MP4 como narración final. Cambia `VOICE_PROVIDER`.
+
+## QC bloqueado por loudnorm (voz real)
+
+```
+Narración loudnorm no verificada…
+# o: Narración loudnorm ausente o no seleccionada en el render
+```
+
+Con voz no-mock el gate es **blocking** (`report.ok=false`, fase `quality_check` failed). No basta con que exista `video.mp4` o un WAV loudnorm post-hoc.
+
+1. Comprueba `output/<id>/render-narration.json` (`kind` debe ser `loudnorm`).
+2. Regenera voz + render: `npm run short -- --id <id> --mode voice`
+3. O, si el render ya tiene provenance buena: `npm run short:post -- --id <id>`
+
+Jobs antiguos `completed` sin provenance **no** se migran solos; hay que revalidar con los comandos de arriba.
 
 ## Reanudar tras fallo de render
 
@@ -50,4 +65,4 @@ El banner amarillo y `report.json` marcan audio mock. No publiques ese MP4 como 
 npm run short:resume -- --id 9-puntos
 ```
 
-No regenera guion/voz si esas fases están `done`.
+No regenera guion/voz si esas fases están `done`. Si `quality_check` ya está `done` con un informe antiguo, usa `short:post` o `--mode voice` para forzar re-QC.

@@ -101,8 +101,35 @@ output/<id>/
   video.mp4
   video-preview.mp4
   thumbnail.png
-  report.json              # QC: narrationLoudnorm exige provenance, no solo el WAV
+  report.json              # QC técnico + publishEligibility (no solo existencia del MP4)
 ```
+
+### QC técnico vs elegibilidad de publicación
+
+| Campo | Significado |
+| --- | --- |
+| `report.ok` | QC **técnico** del job. Con voz real, loudnorm obligatorio (provenance `kind=loudnorm`); si falla → blocking y fase `quality_check` failed. Mock (`mock_omitted`) puede pasar si no hay otros bloqueos. |
+| `report.publishEligibility.eligible` | Gate **automático** de publicación. Mock **nunca** elegible. Voz real solo si QC técnico OK + loudnorm verificado. |
+| `publishEligibility.reasons` | Motivos si `eligible=false` (p. ej. `audio_mock`, `mock_omitted`, `narration_loudnorm:failed`, `technical_qc_failed`). |
+
+`eligible=true` significa que pasaron los controles automáticos definidos. **No** equivale a una validación audiovisual humana ni demuestra que se haya inspeccionado el audio del contenedor MP4. La sola existencia de `video.mp4` no hace el job publicable.
+
+Catálogo BGM vacío: warning esperado; no bloquea QC ni elegibilidad por defecto.
+
+### Revalidar jobs antiguos (sin migración automática)
+
+Jobs `completed` antes de este gate **no** se reevalúan solos. Si falta provenance válida o el QC antiguo solo avisaba:
+
+```bash
+# Invalidar QC (y post si hace falta) y volver a correr
+# Opción A — solo post + QC (si el render ya publicó loudnorm con provenance):
+npm run short:post -- --id <id>
+
+# Opción B — regenerar voz → subtítulos → render → post → QC:
+npm run short -- --id <id> --mode voice
+```
+
+Si `quality_check` ya está `done` con un informe antiguo, `resume` no lo reabre: usa `short:post` o `mode voice` (invalidan fases posteriores). Revisa `output/<id>/report.json` (`ok`, `blocking`, `publishEligibility`).
 
 ## 6. Checklist de calidad
 
@@ -112,6 +139,7 @@ output/<id>/
 - [ ] Si hay pistas en `songs/catalog.json`, hay música de fondo (bajo la voz); si el catálogo está vacío, el warning de BGM es esperado
 - [ ] Countdown suena tick; revelación suena ding/whoosh
 - [ ] Sin banner de prueba: la narración del MP4 es loudnorm (no mock)
+- [ ] `report.ok=true` y, si se pretende publicar, `publishEligibility.eligible=true`
 - [ ] Subtítulos: frase completa visible; solo la palabra activa cambia de color
 - [ ] Tras cada escena hay una pausa breve antes de seguir leyendo
 - [ ] Solución validada (`validation.ok`; three-switches suele ser `partial`)
@@ -122,6 +150,8 @@ output/<id>/
 | --- | --- |
 | Voz robótica / tono beep | `VOICE_PROVIDER=openai-tts` + `OPENAI_API_KEY` |
 | Misma voz antigua tras cambiar `.env` | `npm run short -- --id <id> --mode voice` |
+| QC falla por loudnorm / sin provenance | Regenerar con `--mode voice` (loudnorm antes del render) o `short:post` si ya hay provenance |
+| `eligible=false` con mock | Esperado: no publicar audio de prueba |
 | Sin música | Añade pista **con licencia** a `songs/catalog.json` (ver README) y vuelve a renderizar |
 | Sin SFX | `npm run sfx:generate` y `--mode render` |
 | Guion inválido | `npm run short:validate -- --id <id>` |

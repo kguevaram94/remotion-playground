@@ -5,16 +5,29 @@ import {listCuratedSongFiles} from '../media/bg-music';
 import {probeMedia} from '../media/ffmpeg';
 import {
   evaluateNarrationLoudnormQc,
+  type NarrationLoudnormQcResult,
+  type NarrationLoudnormQcStatus,
   type NarrationRenderProvenance,
 } from '../media/narration-loudnorm';
 import {parseSrt} from '../subtitles/srt';
 import type {JobRecord, JobStore} from '../storage/job-store';
+
+export type PublishEligibility = {
+  eligible: boolean;
+  reasons: string[];
+};
 
 export type QualityReport = {
   ok: boolean;
   blocking: string[];
   warnings: string[];
   checks: Record<string, {ok: boolean; detail?: string}>;
+  /**
+   * Automatic publish gate only. `eligible: true` means defined technical
+   * controls passed — not a human audiovisual review, and not proof that
+   * MP4 container audio was re-extracted or inspected.
+   */
+  publishEligibility: PublishEligibility;
 };
 
 const resolveNarrationProvenance = (
@@ -35,6 +48,63 @@ const resolveNarrationProvenance = (
   }
 };
 
+/**
+ * Map loudnorm QC onto the technical report: real-voice failures are blocking;
+ * mock_omitted (ok=true) does not block by itself.
+ */
+export const applyNarrationLoudnormGate = (
+  report: Pick<QualityReport, 'blocking' | 'warnings' | 'checks'>,
+  loudnormQc: NarrationLoudnormQcResult,
+): void => {
+  report.checks.narrationLoudnorm = {
+    ok: loudnormQc.ok,
+    detail: `${loudnormQc.status}: ${loudnormQc.detail}`,
+  };
+  if (!loudnormQc.ok) {
+    report.blocking.push(
+      loudnormQc.warning ?? `Narración loudnorm: ${loudnormQc.detail}`,
+    );
+    return;
+  }
+  if (loudnormQc.warning) {
+    report.warnings.push(loudnormQc.warning);
+  }
+};
+
+/**
+ * Publish eligibility is separate from technical QC (`report.ok`).
+ * Mock audio is never eligible. Real voice requires verified loudnorm
+ * provenance plus a passing technical report. Existing MP4 bytes alone
+ * do not make a job eligible.
+ */
+export const computePublishEligibility = (options: {
+  technicalOk: boolean;
+  audioIsTest: boolean;
+  loudnormStatus: NarrationLoudnormQcStatus;
+}): PublishEligibility => {
+  const reasons: string[] = [];
+  if (!options.technicalOk) {
+    reasons.push('technical_qc_failed');
+  }
+  if (options.audioIsTest) {
+    reasons.push('audio_mock');
+  }
+  if (options.loudnormStatus !== 'verified_provenance') {
+    reasons.push(
+      options.loudnormStatus === 'mock_omitted'
+        ? 'mock_omitted'
+        : `narration_loudnorm:${options.loudnormStatus}`,
+    );
+  }
+
+  const eligible =
+    options.technicalOk &&
+    !options.audioIsTest &&
+    options.loudnormStatus === 'verified_provenance';
+
+  return {eligible, reasons: eligible ? [] : reasons};
+};
+
 export const runQualityCheck = (
   store: JobStore,
   job: JobRecord,
@@ -51,6 +121,7 @@ export const runQualityCheck = (
     blocking: [],
     warnings: [],
     checks: {},
+    publishEligibility: {eligible: false, reasons: ['pending']},
   };
 
   try {
@@ -176,13 +247,7 @@ export const runQualityCheck = (
       narrationLoudnorm: job.artifacts.narrationLoudnorm,
       narrationAudio: job.artifacts.narrationAudio,
     });
-    report.checks.narrationLoudnorm = {
-      ok: loudnormQc.ok,
-      detail: `${loudnormQc.status}: ${loudnormQc.detail}`,
-    };
-    if (loudnormQc.warning) {
-      report.warnings.push(loudnormQc.warning);
-    }
+    applyNarrationLoudnormGate(report, loudnormQc);
 
     const curated = listCuratedSongFiles();
     report.checks.bgmCatalog = {
@@ -216,6 +281,12 @@ export const runQualityCheck = (
     if (!assetsOk) report.blocking.push('Faltan artefactos de producción');
 
     report.ok = report.blocking.length === 0;
+    report.publishEligibility = computePublishEligibility({
+      technicalOk: report.ok,
+      audioIsTest: Boolean(job.audioIsTest),
+      loudnormStatus: loudnormQc.status,
+    });
+
     const reportPath = store.writeJson(job.id, 'report.json', report);
     job.artifacts.reportJson = reportPath;
     job.warnings.push(...report.warnings);

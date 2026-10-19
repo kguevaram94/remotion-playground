@@ -40,6 +40,7 @@ Código terminado ≠ `accepted`.
 | `T-GOV-001` | P3 | Protocolo colaboración + docs gobernanza | `accepted` | Aceptado 2026-10-19 con base en el informe de revisión |
 | `T-CI-001` | P4 | CI test + typecheck | `accepted` | Aceptado 2026-10-19 con evidencia CI run 39237385007 (commit `fd74e44`) |
 | `T-POLISH-001` | P5 | Pulido logic-lateral (SFX, BGM curada, thumb Satori, loudnorm narración→MP4) | `review_required` | Remediación loudnorm QC (provenance) incluida; espera `accepted` humano. Sin commit/push |
+| `T-QC-LOUDNORM-001` | P5 | Gate QC loudnorm + publishEligibility | `review_required` | Implementado 2026-10-19; espera `accepted` humano. Sin commit/push |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -56,6 +57,38 @@ Código terminado ≠ `accepted`.
 5. Autorizar por separado la siguiente tarea (`proposed` → `approved`).
 
 ## Tarea activa / alcance aprobado
+
+### `T-QC-LOUDNORM-001` · P5 · `review_required`
+
+Estado: **`review_required`** (humano autorizó alcance 2026-10-19; implementación lista).  
+Código terminado ≠ `accepted`. `T-POLISH-001` permanece en `review_required`.
+
+#### Objetivo
+
+Bloquear el QC técnico cuando voz real falla el gate obligatorio de loudnorm; añadir `publishEligibility` en `report.json`; mock nunca publicable.
+
+#### Alcance (ajustes aprobados)
+
+1. **QC técnico:** voz real + loudnorm `failed` / `unverified` / no normalizado → blocking → `report.ok=false` → fase failed. `mock_omitted` puede pasar QC si no hay otros blocking.
+2. **Elegibilidad:** `publishEligibility.eligible` + `reasons`; mock nunca elegible; voz real solo con gate loudnorm + controles técnicos. `eligible=true` ≠ validación audiovisual humana ni inspección del audio del MP4.
+3. **BGM:** catálogo vacío = warning; no bloquea QC ni elegibilidad por defecto; sin pistas sin licencia.
+4. **Estados:** sin migración automática; documentar revalidación; MP4 existente ≠ publicable solo por existir.
+5. Tests + docs; `npm test` + typecheck; sin pago/YouTube/deps/beat/commit/accepted automático.
+
+#### Evidencias de implementación (2026-10-19)
+
+- **Git pre-flight:** `main` limpio y sync con `origin/main` (`a4001a7`) antes de implementar.
+- **Código:** `applyNarrationLoudnormGate`, `computePublishEligibility`, `QualityReport.publishEligibility` en `quality-check.ts`.
+- **Tests:** `tests/unit/quality-check.test.ts` (blocking voz real, mock no elegible, verified elegible, provenance ausente/raw).
+- **Docs:** D010; `generar-short.md` (QC vs elegibilidad + revalidación); `tooling.md`; `troubleshooting.md`.
+- **Comandos:** `npm test` → 16 files / **72** tests passed · `npm run typecheck` OK.
+- **Estado:** `review_required` (no `accepted`). Sin commit/push/merge. Sin servicios de pago.
+
+#### Estado de aprobación
+
+`review_required` — entrega 2026-10-19. Esperando `accepted` humano.
+
+---
 
 ### `T-POLISH-001` · P5 · `review_required`
 
