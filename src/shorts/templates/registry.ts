@@ -74,10 +74,23 @@ export const TEMPLATE_FAMILIES: Record<TemplateFamilyId, TemplateFamily> = {
     formats: ['memory-challenge'],
     beat: {
       common: COMMON_BEAT_RULES,
-      // exactSequence: pendiente entrega C
+      exactSequence: [
+        'hook',
+        'puzzle',
+        'countdown',
+        'hint',
+        'reveal',
+        'outro',
+      ],
       preferCommentCta: true,
     },
-    allowedVisualTemplates: ['memory-challenge', 'countdown', 'hook', 'text'],
+    allowedVisualTemplates: [
+      'memory-challenge',
+      'countdown',
+      'hook',
+      'text',
+    ],
+    referenceTemplatePath: 'data/templates/script-memory.json',
   },
   illusion: {
     id: 'illusion',

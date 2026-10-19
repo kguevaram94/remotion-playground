@@ -51,17 +51,25 @@ describe('puzzle validators', () => {
     expect(validateCountSquaresAnswer(4, 16).ok).toBe(false);
   });
 
-  it('validates memory missing id', () => {
-    const result = validateMemoryChallenge({
+  it('validates memory missing id (ask excludes missing; reveal includes it)', () => {
+    const ask = validateMemoryChallenge({
+      template: 'memory-challenge',
+      items: [{id: 'a', symbol: 'A', color: '#fff'}],
+      missingId: 'b',
+      phase: 'ask',
+    });
+    expect(ask.level).toBe('auto_validated');
+
+    const reveal = validateMemoryChallenge({
       template: 'memory-challenge',
       items: [
         {id: 'a', symbol: 'A', color: '#fff'},
         {id: 'b', symbol: 'B', color: '#000'},
       ],
       missingId: 'b',
-      phase: 'ask',
+      phase: 'reveal',
     });
-    expect(result.level).toBe('auto_validated');
+    expect(reveal.level).toBe('auto_validated');
   });
 
   it('validates arithmetic math puzzles', () => {

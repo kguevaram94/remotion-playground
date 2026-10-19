@@ -8,51 +8,57 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 ## Identificador y fase
 
-- **ID:** `T-MULTIFORMAT-001` · entrega **B** (familia math) — cerrada
-- **Fase ROADMAP:** `P6` (sigue `proposed`)
+- **ID:** `T-MULTIFORMAT-001` · entrega **C** (familia memory)
+- **Fase ROADMAP:** `P6` (sigue `proposed`; A+B `accepted`; D `proposed`)
 
 ## Estado de aprobación
 
-`accepted`
+`review_required`
 
-> Entrega **B** aceptada por humano (chat Cursor 2026-10-19).  
-> A permanece `accepted`. C, D y P6 permanecen `proposed`.  
-> **Sin** implementación `in_progress`. No iniciar C hasta nuevo `approved`.
+> Entrega C implementada (2026-10-19). Esperando revisión humana.  
+> D y P6 permanecen `proposed`. Sin iniciar D. Sin commit/push/merge.
 
-## Objetivo (B — cerrado)
+## Objetivo
 
-Familia **math** al nivel de plantilla oficial: JSON, beat propio, builder, validador (+ narrativa básica answerKey↔reveal), componente, tests y docs.
+Familia **memory** al nivel de plantilla oficial: JSON, beat propio, builder, validador (fases + narrativa), componente, tests y docs.
 
-## Alcance entregado y aceptado (B)
+## Alcance entregado (C)
 
-Implementado según `tasks/approvals.md`: `script-math.json`, beat math, `validateMathNarrative`, `MathPuzzle`, tests/typecheck, regresión validate logic-lateral.
+1. `data/templates/script-memory.json` + README.
+2. Beat `hook→puzzle→countdown→hint→reveal→outro` en registry.
+3. Builder + `family: 'memory'` + CTA comentar.
+4. `validateMemoryChallenge` (ask excluye missingId) + `validateMemoryNarrative`.
+5. Pulido `MemoryChallenge.tsx`.
+6. Tests + validate memory/math/logic-lateral.
+7. Docs D013.
 
-## Limitaciones de aceptación (vinculantes)
+## Criterios de aceptación
 
-- Comprobaciones = **validación** (`--mode validate` / unit tests). **No** se afirma render MP4 ni inspección audiovisual.
-- El fixture `script-math.json` y los tests cubren el camino feliz aritmético + coherencia answerKey↔reveal; **no** demuestran cobertura exhaustiva de casos límite matemáticos.
-- Validación narrativa memory/illusion pendiente (C/D).
-- Beat oficial logic-lateral y P5/QC intactos.
+- [x] `script-memory.json` valida → `auto_validated`.
+- [x] Fases show→hide→ask→reveal + answerKey coherentes.
+- [x] Beat memory propio; logic-lateral intacto.
+- [x] Regresión math + logic-lateral validate OK.
+- [x] `npm test` 92 · `typecheck` OK.
+- [x] Sin deps; sin publish.
+- [ ] Humano marca `accepted` (o rechaza) para C.
 
-## Criterios de aceptación (entrega B)
-
-- [x] Fixture `script-math.json` + beat math + validación answerKey↔reveal + `MathPuzzle`.
-- [x] Tests y typecheck superados.
-- [x] Regresión validate logic-lateral OK.
-- [x] Humano marca `accepted` (2026-10-19).
-
-## Pruebas ejecutadas (referencia de la entrega)
+## Pruebas ejecutadas
 
 ```bash
-npm test          # 18 files / 86 tests passed
+npm test          # 19 files / 92 tests passed
 npm run typecheck # OK
-npm run short -- --input data/templates/script-math.json --mode validate --id t-multiformat-b-math
+npm run short -- --input data/templates/script-memory.json --mode validate --id t-multiformat-c-memory
 # → auto_validated
-npm run short -- --input data/templates/script-logic-lateral.json --mode validate --id t-multiformat-b-logic-regression
-# → OK (partial)
+npm run short -- --input data/templates/script-math.json --mode validate --id t-multiformat-c-math-regression
+npm run short -- --input data/templates/script-logic-lateral.json --mode validate --id t-multiformat-c-logic-regression
 ```
 
-## Notas de cierre
+## Limitaciones
 
-- Entrega B → `accepted`. Siguiente: C (memory) en `proposed` hasta autorización humana explícita.
-- Sin commit/push/merge/publicación en este cierre documental.
+- Validate only (no render/AV).
+- Fixture memory ≠ cobertura exhaustiva de edge cases.
+- Illusion (D) pendiente.
+
+## Notas
+
+- Informe en `tasks/approvals.md`. Esperando humano antes de D.

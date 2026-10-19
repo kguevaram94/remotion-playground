@@ -467,25 +467,163 @@ export const validateMemoryChallenge = (visual: Visual): PuzzleValidationResult 
   if (visual.template !== 'memory-challenge') {
     return fail(['Visual no es memory-challenge']);
   }
-  if (visual.items.length < 2) {
+  if (visual.items.length < 2 && visual.phase !== 'ask') {
     return fail(['Se necesitan al menos 2 elementos']);
   }
+  if (visual.phase === 'ask' && visual.items.length < 1) {
+    return fail(['Fase ask: se necesita al menos 1 elemento visible']);
+  }
+
+  const ids = visual.items.map((i) => i.id);
+  if (new Set(ids).size !== ids.length) {
+    return fail(['IDs de items duplicados']);
+  }
+
   if (visual.missingId) {
     const exists = visual.items.some((i) => i.id === visual.missingId);
+    if (visual.phase === 'ask') {
+      if (exists) {
+        return fail([
+          'Fase ask: missingId no debe aparecer en items visibles',
+        ]);
+      }
+      return ok('auto_validated', [], {
+        missingId: visual.missingId,
+        phase: 'ask',
+        visibleCount: visual.items.length,
+      });
+    }
     if (!exists) {
       return fail([`missingId ${visual.missingId} no está en items`]);
     }
-    return ok('auto_validated', [], {missingId: visual.missingId});
+    return ok('auto_validated', [], {
+      missingId: visual.missingId,
+      phase: visual.phase,
+    });
   }
+
   if (visual.sequence) {
-    const ids = new Set(visual.items.map((i) => i.id));
-    const invalid = visual.sequence.filter((id) => !ids.has(id));
+    const idSet = new Set(ids);
+    const invalid = visual.sequence.filter((sid) => !idSet.has(sid));
     if (invalid.length) {
       return fail([`IDs de secuencia inválidos: ${invalid.join(', ')}`]);
     }
     return ok('auto_validated', [], {sequenceLength: visual.sequence.length});
   }
+
+  if (visual.phase === 'show' || visual.phase === 'hide') {
+    return ok('auto_validated', [], {
+      phase: visual.phase,
+      itemCount: visual.items.length,
+    });
+  }
+
   return ok('pending_review', ['Memoria sin missingId ni sequence']);
+};
+
+type MemoryAnswerKey = {
+  type?: string;
+  missingId?: string;
+  symbol?: string;
+  color?: string;
+  sequence?: string[];
+};
+
+/**
+ * Coherencia de fases + answerKey↔reveal para familia memory.
+ */
+export const validateMemoryNarrative = (
+  script: VideoScript,
+  revealVisual: Visual,
+): PuzzleValidationResult => {
+  if (revealVisual.template !== 'memory-challenge') {
+    return fail(['Narrativa memory requiere visual memory-challenge en reveal']);
+  }
+
+  const memoryScenes = script.scenes.filter(
+    (s) => s.visual.template === 'memory-challenge',
+  );
+  const phases = memoryScenes.map((s) =>
+    s.visual.template === 'memory-challenge' ? s.visual.phase : undefined,
+  );
+  const details: Record<string, unknown> = {narrative: true, phases};
+
+  const expectedOrder = ['show', 'hide', 'ask', 'reveal'] as const;
+  const compact = phases.filter(Boolean) as string[];
+  for (let i = 0; i < expectedOrder.length; i++) {
+    if (compact[i] !== expectedOrder[i]) {
+      return fail(
+        [
+          `Fases memory incoherentes: se esperaba ${expectedOrder.join('→')}, hay ${compact.join('→')}`,
+        ],
+        [],
+        details,
+      );
+    }
+  }
+
+  const show = memoryScenes.find(
+    (s) => s.visual.template === 'memory-challenge' && s.visual.phase === 'show',
+  );
+  const ask = memoryScenes.find(
+    (s) => s.visual.template === 'memory-challenge' && s.visual.phase === 'ask',
+  );
+  const reveal = revealVisual;
+
+  if (
+    !show ||
+    show.visual.template !== 'memory-challenge' ||
+    !ask ||
+    ask.visual.template !== 'memory-challenge' ||
+    reveal.template !== 'memory-challenge'
+  ) {
+    return fail(['Faltan escenas memory show/ask/reveal'], [], details);
+  }
+
+  const missingId = reveal.missingId ?? ask.visual.missingId;
+  if (!missingId) {
+    return fail(['Falta missingId en ask/reveal'], [], details);
+  }
+
+  if (!show.visual.items.some((i) => i.id === missingId)) {
+    return fail([`missingId ${missingId} no estaba en la fase show`], [], details);
+  }
+  if (ask.visual.items.some((i) => i.id === missingId)) {
+    return fail([`missingId ${missingId} sigue visible en ask`], [], details);
+  }
+  if (!reveal.items.some((i) => i.id === missingId)) {
+    return fail([`missingId ${missingId} ausente en reveal`], [], details);
+  }
+
+  const key = script.solution.answerKey as MemoryAnswerKey | undefined;
+  if (!key || (key.type && key.type !== 'memory')) {
+    return ok('partial', ['answerKey memory ausente o type≠memory'], details);
+  }
+  if (key.missingId && key.missingId !== missingId) {
+    return fail(
+      [`answerKey.missingId ${key.missingId} ≠ visual ${missingId}`],
+      [],
+      details,
+    );
+  }
+  const revealed = reveal.items.find((i) => i.id === missingId);
+  if (key.symbol && revealed && key.symbol !== revealed.symbol) {
+    return fail(
+      [`answerKey.symbol ${key.symbol} ≠ ${revealed.symbol}`],
+      [],
+      details,
+    );
+  }
+  if (key.color && revealed && key.color !== revealed.color) {
+    return fail(
+      [`answerKey.color ${key.color} ≠ ${revealed.color}`],
+      [],
+      details,
+    );
+  }
+
+  details.missingId = missingId;
+  return ok('auto_validated', [], details);
 };
 
 export const validateCountSquaresAnswer = (
@@ -546,9 +684,32 @@ export const validateFamilyPuzzle = (
     case 'illusion':
       result = validateOpticalIllusion(visual);
       break;
-    case 'memory':
-      result = validateMemoryChallenge(visual);
+    case 'memory': {
+      const visualResult = validateMemoryChallenge(visual);
+      if (!visualResult.ok) {
+        result = visualResult;
+        break;
+      }
+      const narrative = validateMemoryNarrative(script, visual);
+      if (!narrative.ok) {
+        result = narrative;
+        break;
+      }
+      const rank = (level: ValidationLevel) =>
+        ({auto_validated: 0, partial: 1, pending_review: 2, failed: 3})[level];
+      const level =
+        rank(visualResult.level) >= rank(narrative.level)
+          ? visualResult.level
+          : narrative.level;
+      result = {
+        level,
+        ok: level !== 'failed',
+        errors: [],
+        warnings: [...visualResult.warnings, ...narrative.warnings],
+        details: {...visualResult.details, ...narrative.details},
+      };
       break;
+    }
     case 'logic-lateral':
       if (visual.template === 'bulb-state-reveal') {
         result = validateBulbStateReveal(visual);

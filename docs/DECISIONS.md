@@ -91,6 +91,13 @@ Formato: fecha · decisión · contexto · alternativa · consecuencia.
 - **Alternativas descartadas:** Reutilizar el beat logic-lateral; basar la plantilla oficial solo en cerillas romanas frágiles; validación narrativa por LLM.
 - **Consecuencia:** Memory/illusion siguen sin narrativa específica (C/D). Beat logic-lateral y P5/QC intactos.
 
+## D013 — Familia memory (entrega C)
+
+- **Fecha:** 2026-10-19
+- **Decisión (`T-MULTIFORMAT-001` C):** Plantilla `data/templates/script-memory.json` con beat propio `hook → puzzle → countdown → hint → reveal → outro`. Fases visuales obligatorias `show→hide→ask→reveal`. En `ask`, `missingId` no debe estar en `items`; en `reveal`/`show` sí. Narrativa `validateMemoryNarrative` (answerKey↔reveal, sin LLM).
+- **Alternativas descartadas:** Beat logic-lateral; permitir missingId visible en ask; validación solo del visual de reveal sin fases.
+- **Consecuencia:** Illusion (D) pendiente. Beat logic-lateral y P5/QC intactos. Fixture ≠ cobertura exhaustiva de edge cases.
+
 ---
 
 Al descartar o adoptar algo nuevo: añadir **D00N** aquí y enlazar desde el PR / `tasks/approvals.md`.

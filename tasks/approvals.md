@@ -29,7 +29,7 @@ Código terminado ≠ `accepted`.
 | P3 | Gobernanza ChatGPT+Cursor+GitHub | `accepted` | `AGENTS.md`, `ROADMAP.md`, `tasks/*`, `.cursor/rules/governance.mdc`, `.cursor/rules/shorts.mdc`, `docs/DECISIONS.md` D007–D008; informe de revisión `T-GOV-001` | humano (chat Cursor: aceptación explícita con base en informe) | 2026-10-19 |
 | P4 | CI GitHub Actions | `accepted` | `.github/workflows/ci.yml`; run [39237385007](https://github.com/kguevaram94/remotion-playground/actions/runs/39237385007) en commit `fd74e44abe169808faf90132ce52960df33dd7ef` (success: `npm ci`, `npm run typecheck`, `npm test`) | humano (chat Cursor: aceptación explícita con evidencia CI) | 2026-10-19 |
 | P5 | Pulido logic-lateral | `accepted` | `T-POLISH-001` + `T-QC-LOUDNORM-001` `accepted`. BGM=0 pistas; sin validación audiovisual MP4 no-mock | humano (chat Cursor; código/tests/typecheck; limitación AV doc.) | 2026-10-19 |
-| P6 | Más familias plantilla | `proposed` | A+B `accepted` (2026-10-19); C/D y P6 siguen `proposed` | humano (aceptó A y B; fase P6 no cerrada) | 2026-10-19 |
+| P6 | Más familias plantilla | `proposed` | A+B `accepted`; C `review_required` (2026-10-19); D `proposed` | humano (C approved) | 2026-10-19 |
 | P7 | Studio/preview estable | `proposed` | Depende P0 | — | — |
 | P8 | Publicación YouTube | `blocked` | Descartado por ahora (`ROADMAP` / D-future) | — | — |
 
@@ -41,7 +41,7 @@ Código terminado ≠ `accepted`.
 | `T-CI-001` | P4 | CI test + typecheck | `accepted` | Aceptado 2026-10-19 con evidencia CI run 39237385007 (commit `fd74e44`) |
 | `T-POLISH-001` | P5 | Pulido logic-lateral (SFX, BGM curada, thumb Satori, loudnorm narración→MP4) | `accepted` | Aceptado 2026-10-19 (código/tests/typecheck; limitación AV documentada). Sin commit/push |
 | `T-QC-LOUDNORM-001` | P5 | Gate QC loudnorm + publishEligibility | `accepted` | Aceptado 2026-10-19 (auditoría final 7/7 PASS; 72 tests; typecheck OK) |
-| `T-MULTIFORMAT-001` | P6 | Multiformato (entregas A–D) | A: `accepted` · B: `accepted` · C/D: `proposed` | B aceptada 2026-10-19; P6 sigue `proposed`; C requiere nuevo `approved` |
+| `T-MULTIFORMAT-001` | P6 | Multiformato (entregas A–D) | A+B: `accepted` · C: `review_required` · D: `proposed` | Informe C abajo; P6 sigue `proposed` |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -59,11 +59,36 @@ Código terminado ≠ `accepted`.
 
 ## Tarea activa / alcance aprobado
 
-> Sin implementación `in_progress`. Entregas **A** y **B** de `T-MULTIFORMAT-001` = **`accepted`** (2026-10-19).  
-> C, D = `proposed`. P6 = `proposed`. P5 / QC = `accepted`.  
-> No iniciar C hasta nuevo `approved` humano.
+> Tarea activa: `T-MULTIFORMAT-001` · entrega **C** · **`review_required`**.  
+> A+B = `accepted`. D = `proposed`. P6 = `proposed`. P5 / QC = `accepted`.
 
-### `T-MULTIFORMAT-001` · P6 · entrega B `accepted` (A `accepted` · C/D `proposed`)
+### `T-MULTIFORMAT-001` · P6 · entrega C `review_required` (A+B `accepted` · D `proposed`)
+
+#### Aprobación humana — entrega C (2026-10-19)
+
+- **Alcance autorizado:** familia memory (JSON, beat propio, builder, validador/fases/narrativa, componente, tests, docs).
+- **No autorizado:** D; cambiar beat logic-lateral; P5/QC; deps; YouTube; commit/push/merge; P6 → `accepted`.
+- **Aprobado por:** humano (chat Cursor: `approved`).
+- **Estado C:** `approved` → `in_progress` → **`review_required`**.
+
+#### Informe de revisión — `T-MULTIFORMAT-001` / entrega C
+
+- **Cambios:**
+  - Nuevo: `data/templates/script-memory.json`, `tests/unit/memory-family.test.ts`
+  - `memory-challenge.ts`, `registry.ts` (exactSequence memory)
+  - `puzzle-validator.ts` (fases ask/reveal + `validateMemoryNarrative`)
+  - `MemoryChallenge.tsx`; docs D013; README / generar-short / ARCHITECTURE
+- **Decisiones:** beat memory propio; fases `show→hide→ask→reveal`; ask sin missingId en items.
+- **Comandos (validate only):**
+  - `npm test` → 19 files / **92** tests passed · `typecheck` OK
+  - validate `script-memory.json` → **`auto_validated`**
+  - validate `script-math.json` → `auto_validated`
+  - validate `script-logic-lateral.json` → OK (`partial`)
+- **Limitaciones:** no render/AV; fixture ≠ edge cases exhaustivos; D pendiente.
+- **Estado propuesto:** C `review_required`; D `proposed`; P6 `proposed`.
+- **Siguiente:** humano acepta C; luego `approved` para D.
+
+### `T-MULTIFORMAT-001` · P6 · entrega B `accepted` (histórico · A `accepted`)
 
 #### Aceptación humana — entrega B (2026-10-19)
 

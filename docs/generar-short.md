@@ -75,7 +75,22 @@ cp data/templates/script-math.json data/topics/mi-reto-math.json
 npm run generar-short -- --input data/topics/mi-reto-math.json
 ```
 
-Validación: aritmética declarativa + coherencia `answerKey`↔reveal (`auto_validated` en la plantilla de referencia). Memory/illusion: entregas C–D. Detalle: `docs/ARCHITECTURE.md` · D011–D012.
+Validación: aritmética declarativa + coherencia `answerKey`↔reveal (`auto_validated` en la plantilla de referencia). Detalle: `docs/ARCHITECTURE.md` · D011–D012.
+
+### Familia memory (entrega C)
+
+Plantilla: `data/templates/script-memory.json`.
+
+Beat propio: `hook` → `puzzle` → `countdown` → `hint` → `reveal` → `outro` (CTA comentar).
+
+Fases visuales: `show` → `hide` → `ask` → `reveal` (`missingId` ausente en ask, presente en reveal).
+
+```bash
+cp data/templates/script-memory.json data/topics/mi-reto-memory.json
+npm run generar-short -- --input data/topics/mi-reto-memory.json
+```
+
+Illusion: entrega D. Detalle: D013.
 
 ## 2. Solo título (plantilla automática)
 
