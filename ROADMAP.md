@@ -6,9 +6,10 @@ Protocolo: `AGENTS.md` (ChatGPT planifica/revisa · Cursor implementa · GitHub 
 
 ## Prioridad actual
 
-1. **P5 pulido logic-lateral** — `T-POLISH-001` en `proposed` (no iniciar sin `approved`).
-2. Solo después: P6 (más formatos), P7 (Studio), P8 (publicación) según decisión humana.
-3. P3/P4: `accepted` (2026-10-19).
+1. **P4 CI** — `T-CI-001` en `review_required` (aceptar solo tras verificar evidencia de CI).
+2. **P5 pulido logic-lateral** — `T-POLISH-001` en `proposed` (no iniciar sin `approved`).
+3. Solo después: P6 (más formatos), P7 (Studio), P8 (publicación) según decisión humana.
+4. P3: `accepted` (2026-10-19, informe de revisión).
 
 ## Fases
 
@@ -18,7 +19,7 @@ Protocolo: `AGENTS.md` (ChatGPT planifica/revisa · Cursor implementa · GitHub 
 | P1 | Formato oficial logic-lateral (beat + visuales + CTA comentar) | P0 | P0 | `accepted` |
 | P2 | Validadores de acertijo + política de revisión humana | P0 | P0 | `accepted` |
 | P3 | Gobernanza ChatGPT + Cursor + GitHub | — | P0 | `accepted` |
-| P4 | CI GitHub Actions (`test` + `typecheck`) | — | P0 | `accepted` |
+| P4 | CI GitHub Actions (`test` + `typecheck`) | — | P0 | `review_required` |
 | P5 | Pulido logic-lateral (SFX, música, thumbnail, loudnorm) | P1 | P1 | `proposed` |
 | P6 | Más familias de plantilla (math, memory, illusion) al nivel logic-lateral | P1, P2 | P2 | `proposed` |
 | P7 | Studio / preview workflow documentado y estable | P0 | P2 | `proposed` |
