@@ -1,6 +1,7 @@
 import {
   AbsoluteFill,
   interpolate,
+  spring,
   useCurrentFrame,
   useVideoConfig,
 } from 'remotion';
@@ -12,23 +13,54 @@ export const OpticalIllusion: React.FC<{
   onScreenText?: string;
 }> = ({visual, onScreenText}) => {
   const frame = useCurrentFrame();
-  const {width, height} = useVideoConfig();
+  const {fps, width, height} = useVideoConfig();
   const W = width;
   const H = height;
+  const enter = spring({frame, fps, config: {damping: 14}});
   const guideOpacity = visual.showGuides
-    ? interpolate(frame, [0, 20], [0, 1], {
+    ? interpolate(frame, [0, 18], [0, 1], {
         extrapolateLeft: 'clamp',
         extrapolateRight: 'clamp',
       })
     : 0;
+  const comparePop = visual.compareMode
+    ? spring({frame: Math.max(0, frame - 6), fps, config: {damping: 12}})
+    : 0;
+
+  const lineShapes = visual.shapes.filter((s) => s.kind === 'line');
+  const guideXs =
+    lineShapes.length > 0
+      ? [lineShapes[0].x, lineShapes[0].x + lineShapes[0].size]
+      : [0.2, 0.8];
+  const guideYTop =
+    lineShapes.length > 0
+      ? Math.min(...lineShapes.map((l) => l.y)) - 0.08
+      : 0.22;
+  const guideYBottom =
+    lineShapes.length > 0
+      ? Math.max(...lineShapes.map((l) => l.y)) + 0.08
+      : 0.63;
 
   return (
     <AbsoluteFill
       style={{
         fontFamily: shortFont,
         padding: `${SAFE.top}px ${SAFE.side}px ${SAFE.bottom}px`,
+        opacity: enter,
       }}
     >
+      <div
+        style={{
+          textAlign: 'center',
+          fontSize: 26,
+          fontWeight: 700,
+          letterSpacing: '0.12em',
+          color: shortColors.accent,
+          marginBottom: 12,
+        }}
+      >
+        ILUSIÓN
+      </div>
       {onScreenText ? (
         <div
           style={{
@@ -37,6 +69,7 @@ export const OpticalIllusion: React.FC<{
             fontSize: 36,
             fontWeight: 700,
             marginBottom: 24,
+            whiteSpace: 'pre-line',
           }}
         >
           {onScreenText}
@@ -103,24 +136,18 @@ export const OpticalIllusion: React.FC<{
         })}
         {visual.showGuides ? (
           <g opacity={guideOpacity}>
-            <line
-              x1={0.2 * W}
-              y1={0.2 * H}
-              x2={0.2 * W}
-              y2={0.45 * H}
-              stroke={shortColors.success}
-              strokeWidth={3}
-              strokeDasharray="10 8"
-            />
-            <line
-              x1={0.8 * W}
-              y1={0.2 * H}
-              x2={0.8 * W}
-              y2={0.45 * H}
-              stroke={shortColors.success}
-              strokeWidth={3}
-              strokeDasharray="10 8"
-            />
+            {guideXs.map((gx, i) => (
+              <line
+                key={`guide-${i}`}
+                x1={gx * W}
+                y1={guideYTop * H * 0.5}
+                x2={gx * W}
+                y2={guideYBottom * H * 0.5}
+                stroke={shortColors.success}
+                strokeWidth={3}
+                strokeDasharray="10 8"
+              />
+            ))}
           </g>
         ) : null}
       </svg>
@@ -131,6 +158,8 @@ export const OpticalIllusion: React.FC<{
             color: shortColors.success,
             fontSize: 40,
             fontWeight: 800,
+            transform: `scale(${0.85 + 0.15 * comparePop})`,
+            opacity: comparePop,
           }}
         >
           Misma longitud

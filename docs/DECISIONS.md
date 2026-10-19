@@ -89,14 +89,32 @@ Formato: fecha · decisión · contexto · alternativa · consecuencia.
 - **Fecha:** 2026-10-19
 - **Decisión (`T-MULTIFORMAT-001` B):** Plantilla oficial `data/templates/script-math.json` con beat propio `hook → puzzle → countdown → explanation → reveal → outro` (distinto de logic-lateral). Validador aritmético + coherencia narrativa `answerKey`↔reveal (`validateMathNarrative`). Referencia `auto_validated` con operands/operator/result. CTA comentar vía convención A.
 - **Alternativas descartadas:** Reutilizar el beat logic-lateral; basar la plantilla oficial solo en cerillas romanas frágiles; validación narrativa por LLM.
-- **Consecuencia:** Memory/illusion siguen sin narrativa específica (C/D). Beat logic-lateral y P5/QC intactos.
+- **Consecuencia:** Memory entregada en C (`accepted`); illusion sigue pendiente (D). Beat logic-lateral y P5/QC intactos.
 
 ## D013 — Familia memory (entrega C)
 
 - **Fecha:** 2026-10-19
-- **Decisión (`T-MULTIFORMAT-001` C):** Plantilla `data/templates/script-memory.json` con beat propio `hook → puzzle → countdown → hint → reveal → outro`. Fases visuales obligatorias `show→hide→ask→reveal`. En `ask`, `missingId` no debe estar en `items`; en `reveal`/`show` sí. Narrativa `validateMemoryNarrative` (answerKey↔reveal, sin LLM).
+- **Decisión (`T-MULTIFORMAT-001` C):** Plantilla `data/templates/script-memory.json` con beat propio `hook → puzzle → countdown → hint → reveal → outro`. Fases visuales obligatorias `show→hide→ask→reveal`.
+- **Relación validador (elementos ↔ pregunta ↔ respuesta):**
+  1. `show`: el conjunto completo incluye `missingId`.
+  2. `ask`: pregunta visual — `missingId` **no** figura en `items` (regla de `validateMemoryChallenge` + rechequeo en `validateMemoryNarrative`).
+  3. `reveal`: el mismo `missingId` vuelve a `items`.
+  4. `answerKey.missingId` (y opcionalmente `symbol`/`color`) debe coincidir con el elemento revelado → `auto_validated`; sin `answerKey` coherente → `partial`. Sin LLM.
 - **Alternativas descartadas:** Beat logic-lateral; permitir missingId visible en ask; validación solo del visual de reveal sin fases.
-- **Consecuencia:** Illusion (D) pendiente. Beat logic-lateral y P5/QC intactos. Fixture ≠ cobertura exhaustiva de edge cases.
+- **Consecuencia:** Illusion entregada en D. Beats logic-lateral, math y memory no se alteran en el cierre documental. P5/QC intactos. Fixture ≠ cobertura exhaustiva de edge cases. Regresiones de aceptación = validate only (no render/AV).
+- **Aceptación:** entrega C → `accepted` 2026-10-19 (humano, chat Cursor).
+
+## D014 — Familia illusion (entrega D)
+
+- **Fecha:** 2026-10-19
+- **Decisión (`T-MULTIFORMAT-001` D):** Plantilla `data/templates/script-illusion.json` con beat propio `hook → puzzle → countdown → explanation → reveal → outro` (distinto de logic-lateral; no altera math/memory).
+- **Validación:**
+  1. Geometría declarada (`shapes`) en `validateOpticalIllusion`.
+  2. Narrativa `validateIllusionNarrative`: puzzle sin `compareMode`; reveal **exige** `compareMode=true` y `showGuides=true`.
+  3. Müller-Lyer + `answerKey.lengthsEqual`: tamaños de línea coherentes en reveal.
+  4. **Nunca** `auto_validated` — percepción subjetiva → siempre `partial` o `pending_review`.
+- **Alternativas descartadas:** Beat logic-lateral; `auto_validated` por igualdad geométrica; reveal sin guías de comparación.
+- **Consecuencia:** P6 sigue `proposed` hasta aceptación humana de D y decisión de cierre. Beats A–C intactos. P5/QC intactos. Regresiones = validate only.
 
 ---
 

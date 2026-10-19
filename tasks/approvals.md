@@ -29,7 +29,7 @@ Código terminado ≠ `accepted`.
 | P3 | Gobernanza ChatGPT+Cursor+GitHub | `accepted` | `AGENTS.md`, `ROADMAP.md`, `tasks/*`, `.cursor/rules/governance.mdc`, `.cursor/rules/shorts.mdc`, `docs/DECISIONS.md` D007–D008; informe de revisión `T-GOV-001` | humano (chat Cursor: aceptación explícita con base en informe) | 2026-10-19 |
 | P4 | CI GitHub Actions | `accepted` | `.github/workflows/ci.yml`; run [39237385007](https://github.com/kguevaram94/remotion-playground/actions/runs/39237385007) en commit `fd74e44abe169808faf90132ce52960df33dd7ef` (success: `npm ci`, `npm run typecheck`, `npm test`) | humano (chat Cursor: aceptación explícita con evidencia CI) | 2026-10-19 |
 | P5 | Pulido logic-lateral | `accepted` | `T-POLISH-001` + `T-QC-LOUDNORM-001` `accepted`. BGM=0 pistas; sin validación audiovisual MP4 no-mock | humano (chat Cursor; código/tests/typecheck; limitación AV doc.) | 2026-10-19 |
-| P6 | Más familias plantilla | `proposed` | A+B `accepted`; C `review_required` (2026-10-19); D `proposed` | humano (C approved) | 2026-10-19 |
+| P6 | Más familias plantilla | `proposed` | A+B+C `accepted`; D `review_required` | humano (D approved 2026-10-19) | 2026-10-19 |
 | P7 | Studio/preview estable | `proposed` | Depende P0 | — | — |
 | P8 | Publicación YouTube | `blocked` | Descartado por ahora (`ROADMAP` / D-future) | — | — |
 
@@ -41,7 +41,7 @@ Código terminado ≠ `accepted`.
 | `T-CI-001` | P4 | CI test + typecheck | `accepted` | Aceptado 2026-10-19 con evidencia CI run 39237385007 (commit `fd74e44`) |
 | `T-POLISH-001` | P5 | Pulido logic-lateral (SFX, BGM curada, thumb Satori, loudnorm narración→MP4) | `accepted` | Aceptado 2026-10-19 (código/tests/typecheck; limitación AV documentada). Sin commit/push |
 | `T-QC-LOUDNORM-001` | P5 | Gate QC loudnorm + publishEligibility | `accepted` | Aceptado 2026-10-19 (auditoría final 7/7 PASS; 72 tests; typecheck OK) |
-| `T-MULTIFORMAT-001` | P6 | Multiformato (entregas A–D) | A+B: `accepted` · C: `review_required` · D: `proposed` | Informe C abajo; P6 sigue `proposed` |
+| `T-MULTIFORMAT-001` | P6 | Multiformato (entregas A–D) | A+B+C: `accepted` · D: `review_required` | Informe D abajo; P6 sigue `proposed` |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -59,19 +59,69 @@ Código terminado ≠ `accepted`.
 
 ## Tarea activa / alcance aprobado
 
-> Tarea activa: `T-MULTIFORMAT-001` · entrega **C** · **`review_required`**.  
-> A+B = `accepted`. D = `proposed`. P6 = `proposed`. P5 / QC = `accepted`.
+> Tarea activa: `T-MULTIFORMAT-001` · entrega **D** · **`review_required`**.  
+> A+B+C = `accepted`. D = `review_required`. P6 = `proposed`. P5 / QC = `accepted`.
 
-### `T-MULTIFORMAT-001` · P6 · entrega C `review_required` (A+B `accepted` · D `proposed`)
+### `T-MULTIFORMAT-001` · P6 · entrega D `review_required` (A+B+C `accepted`)
 
-#### Aprobación humana — entrega C (2026-10-19)
+#### Aprobación humana — entrega D (2026-10-19)
+
+- **Alcance autorizado:** familia illusion (JSON, beat propio, builder, validador `partial`/`pending_review` + compareMode/showGuides, componente, tests, docs).
+- **No autorizado:** cerrar P6; alterar beats logic-lateral / math / memory; P5/QC; deps; YouTube; commit/push/merge.
+- **Aprobado por:** humano (chat Cursor: `approved`).
+- **Estado D:** `approved` → `in_progress` → **`review_required`**.
+
+#### Informe de revisión — `T-MULTIFORMAT-001` / entrega D
+
+- **Cambios:**
+  - Nuevo: `data/templates/script-illusion.json`, `tests/unit/illusion-family.test.ts`
+  - `optical-illusion.ts` (beat + `family` + CTA), `registry.ts` (exactSequence illusion)
+  - `puzzle-validator.ts` (`validateIllusionNarrative` + cap nunca `auto_validated`)
+  - `OpticalIllusion.tsx` (badge, guías alineadas, comparePop); docs D014
+- **Decisiones:** beat illusion propio; reveal exige `compareMode`+`showGuides`; status siempre `partial`/`pending_review`.
+- **Comandos (validate only — no render / no AV):**
+  - `npm test` → 20 files / **99** tests passed · `typecheck` OK
+  - validate `script-illusion.json` → **`partial`**
+  - validate `script-memory.json` → `auto_validated`
+  - validate `script-math.json` → `auto_validated`
+  - validate `script-logic-lateral.json` → OK (`partial`)
+- **Limitaciones:** no render/AV; percepción subjetiva; fixture ≠ edge cases; P6 no se cierra solo.
+- **Estado propuesto:** D `review_required`; P6 `proposed`.
+- **Siguiente:** humano acepta D; luego decisión explícita de cierre P6 si aplica.
+
+### `T-MULTIFORMAT-001` · P6 · entrega C `accepted` (A+B `accepted`)
+
+#### Aceptación humana — entrega C (2026-10-19)
+
+Estado: **`accepted`** (humano, chat Cursor 2026-10-19).
+
+La revisión humana acepta el alcance entregado:
+
+- Fixture `data/templates/script-memory.json`.
+- Beat específico de memory (`hook` → `puzzle` → `countdown` → `hint` → `reveal` → `outro`).
+- Fases visuales `show` → `hide` → `ask` → `reveal`.
+- Validador `validateMemoryNarrative` (elementos presentados ↔ pregunta ↔ respuesta revelada; en `ask`, `missingId` no figura en `items`).
+- Componente `MemoryChallenge`.
+- Tests y typecheck superados.
+- Regresión **validate** de math y logic-lateral ejecutada.
+
+**Limitaciones documentadas (vinculantes):**
+
+- Las comprobaciones realizadas corresponden a **validación** (`--mode validate`), **no** a render ni inspección audiovisual.
+- Alcance de la validación memory: el fixture / tests del camino feliz **no demuestran cobertura exhaustiva de casos límite**.
+- Illusion (D) pendiente. Beats de logic-lateral, math y memory intactos en este cierre. P5/QC intactos.
+
+**Aceptado por:** humano (chat Cursor).  
+**No autorizado en este acto:** implementar D; cerrar P6; commit/push/merge; alterar beats logic-lateral / math / memory; tocar P5/QC.
+
+#### Aprobación humana — inicio entrega C (2026-10-19)
 
 - **Alcance autorizado:** familia memory (JSON, beat propio, builder, validador/fases/narrativa, componente, tests, docs).
 - **No autorizado:** D; cambiar beat logic-lateral; P5/QC; deps; YouTube; commit/push/merge; P6 → `accepted`.
 - **Aprobado por:** humano (chat Cursor: `approved`).
-- **Estado C:** `approved` → `in_progress` → **`review_required`**.
+- **Estado C (ciclo):** `approved` → `in_progress` → `review_required` → **`accepted`**.
 
-#### Informe de revisión — `T-MULTIFORMAT-001` / entrega C
+#### Informe de revisión — `T-MULTIFORMAT-001` / entrega C (pre-aceptación)
 
 - **Cambios:**
   - Nuevo: `data/templates/script-memory.json`, `tests/unit/memory-family.test.ts`
@@ -79,14 +129,14 @@ Código terminado ≠ `accepted`.
   - `puzzle-validator.ts` (fases ask/reveal + `validateMemoryNarrative`)
   - `MemoryChallenge.tsx`; docs D013; README / generar-short / ARCHITECTURE
 - **Decisiones:** beat memory propio; fases `show→hide→ask→reveal`; ask sin missingId en items.
-- **Comandos (validate only):**
+- **Comandos (validate only — no render / no AV):**
   - `npm test` → 19 files / **92** tests passed · `typecheck` OK
   - validate `script-memory.json` → **`auto_validated`**
   - validate `script-math.json` → `auto_validated`
   - validate `script-logic-lateral.json` → OK (`partial`)
 - **Limitaciones:** no render/AV; fixture ≠ edge cases exhaustivos; D pendiente.
-- **Estado propuesto:** C `review_required`; D `proposed`; P6 `proposed`.
-- **Siguiente:** humano acepta C; luego `approved` para D.
+- **Estado tras aceptación:** C `accepted`; D `proposed`; P6 `proposed`.
+- **Siguiente:** espera `approved` humano explícito antes de implementar D.
 
 ### `T-MULTIFORMAT-001` · P6 · entrega B `accepted` (histórico · A `accepted`)
 
@@ -107,7 +157,7 @@ La revisión humana acepta el alcance entregado:
 
 - Las comprobaciones realizadas corresponden a **validación**, **no** a render ni inspección audiovisual.
 - Alcance de la validación matemática: el fixture / tests del camino feliz **no demuestran cobertura exhaustiva de casos límite**.
-- Narrativa memory/illusion pendiente (C/D). Beat logic-lateral y P5/QC intactos.
+- En el momento de la aceptación B: narrativa memory/illusion pendiente (C/D). *(C quedó `accepted` el 2026-10-19; D sigue `proposed`.)* Beat logic-lateral y P5/QC intactos.
 
 **Aceptado por:** humano (chat Cursor).  
 **No autorizado en este acto:** implementar C/D; cerrar P6; commit/push/merge; alterar beat logic-lateral o P5/QC.

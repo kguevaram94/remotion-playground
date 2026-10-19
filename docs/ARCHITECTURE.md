@@ -79,13 +79,13 @@ Familias registradas en `src/shorts/templates/registry.ts` (`TemplateFamily` en 
 | `logic-puzzle` | `logic-puzzle` | Genérico (p. ej. nine-dots); sin secuencia logic-lateral |
 | `math` | `math-puzzle` | Beat propio: hook→puzzle→countdown→explanation→reveal→outro · plantilla `script-math.json` (entrega B) |
 | `memory` | `memory-challenge` | Beat propio: hook→puzzle→countdown→hint→reveal→outro · plantilla `script-memory.json` (entrega C) |
-| `illusion` | `optical-illusion` | Beat específico: entrega D |
+| `illusion` | `optical-illusion` | Beat propio: hook→puzzle→countdown→explanation→reveal→outro · plantilla `script-illusion.json` (entrega D · siempre `partial`) |
 | `find-different` | `find-different` | Scaffolding existente |
 
 - Campo JSON opcional `family` (Zod). Si falta, `resolveFamily` / `inferFamilyId` infieren de `format` + visuales (`logic-room` / `switch-sequence` / `bulb-state-reveal` → `logic-lateral`).
 - Familia desconocida → error explícito (`UnknownTemplateFamilyError` / rechazo Zod).
 - **Beat común** (`beat-check.ts`): presencia de `hook`, `reveal`, `outro` (sin imponer orden).
-- **Beat de familia:** solo si la familia declara `exactSequence` (hoy: logic-lateral). CTA comentar = `preferCommentCta` (aviso, no bloqueo).
+- **Beat de familia:** si declara `exactSequence` (hoy: `logic-lateral`, `math`, `memory`, `illusion`). CTA comentar = `preferCommentCta` (aviso, no bloqueo).
 - Validación de acertijo por familia: `validateFamilyPuzzle` en `puzzle-validator.ts` (separada del beat checker).
 
 Scripts legacy sin `family` siguen siendo válidos (sin migración).
@@ -95,11 +95,11 @@ Scripts legacy sin `family` siguen siendo válidos (sin migración).
 La validación es **código**, no autoevaluación del LLM:
 
 - Cuadrículas find-different
-- Matemáticas / cerillas (evaluación aritmética)
+- Matemáticas / cerillas (evaluación aritmética) + narrativa math (`answerKey`↔reveal)
 - 9 puntos (cobertura geométrica de segmentos)
 - Conteo de cuadrados
-- Memoria (IDs)
-- Ilusiones (parcial / revisión humana)
+- **Memoria** (`validateMemoryChallenge` + `validateMemoryNarrative`): fases `show→hide→ask→reveal`; el `missingId` está en los elementos de `show` y de `reveal`, y **no** en los `items` de `ask` (la pregunta es el hueco); `answerKey` alinea id/symbol/color con lo revelado
+- **Ilusión** (`validateOpticalIllusion` + `validateIllusionNarrative`): geometría declarada; reveal exige `compareMode`+`showGuides`; **nunca** `auto_validated` (percepción subjetiva)
 - Logic-lateral / three-switches (plantilla + checks de dominio)
 
 Orquestación: `validateScriptPuzzles` → familia resuelta → beat común → beat de familia → validador específico.

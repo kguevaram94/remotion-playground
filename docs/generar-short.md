@@ -77,20 +77,52 @@ npm run generar-short -- --input data/topics/mi-reto-math.json
 
 Validación: aritmética declarativa + coherencia `answerKey`↔reveal (`auto_validated` en la plantilla de referencia). Detalle: `docs/ARCHITECTURE.md` · D011–D012.
 
-### Familia memory (entrega C)
+### Familia memory (entrega C · `accepted`)
 
 Plantilla: `data/templates/script-memory.json`.
 
-Beat propio: `hook` → `puzzle` → `countdown` → `hint` → `reveal` → `outro` (CTA comentar).
+Beat propio: `hook` → `puzzle` → `countdown` → `hint` → `reveal` → `outro` (CTA comentar). Distinto de logic-lateral y de math; no modificar esos beats al editar memory.
 
-Fases visuales: `show` → `hide` → `ask` → `reveal` (`missingId` ausente en ask, presente en reveal).
+Fases visuales (orden obligatorio): `show` → `hide` → `ask` → `reveal`.
+
+**Cómo valida el acertijo** (`validateMemoryChallenge` + `validateMemoryNarrative`):
+
+| Pieza | Rol |
+| --- | --- |
+| Fase `show` | Presenta el conjunto completo de elementos (`items`). El `missingId` **debe** estar entre ellos. |
+| Fase `hide` | Oculta / transición (mismo contrato visual). |
+| Fase `ask` | Plantea la pregunta mostrando solo los elementos restantes. Regla dura: `missingId` **no** puede aparecer en `items` de ask (el hueco es la pregunta). |
+| Fase `reveal` | Revela la respuesta: `missingId` **vuelve** a estar en `items` (y coincide con el de ask). |
+| `solution.answerKey` | Debe alinear `missingId` (y, si se declaran, `symbol` / `color`) con el elemento revelado. |
+
+Sin LLM: la coherencia es declarativa (elementos presentados ↔ pregunta ↔ respuesta). Si `answerKey` falta o `type≠memory` → `partial`. Plantilla de referencia → `auto_validated`.
 
 ```bash
 cp data/templates/script-memory.json data/topics/mi-reto-memory.json
 npm run generar-short -- --input data/topics/mi-reto-memory.json
 ```
 
-Illusion: entrega D. Detalle: D013.
+### Familia illusion (entrega D)
+
+Plantilla: `data/templates/script-illusion.json`.
+
+Beat propio: `hook` → `puzzle` → `countdown` → `explanation` → `reveal` → `outro` (CTA comentar). No altera beats de logic-lateral, math ni memory.
+
+**Validación (siempre `partial` / `pending_review`, nunca `auto_validated`):**
+
+| Pieza | Rol |
+| --- | --- |
+| Puzzle | `optical-illusion` con `compareMode=false` (pregunta perceptual). |
+| Reveal | `compareMode=true` + `showGuides=true` (guías de comparación obligatorias). |
+| Geometría | `shapes` declarados; Müller-Lyer exige ≥2 líneas; si `answerKey.lengthsEqual`, tamaños coherentes. |
+| Status | Percepción subjetiva → revisión humana; la igualdad geométrica no basta para `auto_validated`. |
+
+```bash
+cp data/templates/script-illusion.json data/topics/mi-reto-illusion.json
+npm run generar-short -- --input data/topics/mi-reto-illusion.json
+```
+
+Detalle: D014.
 
 ## 2. Solo título (plantilla automática)
 

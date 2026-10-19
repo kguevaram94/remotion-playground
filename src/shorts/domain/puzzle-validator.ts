@@ -344,21 +344,147 @@ export const validateOpticalIllusion = (visual: Visual): PuzzleValidationResult 
   if (visual.template !== 'optical-illusion') {
     return fail(['Visual no es optical-illusion']);
   }
-  if (visual.illusionType === 'mueller-lyer' || visual.illusionType === 'ebbinghaus') {
-    return ok(
-      'partial',
+
+  const details: Record<string, unknown> = {
+    illusionType: visual.illusionType,
+    shapeCount: visual.shapes.length,
+    compareMode: visual.compareMode,
+    showGuides: visual.showGuides,
+  };
+
+  if (visual.shapes.length === 0) {
+    return ok('pending_review', ['Sin formas geométricas declaradas'], details);
+  }
+
+  const ids = visual.shapes.map((s) => s.id);
+  if (new Set(ids).size !== ids.length) {
+    return fail(['IDs de shapes duplicados'], [], details);
+  }
+
+  if (visual.illusionType === 'mueller-lyer') {
+    const lines = visual.shapes.filter((s) => s.kind === 'line');
+    if (lines.length < 2) {
+      return fail(
+        ['Müller-Lyer requiere al menos 2 líneas (kind=line)'],
+        [],
+        details,
+      );
+    }
+    details.lineSizes = lines.map((l) => l.size);
+  }
+
+  // Nunca auto_validated: la percepción es subjetiva.
+  return ok(
+    'partial',
+    [
+      'Ilusión óptica: geometría declarada OK; la percepción subjetiva requiere revisión humana (nunca auto_validated).',
+    ],
+    details,
+  );
+};
+
+type IllusionAnswerKey = {
+  type?: string;
+  lengthsEqual?: boolean;
+  size?: number;
+};
+
+/**
+ * Coherencia puzzle↔reveal + guías compareMode para familia illusion.
+ * Resultado máximo: partial / pending_review (nunca auto_validated).
+ */
+export const validateIllusionNarrative = (
+  script: VideoScript,
+  revealVisual: Visual,
+): PuzzleValidationResult => {
+  if (revealVisual.template !== 'optical-illusion') {
+    return fail(['Narrativa illusion requiere visual optical-illusion en reveal']);
+  }
+
+  const illusionScenes = script.scenes.filter(
+    (s) => s.visual.template === 'optical-illusion',
+  );
+  const details: Record<string, unknown> = {
+    narrative: true,
+    sceneCount: illusionScenes.length,
+  };
+
+  const puzzle = script.scenes.find(
+    (s) =>
+      s.type === 'puzzle' && s.visual.template === 'optical-illusion',
+  );
+  const reveal = revealVisual;
+
+  if (!puzzle || puzzle.visual.template !== 'optical-illusion') {
+    return fail(['Falta escena puzzle con optical-illusion'], [], details);
+  }
+
+  if (puzzle.visual.illusionType !== reveal.illusionType) {
+    return fail(
       [
-        'Ilusión óptica: se validan propiedades geométricas declaradas; la percepción subjetiva requiere revisión humana.',
+        `illusionType puzzle (${puzzle.visual.illusionType}) ≠ reveal (${reveal.illusionType})`,
       ],
-      {illusionType: visual.illusionType, shapes: visual.shapes.length},
+      [],
+      details,
     );
   }
-  if (visual.shapes.length === 0) {
-    return ok('pending_review', ['Sin formas geométricas declaradas']);
+
+  // Guías oficiales de reveal (entrega D): compareMode + showGuides.
+  if (!reveal.compareMode) {
+    return fail(
+      ['Reveal illusion debe usar compareMode=true (guía de comparación)'],
+      [],
+      details,
+    );
   }
-  return ok('partial', ['Validación geométrica parcial'], {
-    shapeCount: visual.shapes.length,
-  });
+  if (!reveal.showGuides) {
+    return fail(
+      ['Reveal illusion debe usar showGuides=true (guías visuales)'],
+      [],
+      details,
+    );
+  }
+
+  if (puzzle.visual.compareMode) {
+    return fail(
+      ['Puzzle illusion no debe activar compareMode (reserva para reveal)'],
+      [],
+      details,
+    );
+  }
+
+  const key = script.solution.answerKey as IllusionAnswerKey | undefined;
+  if (reveal.illusionType === 'mueller-lyer' && key?.lengthsEqual) {
+    const lines = reveal.shapes.filter((s) => s.kind === 'line');
+    if (lines.length < 2) {
+      return fail(['Reveal Müller-Lyer con lengthsEqual necesita ≥2 líneas'], [], details);
+    }
+    const sizes = lines.map((l) => l.size);
+    const expected = key.size ?? sizes[0];
+    if (sizes.some((s) => s !== expected)) {
+      return fail(
+        [
+          `lengthsEqual: tamaños de línea incoherentes (${sizes.join(', ')}; esperado ${expected})`,
+        ],
+        [],
+        details,
+      );
+    }
+    details.lengthsEqual = true;
+    details.size = expected;
+  }
+
+  details.compareMode = true;
+  details.showGuides = true;
+  details.illusionType = reveal.illusionType;
+
+  return ok(
+    'partial',
+    [
+      'Narrativa illusion coherente (puzzle→reveal + compareMode/showGuides); percepción pendiente de revisión humana.',
+    ],
+    details,
+  );
 };
 
 export const validateNineDots = (visual: Visual): PuzzleValidationResult => {
@@ -681,9 +807,35 @@ export const validateFamilyPuzzle = (
       };
       break;
     }
-    case 'illusion':
-      result = validateOpticalIllusion(visual);
+    case 'illusion': {
+      const visualResult = validateOpticalIllusion(visual);
+      if (!visualResult.ok) {
+        result = visualResult;
+        break;
+      }
+      const narrative = validateIllusionNarrative(script, visual);
+      if (!narrative.ok) {
+        result = narrative;
+        break;
+      }
+      const rank = (level: ValidationLevel) =>
+        ({auto_validated: 0, partial: 1, pending_review: 2, failed: 3})[level];
+      const level =
+        rank(visualResult.level) >= rank(narrative.level)
+          ? visualResult.level
+          : narrative.level;
+      // Cap: illusion nunca sube a auto_validated.
+      const capped: ValidationLevel =
+        level === 'auto_validated' ? 'partial' : level;
+      result = {
+        level: capped,
+        ok: capped !== 'failed',
+        errors: [],
+        warnings: [...visualResult.warnings, ...narrative.warnings],
+        details: {...visualResult.details, ...narrative.details},
+      };
       break;
+    }
     case 'memory': {
       const visualResult = validateMemoryChallenge(visual);
       if (!visualResult.ok) {

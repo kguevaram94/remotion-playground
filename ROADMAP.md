@@ -7,7 +7,7 @@ Protocolo: `AGENTS.md` (ChatGPT planifica/revisa · Cursor implementa · GitHub 
 ## Prioridad actual
 
 1. **P5 pulido logic-lateral** — `accepted` (2026-10-19). `T-POLISH-001` + `T-QC-LOUDNORM-001` `accepted` (limitación audiovisual documentada en `tasks/approvals.md`).
-2. **P6 / `T-MULTIFORMAT-001`:** A+B `accepted`; entrega **C** (memory) `review_required` (2026-10-19); D y P6 siguen `proposed`. Alternativas: P7 (Studio) o P8 (`blocked`).
+2. **P6 / `T-MULTIFORMAT-001`:** A+B+C `accepted`; entrega **D** (illusion) `review_required`; P6 sigue `proposed`. Alternativas: P7 (Studio) o P8 (`blocked`).
 3. P3: `accepted` (2026-10-19, informe de revisión).
 4. P4: `accepted` (2026-10-19, evidencia CI run 39237385007).
 
@@ -55,12 +55,12 @@ Tras `accepted` P5 — propuesta registrada en `proposed` hasta autorización hu
 | --- | --- |
 | ID | `T-MULTIFORMAT-001` |
 | Fase | P6 |
-| Estado | P6 `proposed` · A+B `accepted` · C `review_required` · D `proposed` |
-| Objetivo | Contrato (A); math (B); memory (C); illusion (D) si se aprueba, sin alterar beat logic-lateral |
-| Depende de | P1, P2, P5, A+B `accepted` |
-| Gate | C en revisión humana. D y cierre P6 requieren nuevo `approved` |
-| Entregas | A+B `accepted` · C memory `review_required` · D illusion (`proposed`) |
-| Nota A/B | Comprobaciones = validate only (no render / no inspección AV). Fixture math ≠ cobertura exhaustiva de casos límite. Narrativa memory/illusion pendiente C–D |
+| Estado | P6 `proposed` · A+B+C `accepted` · D `review_required` |
+| Objetivo | Contrato (A); math (B); memory (C); illusion (D), sin alterar beats logic-lateral / math / memory |
+| Depende de | P1, P2, P5, A+B+C `accepted` |
+| Gate | D en revisión humana. Cierre P6 requiere `accepted` de D + decisión explícita |
+| Entregas | A+B+C `accepted` · D illusion (`review_required`) |
+| Nota A/B/C | Comprobaciones = validate only (no render / no inspección AV). Fixtures ≠ cobertura exhaustiva de casos límite. Narrativa illusion pendiente (D) |
 | Nota P5 | Aceptación con limitación audiovisual documentada (sin MP4 no-mock auditado) |
 
 ## Fuera de alcance (hasta nueva decisión)

@@ -1,0 +1,134 @@
+{
+  "id": "mi-reto-illusion",
+  "title": "TÍTULO DEL RETO ILUSION — edita y pasa con --input",
+  "language": "es",
+  "niche": "optical-illusion",
+  "format": "optical-illusion",
+  "family": "illusion",
+  "targetDurationSeconds": 28,
+  "aspectRatio": "9:16",
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "hook": "¿Cuál de estas dos líneas es más larga?",
+  "narration": "Concatenación de las narraciones de cada escena (el pipeline también las une).",
+  "scenes": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSeconds": 3,
+      "narration": "¿Cuál de estas dos líneas horizontales es más larga?",
+      "onScreenText": "ILUSIÓN\n¿CUÁL ES MÁS LARGA?",
+      "subtitleText": "¿Cuál línea es más larga?",
+      "transition": "fade",
+      "visual": {
+        "template": "hook",
+        "badge": "ILUSIÓN",
+        "emphasis": "Müller-Lyer"
+      }
+    },
+    {
+      "id": "puzzle",
+      "type": "puzzle",
+      "durationSeconds": 4,
+      "narration": "Confía en tus ojos… o no. Observa las flechas.",
+      "onScreenText": "OBSERVA",
+      "subtitleText": "Observa con atención",
+      "transition": "zoom",
+      "visual": {
+        "template": "optical-illusion",
+        "illusionType": "mueller-lyer",
+        "shapes": [
+          {"id": "a", "kind": "line", "x": 0.2, "y": 0.35, "size": 0.6, "rotation": 0, "color": "#f8fafc"},
+          {"id": "b", "kind": "line", "x": 0.2, "y": 0.55, "size": 0.6, "rotation": 0, "color": "#f8fafc"},
+          {"id": "a1", "kind": "arrow", "x": 0.2, "y": 0.35, "size": 0.08, "rotation": -45, "color": "#38bdf8"},
+          {"id": "a2", "kind": "arrow", "x": 0.8, "y": 0.35, "size": 0.08, "rotation": 225, "color": "#38bdf8"},
+          {"id": "b1", "kind": "arrow", "x": 0.2, "y": 0.55, "size": 0.08, "rotation": 45, "color": "#fbbf24"},
+          {"id": "b2", "kind": "arrow", "x": 0.8, "y": 0.55, "size": 0.08, "rotation": 135, "color": "#fbbf24"}
+        ],
+        "showGuides": false,
+        "compareMode": false
+      }
+    },
+    {
+      "id": "countdown",
+      "type": "countdown",
+      "durationSeconds": 3,
+      "narration": "Decide ahora.",
+      "onScreenText": "DECIDE",
+      "subtitleText": "Decide",
+      "transition": "none",
+      "visual": {
+        "template": "countdown",
+        "seconds": 3,
+        "label": "Decide"
+      }
+    },
+    {
+      "id": "explanation",
+      "type": "explanation",
+      "durationSeconds": 3.5,
+      "narration": "Las flechas cambian cómo percibes la longitud. Vamos a medir.",
+      "onScreenText": "LAS FLECHAS ENGAÑAN",
+      "subtitleText": "Las flechas engañan",
+      "transition": "fade",
+      "visual": {
+        "template": "text",
+        "headline": "LAS FLECHAS ENGAÑAN",
+        "body": "Misma geometría, distinta percepción"
+      }
+    },
+    {
+      "id": "reveal",
+      "type": "reveal",
+      "durationSeconds": 4.5,
+      "narration": "Miden exactamente lo mismo. Las guías verticales alinean los extremos: misma longitud.",
+      "onScreenText": "¡IGUALES!",
+      "subtitleText": "Las dos miden lo mismo",
+      "transition": "fade",
+      "visual": {
+        "template": "optical-illusion",
+        "illusionType": "mueller-lyer",
+        "shapes": [
+          {"id": "a", "kind": "line", "x": 0.2, "y": 0.35, "size": 0.6, "rotation": 0, "color": "#34d399"},
+          {"id": "b", "kind": "line", "x": 0.2, "y": 0.55, "size": 0.6, "rotation": 0, "color": "#34d399"}
+        ],
+        "showGuides": true,
+        "compareMode": true
+      }
+    },
+    {
+      "id": "outro",
+      "type": "outro",
+      "durationSeconds": 3,
+      "narration": "¿Te engañó la ilusión? Cuéntalo en los comentarios.",
+      "onScreenText": "¿TE ENGAÑÓ?",
+      "subtitleText": "Comenta si te engañó",
+      "transition": "fade",
+      "visual": {
+        "template": "text",
+        "headline": "¿TE ENGAÑÓ?",
+        "body": "Cuéntalo en los comentarios",
+        "accent": "Deja tu respuesta abajo ↓"
+      }
+    }
+  ],
+  "solution": {
+    "summary": "Ambas líneas tienen la misma longitud.",
+    "explanation": "En la ilusión de Müller-Lyer, las flechas alteran la percepción aunque las longitudes geométricas sean idénticas (size=0.6 en ambas).",
+    "answerKey": {
+      "type": "mueller-lyer",
+      "lengthsEqual": true,
+      "size": 0.6
+    },
+    "validationStatus": "partial"
+  },
+  "callToAction": "¿Te engañó? Cuéntalo en los comentarios.",
+  "sources": [
+    "Plantilla oficial familia illusion (T-MULTIFORMAT-001 entrega D)."
+  ],
+  "createdAt": "2026-10-19T17:30:00.000Z",
+  "schemaVersion": 1
+}

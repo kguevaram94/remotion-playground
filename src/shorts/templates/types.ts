@@ -19,8 +19,7 @@ export type FamilyBeatSpec = {
   common: CommonBeatRules;
   /**
    * Secuencia ordenada oficial de la familia.
-   * Solo logic-lateral la define en entrega A; math/memory/illusion
-   * la añadirán cuando se aprueben B/C/D.
+   * Hoy: logic-lateral, math, memory, illusion (entregas A–D).
    */
   exactSequence?: readonly SceneType[];
   /**
@@ -41,7 +40,7 @@ export type TemplateBuildOptions = {
 /**
  * Contrato de familia de plantilla (entrega A).
  * La generación por título sigue en `script-generator.ts` (evitar ciclos
- * registry ↔ select ↔ puzzle-validator). Pulido math/memory/illusion = B/C/D.
+ * registry ↔ select ↔ puzzle-validator). Familias math/memory/illusion = B/C/D.
  */
 export type TemplateFamily = {
   id: TemplateFamilyId;

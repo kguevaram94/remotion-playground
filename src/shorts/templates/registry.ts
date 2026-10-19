@@ -97,7 +97,14 @@ export const TEMPLATE_FAMILIES: Record<TemplateFamilyId, TemplateFamily> = {
     formats: ['optical-illusion'],
     beat: {
       common: COMMON_BEAT_RULES,
-      // exactSequence: pendiente entrega D
+      exactSequence: [
+        'hook',
+        'puzzle',
+        'countdown',
+        'explanation',
+        'reveal',
+        'outro',
+      ],
       preferCommentCta: true,
     },
     allowedVisualTemplates: [
@@ -106,6 +113,7 @@ export const TEMPLATE_FAMILIES: Record<TemplateFamilyId, TemplateFamily> = {
       'hook',
       'text',
     ],
+    referenceTemplatePath: 'data/templates/script-illusion.json',
   },
   'find-different': {
     id: 'find-different',
