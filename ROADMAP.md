@@ -6,7 +6,7 @@ Protocolo: `AGENTS.md` (ChatGPT planifica/revisa · Cursor implementa · GitHub 
 
 ## Prioridad actual
 
-1. **P5 pulido logic-lateral** — `T-POLISH-001` en `review_required` (espera aceptación humana).
+1. **P5 pulido logic-lateral** — `T-POLISH-001` en `review_required` (espera aceptación humana). `T-QC-LOUDNORM-001` = `accepted` (2026-10-19).
 2. Solo después de `accepted` P5: P6 (más formatos), P7 (Studio), P8 (publicación) según decisión humana.
 3. P3: `accepted` (2026-10-19, informe de revisión).
 4. P4: `accepted` (2026-10-19, evidencia CI run 39237385007).
@@ -49,7 +49,7 @@ P0 ──► P1 ──► P5 ──► P8 (futuro / blocked)
 
 ## Primera propuesta de siguiente trabajo
 
-Tras aceptar P3/P4 — **alcance definitivo** en `tasks/approvals.md` (`T-POLISH-001`); aún `proposed`:
+Pendiente humano (sin cambiar estados aquí):
 
 | Campo | Valor |
 | --- | --- |
@@ -58,8 +58,9 @@ Tras aceptar P3/P4 — **alcance definitivo** en `tasks/approvals.md` (`T-POLISH
 | Estado | `review_required` (implementado; gates SFX=A, BGM=B, thumb=A, loudnorm=B) |
 | Objetivo | Calidad de producción del short logic-lateral de referencia |
 | Alcance | SFX procedural; BGM 3–8 pistas con licencia verificable; thumbnail Satori; loudnorm de narración usado en el MP4 |
+| Relacionado | `T-QC-LOUDNORM-001` (`accepted` 2026-10-19): gate QC loudnorm + `publishEligibility` |
 | Fuera de alcance | Nuevos formatos; mix loudnorm integral; YouTube upload; packs SFX; deps/pago sin OK |
-| Gate | Requiere `approved` del alcance definitivo en `tasks/approvals.md` o OK explícito en Cursor |
+| Gate | Aceptación humana de `T-POLISH-001` / P5; siguiente tarea en `proposed` hasta nuevo `approved` |
 
 ## Fuera de alcance (hasta nueva decisión)
 

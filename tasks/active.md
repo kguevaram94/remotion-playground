@@ -13,9 +13,11 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 ## Estado de aprobación
 
-`review_required`
+`accepted`
 
-> Gate loudnorm + publishEligibility implementado. Esperando revisión humana. **No** marcar `accepted` el agente.
+> Aceptado por humano en chat Cursor 2026-10-19 tras auditoría final (7/7 PASS).  
+> **Sin** tarea de implementación `in_progress`. Siguiente trabajo: espera autorización humana.  
+> `T-POLISH-001` permanece en `review_required` (sin cambio).
 
 ## Objetivo
 
@@ -32,9 +34,9 @@ Definir y aplicar el gate de calidad de loudnorm: bloquear el QC técnico cuando
 
 ## Fuera de alcance
 
-Respetado: sin pago/YouTube/deps/beat/formatos/commit/push/merge/`accepted` automático.
+Respetado: sin pago/YouTube/deps/beat/formatos/commit/push/merge.
 
-## Archivos afectados previstos
+## Archivos afectados
 
 - `src/shorts/pipeline/quality-check.ts`
 - `tests/unit/quality-check.test.ts`
@@ -56,24 +58,18 @@ Respetado: sin pago/YouTube/deps/beat/formatos/commit/push/merge/`accepted` auto
 - [x] Sin migración automática; docs de revalidación de jobs antiguos.
 - [x] Tests de propuesta + mock nunca elegible + bloqueo voz real.
 - [x] `npm test` y `npm run typecheck` OK.
-- [ ] Revisión humana; **no** `accepted` automático.
+- [x] Revisión humana + auditoría final 7/7 PASS → `accepted` 2026-10-19.
 
-## Pruebas que deben ejecutarse
+## Pruebas ejecutadas
 
 ```bash
-npm test
-npm run typecheck
+npm test      # 16 files / 72 tests passed
+npm run typecheck  # OK
 ```
 
-Ejecutados: **16 files / 72 tests OK**, typecheck OK.
+## Notas de cierre
 
-## Riesgos y cuestiones pendientes
-
-- Jobs antiguos `completed` sin provenance válida no se reevalúan solos (documentado).
-- `mode=post` / `--mode voice` para revalidar.
-
-## Notas de progreso
-
-- Git pre-flight: `main` limpio, sync con `origin/main` (`a4001a7`).
-- Implementación: `applyNarrationLoudnormGate` + `computePublishEligibility` + `report.publishEligibility`.
-- Entrega en `review_required`.
+- Gate loudnorm + `publishEligibility` aceptado.
+- Provenance P5 intacta; BGM vacío no bloquea.
+- Pendiente humano (sin cambiar aquí): `T-POLISH-001` / P5 en `review_required`.
+- Siguiente tarea: `proposed` hasta nuevo `approved`.

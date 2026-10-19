@@ -28,7 +28,7 @@ Código terminado ≠ `accepted`.
 | P2 | Validadores | `accepted` | `puzzle-validator.ts`, `tests/unit/puzzle-validator.test.ts` | legado | 2026-Q1 |
 | P3 | Gobernanza ChatGPT+Cursor+GitHub | `accepted` | `AGENTS.md`, `ROADMAP.md`, `tasks/*`, `.cursor/rules/governance.mdc`, `.cursor/rules/shorts.mdc`, `docs/DECISIONS.md` D007–D008; informe de revisión `T-GOV-001` | humano (chat Cursor: aceptación explícita con base en informe) | 2026-10-19 |
 | P4 | CI GitHub Actions | `accepted` | `.github/workflows/ci.yml`; run [39237385007](https://github.com/kguevaram94/remotion-playground/actions/runs/39237385007) en commit `fd74e44abe169808faf90132ce52960df33dd7ef` (success: `npm ci`, `npm run typecheck`, `npm test`) | humano (chat Cursor: aceptación explícita con evidencia CI) | 2026-10-19 |
-| P5 | Pulido logic-lateral | `review_required` | `T-POLISH-001` implementado; ver evidencias abajo. BGM curado=0 pistas (limitación doc.) | aprobado inicio: humano 2026-10-19; aceptación pendiente | 2026-10-19 |
+| P5 | Pulido logic-lateral | `review_required` | `T-POLISH-001` en `review_required`; `T-QC-LOUDNORM-001` `accepted` (2026-10-19). BGM curado=0 pistas | P5 aceptación pendiente (Polish); QC gate aceptado | 2026-10-19 |
 | P6 | Más familias plantilla | `proposed` | Depende P1/P2 + decisión de alcance | — | — |
 | P7 | Studio/preview estable | `proposed` | Depende P0 | — | — |
 | P8 | Publicación YouTube | `blocked` | Descartado por ahora (`ROADMAP` / D-future) | — | — |
@@ -40,7 +40,7 @@ Código terminado ≠ `accepted`.
 | `T-GOV-001` | P3 | Protocolo colaboración + docs gobernanza | `accepted` | Aceptado 2026-10-19 con base en el informe de revisión |
 | `T-CI-001` | P4 | CI test + typecheck | `accepted` | Aceptado 2026-10-19 con evidencia CI run 39237385007 (commit `fd74e44`) |
 | `T-POLISH-001` | P5 | Pulido logic-lateral (SFX, BGM curada, thumb Satori, loudnorm narración→MP4) | `review_required` | Remediación loudnorm QC (provenance) incluida; espera `accepted` humano. Sin commit/push |
-| `T-QC-LOUDNORM-001` | P5 | Gate QC loudnorm + publishEligibility | `review_required` | Implementado 2026-10-19; espera `accepted` humano. Sin commit/push |
+| `T-QC-LOUDNORM-001` | P5 | Gate QC loudnorm + publishEligibility | `accepted` | Aceptado 2026-10-19 (auditoría final 7/7 PASS; 72 tests; typecheck OK) |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -58,10 +58,12 @@ Código terminado ≠ `accepted`.
 
 ## Tarea activa / alcance aprobado
 
-### `T-QC-LOUDNORM-001` · P5 · `review_required`
+> Sin implementación `in_progress`. `T-QC-LOUDNORM-001` = `accepted`. `T-POLISH-001` = `review_required` (sin cambio). Siguiente tarea: espera `approved` humano.
 
-Estado: **`review_required`** (humano autorizó alcance 2026-10-19; implementación lista).  
-Código terminado ≠ `accepted`. `T-POLISH-001` permanece en `review_required`.
+### `T-QC-LOUDNORM-001` · P5 · `accepted`
+
+Estado: **`accepted`** (humano, chat Cursor 2026-10-19, tras auditoría final).  
+`T-POLISH-001` permanece en `review_required` (sin cambio en esta aceptación).
 
 #### Objetivo
 
@@ -82,11 +84,17 @@ Bloquear el QC técnico cuando voz real falla el gate obligatorio de loudnorm; a
 - **Tests:** `tests/unit/quality-check.test.ts` (blocking voz real, mock no elegible, verified elegible, provenance ausente/raw).
 - **Docs:** D010; `generar-short.md` (QC vs elegibilidad + revalidación); `tooling.md`; `troubleshooting.md`.
 - **Comandos:** `npm test` → 16 files / **72** tests passed · `npm run typecheck` OK.
-- **Estado:** `review_required` (no `accepted`). Sin commit/push/merge. Sin servicios de pago.
+
+#### Evidencias de aceptación (2026-10-19)
+
+- Auditoría final solo lectura: **7/7 criterios PASS**.
+- `npm test`: 16 archivos / 72 tests; `npm run typecheck`: OK.
+- Fallo loudnorm (voz real) bloquea QC técnico; mock puede pasar QC pero nunca es elegible; provenance P5 intacta; BGM vacío no bloquea.
+- Aceptado por: humano (chat Cursor). Sin commit/push/merge en la aceptación documental.
 
 #### Estado de aprobación
 
-`review_required` — entrega 2026-10-19. Esperando `accepted` humano.
+`accepted` — 2026-10-19.
 
 ---
 

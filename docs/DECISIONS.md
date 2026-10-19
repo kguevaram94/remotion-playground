@@ -75,6 +75,7 @@ Formato: fecha · decisión · contexto · alternativa · consecuencia.
 - **Decisión (`T-QC-LOUDNORM-001`):** Con voz real, loudnorm `failed` / `unverified` / no normalizado es **blocking** del QC técnico (`report.ok=false`, fase `quality_check` failed). `mock_omitted` puede pasar el QC técnico si no hay otros bloqueos. `report.publishEligibility` (`eligible` + `reasons`) es un gate automático distinto: mock **nunca** elegible; voz real solo con loudnorm verificado + QC técnico OK. Catálogo BGM vacío sigue siendo warning (no bloquea QC ni elegibilidad por defecto).
 - **Alternativas descartadas:** Tratar fallo loudnorm solo como warning; igualar `report.ok` con “publicable”; migrar automáticamente jobs antiguos `completed`.
 - **Consecuencia:** Existencia de `video.mp4` ≠ publicable. `eligible=true` = controles automáticos definidos; **no** es validación audiovisual humana ni inspección del audio del contenedor MP4. Jobs antiguos sin provenance válida se revalidan a mano (ver `docs/generar-short.md` / troubleshooting).
+- **Aceptación:** `T-QC-LOUDNORM-001` → `accepted` 2026-10-19 (humano, chat Cursor; auditoría final 7/7 PASS). `T-POLISH-001` / P5 siguen en `review_required`.
 
 ---
 
