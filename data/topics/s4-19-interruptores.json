@@ -1,0 +1,133 @@
+{
+  "id": "s4-19-interruptores",
+  "title": "Tres interruptores y una bombilla: ¿cuál la enciende?",
+  "language": "es",
+  "niche": "logic",
+  "format": "logic-puzzle",
+  "targetDurationSeconds": 32,
+  "aspectRatio": "9:16",
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "hook": "Tienes tres interruptores y una bombilla en otra habitación. Solo puedes entrar una vez. ¿Cómo sabes cuál la enciende?",
+  "narration": "Tienes tres interruptores y una bombilla en otra habitación. Solo puedes entrar una vez. ¿Cuál la enciende? Puedes tocar los interruptores todas las veces que quieras, pero no ver la bombilla hasta entrar. Piénsalo. Tienes cinco segundos para encontrar una solución. Primero, enciende el interruptor A y déjalo así unos minutos. Después, apágalo y enciende el interruptor B. Ahora entra. Si la bombilla está encendida, es B. Si está apagada pero caliente, es A. Si está apagada y fría, es C. El truco es usar el calor como una pista adicional. ¿Lo habías resuelto? Cuéntalo en los comentarios.",
+  "scenes": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSeconds": 4,
+      "narration": "Tienes tres interruptores y una bombilla en otra habitación. Solo puedes entrar una vez. ¿Cuál la enciende?",
+      "onScreenText": "3 INTERRUPTORES\n1 BOMBILLA\n1 SOLA ENTRADA",
+      "subtitleText": "3 interruptores, 1 bombilla, 1 entrada",
+      "transition": "zoom",
+      "visual": {
+        "template": "logic-room",
+        "switches": ["A", "B", "C"],
+        "bulb": "off",
+        "layout": "split-room",
+        "showRuleCards": false
+      }
+    },
+    {
+      "id": "rules",
+      "type": "instruction",
+      "durationSeconds": 5,
+      "narration": "Puedes tocar los interruptores todas las veces que quieras, pero no ver la bombilla hasta entrar.",
+      "onScreenText": "Puedes usar los interruptores\nNo puedes ver la bombilla",
+      "subtitleText": "Interruptores sí, bombilla no",
+      "transition": "slide-up",
+      "visual": {
+        "template": "logic-room",
+        "switches": ["A", "B", "C"],
+        "bulb": "hidden",
+        "layout": "split-room",
+        "showRuleCards": true
+      }
+    },
+    {
+      "id": "think",
+      "type": "countdown",
+      "durationSeconds": 5,
+      "narration": "Piénsalo. Tienes cinco segundos para encontrar una solución.",
+      "onScreenText": "¿CUÁL ES EL TRUCO?",
+      "subtitleText": "Cuenta atrás",
+      "transition": "none",
+      "visual": {
+        "template": "countdown",
+        "seconds": 5,
+        "label": "¿Cuál es el truco?",
+        "background": "logic-room"
+      }
+    },
+    {
+      "id": "step1",
+      "type": "explanation",
+      "durationSeconds": 6,
+      "narration": "Primero, enciende el interruptor A y déjalo así unos minutos. Después, apágalo y enciende el interruptor B.",
+      "onScreenText": "1. A ENCENDIDO\n2. A APAGADO\n3. B ENCENDIDO",
+      "subtitleText": "Primero A, luego B",
+      "transition": "fade",
+      "visual": {
+        "template": "switch-sequence",
+        "steps": [
+          {"switch": "A", "state": "on"},
+          {"switch": "A", "state": "off"},
+          {"switch": "B", "state": "on"}
+        ]
+      }
+    },
+    {
+      "id": "reveal",
+      "type": "reveal",
+      "durationSeconds": 8,
+      "narration": "Ahora entra. Si la bombilla está encendida, es B. Si está apagada pero caliente, es A. Si está apagada y fría, es C.",
+      "onScreenText": "ENCENDIDA = B\nAPAGADA Y CALIENTE = A\nAPAGADA Y FRÍA = C",
+      "subtitleText": "Tres estados, tres respuestas",
+      "transition": "fade",
+      "visual": {
+        "template": "bulb-state-reveal",
+        "states": [
+          {"state": "on", "answer": "B"},
+          {"state": "off-warm", "answer": "A"},
+          {"state": "off-cold", "answer": "C"}
+        ]
+      }
+    },
+    {
+      "id": "outro",
+      "type": "outro",
+      "durationSeconds": 5,
+      "narration": "El truco es usar el calor como una pista adicional. ¿Lo habías resuelto? Cuéntalo en los comentarios.",
+      "onScreenText": "¿LO RESOLVISTE?",
+      "subtitleText": "Comenta tu método",
+      "transition": "fade",
+      "visual": {
+        "template": "text",
+        "headline": "¿LO RESOLVISTE?",
+        "body": "Cuéntalo en los comentarios",
+        "accent": "Deja tu método abajo ↓"
+      }
+    }
+  ],
+  "solution": {
+    "summary": "A calienta, B enciende, C queda fría: tres estados con una sola entrada.",
+    "explanation": "Enciende el interruptor A durante unos minutos. Apágalo y enciende el B. Entra: encendida = B; apagada-caliente = A; apagada-fría = C. Presupone una bombilla que se calienta lo suficiente.",
+    "answerKey": {
+      "type": "three-switches",
+      "mapping": {
+        "on": "B",
+        "off-warm": "A",
+        "off-cold": "C"
+      }
+    },
+    "validationStatus": "partial"
+  },
+  "callToAction": "¿Lo habías resuelto? Escribe tu método en comentarios.",
+  "sources": [
+    "Acertijo clásico de los tres interruptores (estados encendida / caliente / fría)."
+  ],
+  "createdAt": "2026-10-18T10:12:00.000Z",
+  "schemaVersion": 1
+}

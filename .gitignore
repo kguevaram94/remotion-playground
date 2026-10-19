@@ -5,3 +5,15 @@ dist
 
 # Ignore the output video from Git but not videos you import into src/.
 out
+output/**
+!output/.gitkeep
+
+# Vitest / temp
+coverage
+*.tmp
+
+# Audio de trabajos copiado para Remotion staticFile
+public/shorts/
+
+# Muestras locales de voces (regenerables)
+output/voice-samples/

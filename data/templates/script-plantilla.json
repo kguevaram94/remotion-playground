@@ -1,0 +1,359 @@
+{
+  "id": "mi-reto",
+  "title": "TÍTULO DEL ACERTIJO AQUÍ — edita este JSON y pásalo con --input",
+  "language": "es",
+  "niche": "logic",
+  "format": "logic-puzzle",
+  "targetDurationSeconds": 32.40384615384615,
+  "aspectRatio": "9:16",
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "hook": "Hook corto",
+  "narration": "Nueve puntos. ¿Puedes unirlos todos con solo cuatro líneas rectas, sin levantar el lápiz? Reglas: líneas rectas, trazo continuo, debes pasar por los nueve puntos. Aquí tienes la cuadrícula. Piensa con calma. Tienes unos segundos. ¿Ya lo tienes? La clave es salir del cuadrado imaginario. Así se conectan los nueve puntos en cuatro trazos. Asumimos un borde que no existe. Al extender las líneas fuera de la cuadrícula, el trazo es posible. ¿Lo resolviste antes de la revelación? Cuéntalo en comentarios.",
+  "scenes": [
+    {
+      "id": "hook",
+      "narration": "Nueve puntos. ¿Puedes unirlos todos con solo cuatro líneas rectas, sin levantar el lápiz?",
+      "onScreenText": "9 puntos · 4 líneas",
+      "durationSeconds": 4.147692307692308,
+      "transition": "fade",
+      "subtitleText": "¿Puedes unir 9 puntos con 4 líneas?",
+      "type": "hook",
+      "visual": {
+        "template": "hook",
+        "badge": "RETO VISUAL",
+        "emphasis": "4 líneas · sin levantar el lápiz"
+      }
+    },
+    {
+      "id": "instruction",
+      "narration": "Reglas: líneas rectas, trazo continuo, debes pasar por los nueve puntos.",
+      "onScreenText": "Rectas · continuo · 9 puntos",
+      "durationSeconds": 3.888461538461539,
+      "transition": "slide-up",
+      "subtitleText": "Líneas rectas y trazo continuo",
+      "type": "instruction",
+      "visual": {
+        "template": "text",
+        "headline": "Reglas",
+        "body": "1) Solo líneas rectas\n2) Sin levantar el lápiz\n3) Pasa por los 9 puntos"
+      }
+    },
+    {
+      "id": "puzzle",
+      "narration": "Aquí tienes la cuadrícula. Piensa con calma.",
+      "onScreenText": "¿Cuál es tu trazo?",
+      "durationSeconds": 3.2403846153846154,
+      "transition": "zoom",
+      "subtitleText": "Observa la cuadrícula",
+      "type": "puzzle",
+      "visual": {
+        "template": "logic-puzzle",
+        "variant": "nine-dots",
+        "dots": [
+          {
+            "id": "d00",
+            "x": 0.25,
+            "y": 0.25
+          },
+          {
+            "id": "d01",
+            "x": 0.5,
+            "y": 0.25
+          },
+          {
+            "id": "d02",
+            "x": 0.75,
+            "y": 0.25
+          },
+          {
+            "id": "d10",
+            "x": 0.25,
+            "y": 0.5
+          },
+          {
+            "id": "d11",
+            "x": 0.5,
+            "y": 0.5
+          },
+          {
+            "id": "d12",
+            "x": 0.75,
+            "y": 0.5
+          },
+          {
+            "id": "d20",
+            "x": 0.25,
+            "y": 0.75
+          },
+          {
+            "id": "d21",
+            "x": 0.5,
+            "y": 0.75
+          },
+          {
+            "id": "d22",
+            "x": 0.75,
+            "y": 0.75
+          }
+        ],
+        "lines": [],
+        "objects": [],
+        "revealProgress": 0
+      }
+    },
+    {
+      "id": "countdown",
+      "narration": "Tienes unos segundos. ¿Ya lo tienes?",
+      "onScreenText": "Resuelve",
+      "durationSeconds": 6.480769230769231,
+      "transition": "none",
+      "subtitleText": "Cuenta atrás",
+      "type": "countdown",
+      "visual": {
+        "template": "countdown",
+        "seconds": 5,
+        "label": "Resuelve"
+      }
+    },
+    {
+      "id": "reveal",
+      "narration": "La clave es salir del cuadrado imaginario. Así se conectan los nueve puntos en cuatro trazos.",
+      "onScreenText": "¡Sal del cuadrado!",
+      "durationSeconds": 7.128846153846147,
+      "transition": "fade",
+      "subtitleText": "Hay que salir del cuadrado",
+      "type": "reveal",
+      "visual": {
+        "template": "logic-puzzle",
+        "variant": "nine-dots",
+        "dots": [
+          {
+            "id": "d00",
+            "x": 0.25,
+            "y": 0.25
+          },
+          {
+            "id": "d01",
+            "x": 0.5,
+            "y": 0.25
+          },
+          {
+            "id": "d02",
+            "x": 0.75,
+            "y": 0.25
+          },
+          {
+            "id": "d10",
+            "x": 0.25,
+            "y": 0.5
+          },
+          {
+            "id": "d11",
+            "x": 0.5,
+            "y": 0.5
+          },
+          {
+            "id": "d12",
+            "x": 0.75,
+            "y": 0.5
+          },
+          {
+            "id": "d20",
+            "x": 0.25,
+            "y": 0.75
+          },
+          {
+            "id": "d21",
+            "x": 0.5,
+            "y": 0.75
+          },
+          {
+            "id": "d22",
+            "x": 0.75,
+            "y": 0.75
+          }
+        ],
+        "lines": [
+          {
+            "from": [
+              0.25,
+              0.75
+            ],
+            "to": [
+              1,
+              0.75
+            ]
+          },
+          {
+            "from": [
+              1,
+              0.75
+            ],
+            "to": [
+              0.25,
+              0
+            ]
+          },
+          {
+            "from": [
+              0.25,
+              0
+            ],
+            "to": [
+              0.25,
+              0.75
+            ]
+          },
+          {
+            "from": [
+              0.25,
+              0.75
+            ],
+            "to": [
+              0.75,
+              0.25
+            ]
+          }
+        ],
+        "objects": [],
+        "revealProgress": 1
+      }
+    },
+    {
+      "id": "explanation",
+      "narration": "Asumimos un borde que no existe. Al extender las líneas fuera de la cuadrícula, el trazo es posible.",
+      "onScreenText": "El borde era imaginario",
+      "durationSeconds": 4.536538461538462,
+      "transition": "slide-up",
+      "subtitleText": "El borde no existía",
+      "type": "explanation",
+      "visual": {
+        "template": "text",
+        "headline": "Por qué funciona",
+        "body": "Las restricciones extras que inventamos bloquean la solución.",
+        "accent": "Piensa fuera de la caja"
+      }
+    },
+    {
+      "id": "outro",
+      "narration": "¿Lo resolviste antes de la revelación? Cuéntalo en comentarios.",
+      "onScreenText": "¿Lo lograste?",
+      "durationSeconds": 2.981153846153846,
+      "transition": "fade",
+      "subtitleText": "Comenta si lo resolviste",
+      "type": "outro",
+      "visual": {
+        "template": "text",
+        "headline": "¿Lo resolviste?",
+        "body": "Comenta tu tiempo o tu trazo"
+      }
+    }
+  ],
+  "solution": {
+    "summary": "Cuatro líneas que salen del cuadrado imaginario cubren los 9 puntos.",
+    "explanation": "El trazo continuo empieza en la fila inferior, se extiende fuera de la cuadrícula, atraviesa diagonales y columnas extendidas, y cubre los nueve puntos sin levantar el lápiz.",
+    "answerKey": {
+      "type": "nine-dots",
+      "lines": [
+        {
+          "from": [
+            0.25,
+            0.75
+          ],
+          "to": [
+            1,
+            0.75
+          ]
+        },
+        {
+          "from": [
+            1,
+            0.75
+          ],
+          "to": [
+            0.25,
+            0
+          ]
+        },
+        {
+          "from": [
+            0.25,
+            0
+          ],
+          "to": [
+            0.25,
+            0.75
+          ]
+        },
+        {
+          "from": [
+            0.25,
+            0.75
+          ],
+          "to": [
+            0.75,
+            0.25
+          ]
+        }
+      ],
+      "dots": [
+        {
+          "id": "d00",
+          "x": 0.25,
+          "y": 0.25
+        },
+        {
+          "id": "d01",
+          "x": 0.5,
+          "y": 0.25
+        },
+        {
+          "id": "d02",
+          "x": 0.75,
+          "y": 0.25
+        },
+        {
+          "id": "d10",
+          "x": 0.25,
+          "y": 0.5
+        },
+        {
+          "id": "d11",
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "id": "d12",
+          "x": 0.75,
+          "y": 0.5
+        },
+        {
+          "id": "d20",
+          "x": 0.25,
+          "y": 0.75
+        },
+        {
+          "id": "d21",
+          "x": 0.5,
+          "y": 0.75
+        },
+        {
+          "id": "d22",
+          "x": 0.75,
+          "y": 0.75
+        }
+      ]
+    },
+    "validationStatus": "auto_validated"
+  },
+  "callToAction": "Comenta tu respuesta",
+  "sources": [
+    "Acertijo clásico de los 9 puntos (think outside the box). Solución geométrica verificada en código."
+  ],
+  "createdAt": "2026-10-18T10:01:29.195Z",
+  "schemaVersion": 1
+}

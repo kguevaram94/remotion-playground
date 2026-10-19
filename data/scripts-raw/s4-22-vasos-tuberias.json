@@ -1,0 +1,128 @@
+{
+  "id": "s4-22-vasos-tuberias",
+  "title": "¿Qué vaso se llenará primero?",
+  "niche": "logica-pensamiento-lateral",
+  "format": "logic-puzzle",
+  "language": "es-ES",
+  "targetDurationSeconds": 32,
+  "aspectRatio": "9:16",
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "fps": 30,
+  "hook": "El agua empieza a caer por este sistema de tuberías. ¿Qué vaso se llenará primero?",
+  "solution": "No se puede determinar solo con el título: depende de qué tuberías estén abiertas, bloqueadas y de las alturas y capacidades de los vasos. En esta versión, el diagrama debe definir una única ruta abierta hasta el vaso C; las otras rutas están bloqueadas. La respuesta es C.",
+  "callToAction": "Fíjate en las conexiones antes de elegir un vaso.",
+  "sources": [],
+  "validation": {
+    "status": "requires_template_geometry",
+    "method": "El render debe usar la configuración declarativa indicada: ruta hacia C abierta y rutas hacia A y B bloqueadas. Ejecutar una validación de conectividad antes de marcarlo como verificado.",
+    "assumptions": [
+      "El componente de tuberías debe representar visualmente los bloqueos sin ambigüedad.",
+      "El agua sigue únicamente rutas conectadas y abiertas."
+    ]
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSeconds": 4,
+      "narration": "El agua empieza a caer por este sistema de tuberías. ¿Qué vaso se llenará primero?",
+      "onScreenText": "¿A, B O C?",
+      "visual": {
+        "kind": "pipe-puzzle",
+        "source": "top-inlet",
+        "glasses": [
+          "A",
+          "B",
+          "C"
+        ],
+        "pipeLayout": "config-c",
+        "blockedEdges": [
+          "branch-to-A",
+          "branch-to-B"
+        ],
+        "openPath": [
+          "inlet-to-main",
+          "main-to-C"
+        ]
+      },
+      "transition": "quick-zoom"
+    },
+    {
+      "id": "rules",
+      "type": "instruction",
+      "durationSeconds": 4,
+      "narration": "Mira bien las uniones: una tubería bloqueada no deja pasar el agua.",
+      "onScreenText": "SIGUE LAS CONEXIONES",
+      "visual": {
+        "kind": "pipe-puzzle",
+        "highlightMode": "connections",
+        "showBlockedEnds": true
+      },
+      "transition": "slide"
+    },
+    {
+      "id": "think",
+      "type": "countdown",
+      "durationSeconds": 5,
+      "narration": "Tienes cinco segundos. ¿Qué vaso recibe el agua?",
+      "onScreenText": "5 SEGUNDOS",
+      "visual": {
+        "kind": "countdown",
+        "seconds": 5,
+        "background": "pipe-puzzle"
+      },
+      "transition": "hold"
+    },
+    {
+      "id": "trace",
+      "type": "explanation",
+      "durationSeconds": 7,
+      "narration": "Sigue la tubería desde la entrada. Las dos ramas laterales están bloqueadas, así que el agua no puede llegar a A ni a B.",
+      "onScreenText": "A: BLOQUEADA\\nB: BLOQUEADA",
+      "visual": {
+        "kind": "pipe-trace",
+        "highlightedPath": [
+          "inlet-to-main"
+        ],
+        "blockedEdges": [
+          "branch-to-A",
+          "branch-to-B"
+        ]
+      },
+      "transition": "path-draw"
+    },
+    {
+      "id": "reveal",
+      "type": "reveal",
+      "durationSeconds": 7,
+      "narration": "La única ruta abierta conduce al vaso C. Por eso, en este diseño, C se llena primero.",
+      "onScreenText": "RESPUESTA: VASO C",
+      "visual": {
+        "kind": "pipe-fill",
+        "glass": "C",
+        "fillFrom": 0,
+        "fillTo": 1,
+        "validatedPath": [
+          "inlet-to-main",
+          "main-to-C"
+        ]
+      },
+      "transition": "water-fill"
+    },
+    {
+      "id": "outro",
+      "type": "outro",
+      "durationSeconds": 5,
+      "narration": "En estos retos, no adivines: comprueba cada conexión antes de decidir.",
+      "onScreenText": "OBSERVA. SIGUE. RESUELVE.",
+      "visual": {
+        "kind": "answer-card",
+        "accent": "water-path"
+      },
+      "transition": "fade"
+    }
+  ]
+}

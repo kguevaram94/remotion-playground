@@ -1,44 +1,54 @@
-# Remotion Playground
+# Remotion Playground + fábrica de Shorts
 
-Repo de prueba para experimentar con [Remotion](https://www.remotion.dev/) y generar videos animados con React.
-
-## Requisitos
-
-- Node.js 18+ (probado con Node 26)
-- macOS 15+ recomendado por Remotion
+Playground Remotion y **fábrica automatizada de YouTube Shorts** (acertijos, lógica, ilusiones, memoria).
 
 ## Empezar
 
 ```bash
 npm install
-npm run dev
+cp .env.example .env   # OPENAI_API_KEY + VOICE_PROVIDER=openai-tts
+npm run sfx:generate
+
+# Formato oficial logic-lateral (recomendado):
+cp data/templates/script-logic-lateral.json data/topics/mi-reto.json
+# …edita id, title, narrations…
+npm run generar-short -- --input data/topics/mi-reto.json
 ```
 
-Eso abre **Remotion Studio** en el navegador: ahí previsualizas la composición, ajustas el timeline y renders.
+Salida en `output/<id>/video.mp4` (guion, voz, karaoke, música, SFX, thumbnail).
 
-## Renderizar un MP4
+Referencia: `output/s4-19-interruptores/video.mp4`. Procedimiento: [docs/generar-short.md](docs/generar-short.md).
+
+## Comandos
+
+| Comando | Descripción |
+| --- | --- |
+| `npm run generar-short -- --input data/templates/script-logic-lateral.json` | Short logic-lateral (recomendado) |
+| `npm run generar-short -- "título"` | Short desde título (detección de plantilla) |
+| `npm run generar-short -- --input data/topics/….json` | Desde topic o guion propio |
+| `npm run short -- "título"` | Pipeline completo (mismo motor) |
+| `npm run short:script -- "título"` | Solo guion |
+| `npm run short:render -- --id <id>` | Re-render |
+| `npm run short:voice -- --id <id>` | Regenerar voz + subtítulos + vídeo |
+| `npm run short:preview -- --id <id>` | Preview a menor resolución |
+| `npm run short:resume -- --id <id>` | Reanudar fases pendientes |
+| `npm run short:validate -- --id <id>` | Validar acertijo |
+| `npm run dev` | Remotion Studio |
+| `npm test` | Pruebas |
+| `npm run typecheck` | TypeScript |
+
+Docs: [generar-short](docs/generar-short.md) · [usage](docs/usage.md) · [architecture](docs/architecture.md) · [troubleshooting](docs/troubleshooting.md) · [AGENTS.md](AGENTS.md)
+
+## Composiciones Remotion
+
+| ID | Descripción |
+| --- | --- |
+| `HelloRemotion` | Demo 16:9 |
+| `ScriptVideo` | Infografía vertical existente |
+| `ShortVideo` | Shorts de acertijos (fábrica) |
+
+## FFmpeg (opcional, QC)
 
 ```bash
-npx remotion render HelloRemotion out/hello.mp4
+brew install ffmpeg
 ```
-
-El vídeo queda en `out/hello.mp4` (esa carpeta está en `.gitignore`).
-
-## Estructura
-
-- `src/Root.tsx` — registro de composiciones
-- `src/Composition.tsx` — composición demo `HelloRemotion` (texto + spring + órbita)
-- `public/` — assets estáticos (imágenes, audio, etc.)
-
-## Ideas para probar
-
-1. Cambiar colores / tipografía en `HelloRemotion`
-2. Añadir `Sequence` para escenas en serie
-3. Importar una imagen en `public/` y usarla con `<Img>`
-4. Renderizar a GIF o WebM con el CLI de Remotion
-
-## Docs útiles
-
-- [Fundamentos](https://www.remotion.dev/docs/the-fundamentals)
-- [Animar con `spring` / `interpolate`](https://www.remotion.dev/docs/animating-properties)
-- [CLI render](https://www.remotion.dev/docs/cli/render)

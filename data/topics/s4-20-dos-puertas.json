@@ -1,0 +1,130 @@
+{
+  "id": "s4-20-dos-puertas",
+  "title": "Dos puertas y dos guardianes: ¿qué pregunta debes hacer?",
+  "language": "es",
+  "niche": "logic",
+  "format": "logic-puzzle",
+  "targetDurationSeconds": 33,
+  "aspectRatio": "9:16",
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "hook": "Una puerta te lleva a la libertad y la otra a una trampa. Un guardián siempre dice la verdad y el otro siempre miente. Solo puedes hacer una pregunta.",
+  "narration": "Una puerta te lleva a la libertad y la otra a una trampa. Un guardián siempre dice la verdad y el otro siempre miente. Solo puedes hacer una pregunta. No sabes quién miente y quién dice la verdad, y solo puedes preguntar a uno. ¿Qué pregunta te permite elegir la puerta correcta? Piénsalo. Pregunta a cualquiera: ¿qué puerta me diría el otro guardián que lleva a la libertad? Los dos señalarán la puerta equivocada. El guardián sincero cuenta la mentira del otro; el mentiroso miente sobre la respuesta verdadera. Elige la puerta contraria. Una sola pregunta, y la lógica elimina la incertidumbre. ¿Lo resolviste?",
+  "scenes": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSeconds": 5,
+      "narration": "Una puerta te lleva a la libertad y la otra a una trampa. Un guardián siempre dice la verdad y el otro siempre miente. Solo puedes hacer una pregunta.",
+      "onScreenText": "2 PUERTAS\n1 LLEVA A LA LIBERTAD",
+      "subtitleText": "2 PUERTAS",
+      "transition": "zoom",
+      "visual": {
+        "template": "two-doors",
+        "doors": [
+          "A",
+          "B"
+        ],
+        "guardians": [
+          "truth",
+          "liar"
+        ]
+      }
+    },
+    {
+      "id": "rules",
+      "type": "instruction",
+      "durationSeconds": 4,
+      "narration": "No sabes quién miente y quién dice la verdad, y solo puedes preguntar a uno.",
+      "onScreenText": "NO SABES QUIÉN ES QUIÉN",
+      "subtitleText": "NO SABES QUIÉN ES QUIÉN",
+      "transition": "slide-up",
+      "visual": {
+        "template": "guardian-cards",
+        "showUnknownIdentities": true
+      }
+    },
+    {
+      "id": "think",
+      "type": "countdown",
+      "durationSeconds": 5,
+      "narration": "¿Qué pregunta te permite elegir la puerta correcta? Piénsalo.",
+      "onScreenText": "¿QUÉ PREGUNTARÍAS?",
+      "subtitleText": "Cuenta atrás",
+      "transition": "none",
+      "visual": {
+        "template": "countdown",
+        "seconds": 5,
+        "label": "¿QUÉ PREGUNTARÍAS?",
+        "background": "two-doors"
+      }
+    },
+    {
+      "id": "question",
+      "type": "explanation",
+      "durationSeconds": 7,
+      "narration": "Pregunta a cualquiera: ¿qué puerta me diría el otro guardián que lleva a la libertad?",
+      "onScreenText": "«¿QUÉ PUERTA DIRÍA EL OTRO?»",
+      "subtitleText": "«¿QUÉ PUERTA DIRÍA EL OTRO?»",
+      "transition": "fade",
+      "visual": {
+        "template": "speech-bubble",
+        "question": "¿Qué puerta me diría el otro guardián que lleva a la libertad?",
+        "highlight": "other-guardian"
+      }
+    },
+    {
+      "id": "reveal",
+      "type": "reveal",
+      "durationSeconds": 8,
+      "narration": "Los dos señalarán la puerta equivocada. El guardián sincero cuenta la mentira del otro; el mentiroso miente sobre la respuesta verdadera. Elige la puerta contraria.",
+      "onScreenText": "SEÑALAN LA INCORRECTA\nELIGE LA CONTRARIA",
+      "subtitleText": "SEÑALAN LA INCORRECTA",
+      "transition": "fade",
+      "visual": {
+        "template": "two-case-diagram",
+        "cases": [
+          "ask-truthful",
+          "ask-liar"
+        ],
+        "result": "wrong-door"
+      }
+    },
+    {
+      "id": "outro",
+      "type": "outro",
+      "durationSeconds": 4,
+      "narration": "Una sola pregunta, y la lógica elimina la incertidumbre. ¿Lo resolviste?",
+      "onScreenText": "¿LO RESOLVISTE?",
+      "subtitleText": "Comenta tu método",
+      "transition": "fade",
+      "visual": {
+        "template": "text",
+        "headline": "¿LO RESOLVISTE?",
+        "body": "Cuéntalo en los comentarios",
+        "accent": "open-safe-door"
+      }
+    }
+  ],
+  "solution": {
+    "summary": "Pregunta a cualquiera de los guardianes: «¿Qué puerta me diría el otro guardián que lleva a la libertad?». Ambos señalarán la puerta equivocada: el sincero info",
+    "explanation": "Pregunta a cualquiera de los guardianes: «¿Qué puerta me diría el otro guardián que lleva a la libertad?». Ambos señalarán la puerta equivocada: el sincero informa correctamente de la mentira del otro, y el mentiroso miente sobre la respuesta verdadera del otro. Elige la puerta contraria.",
+    "answerKey": {
+      "type": "s4-20-dos-puertas",
+      "validation": {
+        "status": "verified",
+        "method": "Tabla de casos: si preguntas al sincero, describe la respuesta falsa del mentiroso; si preguntas al mentiroso, miente sobre la respuesta verdadera del sincero. En ambos casos se señala la puerta incorrecta."
+      }
+    },
+    "validationStatus": "partial"
+  },
+  "callToAction": "¿Lo resolviste? Cuéntalo en los comentarios.",
+  "sources": [
+    "Adaptado de guion creativo s4-20-dos-puertas"
+  ],
+  "createdAt": "2026-10-18T10:38:56.482Z",
+  "schemaVersion": 1
+}

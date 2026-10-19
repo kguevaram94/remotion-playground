@@ -1,0 +1,1935 @@
+[
+  {
+    "text": "Sesgo de Confirmación Imagina",
+    "startMs": 113,
+    "tokens": [
+      {
+        "text": "Sesgo",
+        "fromMs": 113,
+        "toMs": 425
+      },
+      {
+        "text": " de",
+        "fromMs": 435,
+        "toMs": 508
+      },
+      {
+        "text": " Confirmación",
+        "fromMs": 519,
+        "toMs": 1248
+      },
+      {
+        "text": " Imagina",
+        "fromMs": 1962,
+        "toMs": 2431
+      }
+    ],
+    "durationMs": 2329
+  },
+  {
+    "text": "que tienes una hipótesis sobre una situación",
+    "startMs": 2442,
+    "tokens": [
+      {
+        "text": "que",
+        "fromMs": 2442,
+        "toMs": 2556
+      },
+      {
+        "text": " tienes",
+        "fromMs": 2567,
+        "toMs": 2827
+      },
+      {
+        "text": " una",
+        "fromMs": 2837,
+        "toMs": 2962
+      },
+      {
+        "text": " hipótesis",
+        "fromMs": 2973,
+        "toMs": 3400
+      },
+      {
+        "text": " sobre",
+        "fromMs": 3410,
+        "toMs": 3598
+      },
+      {
+        "text": " una",
+        "fromMs": 3608,
+        "toMs": 3723
+      },
+      {
+        "text": " situación",
+        "fromMs": 3733,
+        "toMs": 4348
+      }
+    ],
+    "durationMs": 2629
+  },
+  {
+    "text": "Por ejemplo piensa que los niños",
+    "startMs": 5071,
+    "tokens": [
+      {
+        "text": "Por",
+        "fromMs": 5071,
+        "toMs": 5248
+      },
+      {
+        "text": " ejemplo",
+        "fromMs": 5258,
+        "toMs": 5665
+      },
+      {
+        "text": " piensa",
+        "fromMs": 5873,
+        "toMs": 6133
+      },
+      {
+        "text": " que",
+        "fromMs": 6144,
+        "toMs": 6227
+      },
+      {
+        "text": " los",
+        "fromMs": 6237,
+        "toMs": 6352
+      },
+      {
+        "text": " niños",
+        "fromMs": 6362,
+        "toMs": 6612
+      }
+    ],
+    "durationMs": 1552
+  },
+  {
+    "text": "en tu comunidad tienen problemas",
+    "startMs": 6623,
+    "tokens": [
+      {
+        "text": "en",
+        "fromMs": 6623,
+        "toMs": 6696
+      },
+      {
+        "text": " tu",
+        "fromMs": 6706,
+        "toMs": 6779
+      },
+      {
+        "text": " comunidad",
+        "fromMs": 6790,
+        "toMs": 7217
+      },
+      {
+        "text": " tienen",
+        "fromMs": 7227,
+        "toMs": 7456
+      },
+      {
+        "text": " problemas",
+        "fromMs": 7467,
+        "toMs": 8029
+      }
+    ],
+    "durationMs": 2125
+  },
+  {
+    "text": "Qué haces en este caso Puedes",
+    "startMs": 8748,
+    "tokens": [
+      {
+        "text": "Qué",
+        "fromMs": 8748,
+        "toMs": 8946
+      },
+      {
+        "text": " haces",
+        "fromMs": 8956,
+        "toMs": 9175
+      },
+      {
+        "text": " en",
+        "fromMs": 9185,
+        "toMs": 9258
+      },
+      {
+        "text": " este",
+        "fromMs": 9269,
+        "toMs": 9435
+      },
+      {
+        "text": " caso",
+        "fromMs": 9446,
+        "toMs": 9852
+      },
+      {
+        "text": " Puedes",
+        "fromMs": 10571,
+        "toMs": 10862
+      }
+    ],
+    "durationMs": 2125
+  },
+  {
+    "text": "buscar evidencias que apoyen tu hipótesis",
+    "startMs": 10873,
+    "tokens": [
+      {
+        "text": "buscar",
+        "fromMs": 10873,
+        "toMs": 11165
+      },
+      {
+        "text": " evidencias",
+        "fromMs": 11175,
+        "toMs": 11592
+      },
+      {
+        "text": " que",
+        "fromMs": 11602,
+        "toMs": 11654
+      },
+      {
+        "text": " apoyen",
+        "fromMs": 11665,
+        "toMs": 11987
+      },
+      {
+        "text": " tu",
+        "fromMs": 11998,
+        "toMs": 12071
+      },
+      {
+        "text": " hipótesis",
+        "fromMs": 12081,
+        "toMs": 12665
+      }
+    ],
+    "durationMs": 2506
+  },
+  {
+    "text": "No hay nada malo con eso pero",
+    "startMs": 13379,
+    "tokens": [
+      {
+        "text": "No",
+        "fromMs": 13379,
+        "toMs": 13587
+      },
+      {
+        "text": " hay",
+        "fromMs": 13598,
+        "toMs": 13681
+      },
+      {
+        "text": " nada",
+        "fromMs": 13692,
+        "toMs": 13858
+      },
+      {
+        "text": " malo",
+        "fromMs": 13869,
+        "toMs": 14067
+      },
+      {
+        "text": " con",
+        "fromMs": 14077,
+        "toMs": 14212
+      },
+      {
+        "text": " eso",
+        "fromMs": 14223,
+        "toMs": 14515
+      },
+      {
+        "text": " pero",
+        "fromMs": 14713,
+        "toMs": 14869
+      }
+    ],
+    "durationMs": 1500
+  },
+  {
+    "text": "podrías estar cometiendo un Sesgo de",
+    "startMs": 14879,
+    "tokens": [
+      {
+        "text": "podrías",
+        "fromMs": 14879,
+        "toMs": 15212
+      },
+      {
+        "text": " estar",
+        "fromMs": 15223,
+        "toMs": 15452
+      },
+      {
+        "text": " cometiendo",
+        "fromMs": 15463,
+        "toMs": 15890
+      },
+      {
+        "text": " un",
+        "fromMs": 15900,
+        "toMs": 16015
+      },
+      {
+        "text": " Sesgo",
+        "fromMs": 16025,
+        "toMs": 16254
+      },
+      {
+        "text": " de",
+        "fromMs": 16265,
+        "toMs": 16327
+      }
+    ],
+    "durationMs": 1458
+  },
+  {
+    "text": "Confirmación El",
+    "startMs": 16337,
+    "tokens": [
+      {
+        "text": "Confirmación",
+        "fromMs": 16337,
+        "toMs": 17087
+      },
+      {
+        "text": " El",
+        "fromMs": 17806,
+        "toMs": 17983
+      }
+    ],
+    "durationMs": 1657
+  },
+  {
+    "text": "Sesgo de Confirmación es un sesgo cognitivo",
+    "startMs": 17994,
+    "tokens": [
+      {
+        "text": "Sesgo",
+        "fromMs": 17994,
+        "toMs": 18212
+      },
+      {
+        "text": " de",
+        "fromMs": 18223,
+        "toMs": 18285
+      },
+      {
+        "text": " Confirmación",
+        "fromMs": 18296,
+        "toMs": 18879
+      },
+      {
+        "text": " es",
+        "fromMs": 18890,
+        "toMs": 18994
+      },
+      {
+        "text": " un",
+        "fromMs": 19004,
+        "toMs": 19108
+      },
+      {
+        "text": " sesgo",
+        "fromMs": 19119,
+        "toMs": 19348
+      },
+      {
+        "text": " cognitivo",
+        "fromMs": 19358,
+        "toMs": 19837
+      }
+    ],
+    "durationMs": 1854
+  },
+  {
+    "text": "que hace que nuestras mentes nos inclinemos",
+    "startMs": 19848,
+    "tokens": [
+      {
+        "text": "que",
+        "fromMs": 19848,
+        "toMs": 19942
+      },
+      {
+        "text": " hace",
+        "fromMs": 19952,
+        "toMs": 20098
+      },
+      {
+        "text": " que",
+        "fromMs": 20108,
+        "toMs": 20181
+      },
+      {
+        "text": " nuestras",
+        "fromMs": 20192,
+        "toMs": 20452
+      },
+      {
+        "text": " mentes",
+        "fromMs": 20462,
+        "toMs": 20733
+      },
+      {
+        "text": " nos",
+        "fromMs": 20744,
+        "toMs": 20890
+      },
+      {
+        "text": " inclinemos",
+        "fromMs": 20900,
+        "toMs": 21369
+      }
+    ],
+    "durationMs": 1531
+  },
+  {
+    "text": "a buscar y recordar información",
+    "startMs": 21379,
+    "tokens": [
+      {
+        "text": "a",
+        "fromMs": 21379,
+        "toMs": 21410
+      },
+      {
+        "text": " buscar",
+        "fromMs": 21421,
+        "toMs": 21702
+      },
+      {
+        "text": " y",
+        "fromMs": 21712,
+        "toMs": 21744
+      },
+      {
+        "text": " recordar",
+        "fromMs": 21754,
+        "toMs": 22265
+      },
+      {
+        "text": " información",
+        "fromMs": 22400,
+        "toMs": 23004
+      }
+    ],
+    "durationMs": 1636
+  },
+  {
+    "text": "que confirmaría nuestras creencias o creyentes",
+    "startMs": 23015,
+    "tokens": [
+      {
+        "text": "que",
+        "fromMs": 23015,
+        "toMs": 23098
+      },
+      {
+        "text": " confirmaría",
+        "fromMs": 23108,
+        "toMs": 23650
+      },
+      {
+        "text": " nuestras",
+        "fromMs": 23660,
+        "toMs": 23942
+      },
+      {
+        "text": " creencias",
+        "fromMs": 23952,
+        "toMs": 24327
+      },
+      {
+        "text": " o",
+        "fromMs": 24337,
+        "toMs": 24379
+      },
+      {
+        "text": " creyentes",
+        "fromMs": 24390,
+        "toMs": 24931
+      }
+    ],
+    "durationMs": 2166
+  },
+  {
+    "text": "y olvidar o ignorar información",
+    "startMs": 25181,
+    "tokens": [
+      {
+        "text": "y",
+        "fromMs": 25181,
+        "toMs": 25337
+      },
+      {
+        "text": " olvidar",
+        "fromMs": 25348,
+        "toMs": 25681
+      },
+      {
+        "text": " o",
+        "fromMs": 25692,
+        "toMs": 25744
+      },
+      {
+        "text": " ignorar",
+        "fromMs": 25754,
+        "toMs": 26056
+      },
+      {
+        "text": " información",
+        "fromMs": 26067,
+        "toMs": 26587
+      }
+    ],
+    "durationMs": 1417
+  },
+  {
+    "text": "que contradiga estas creencias",
+    "startMs": 26598,
+    "tokens": [
+      {
+        "text": "que",
+        "fromMs": 26598,
+        "toMs": 26681
+      },
+      {
+        "text": " contradiga",
+        "fromMs": 26692,
+        "toMs": 27119
+      },
+      {
+        "text": " estas",
+        "fromMs": 27129,
+        "toMs": 27379
+      },
+      {
+        "text": " creencias",
+        "fromMs": 27390,
+        "toMs": 28046
+      }
+    ],
+    "durationMs": 2171
+  },
+  {
+    "text": "En este caso de la comunidad podrías",
+    "startMs": 28769,
+    "tokens": [
+      {
+        "text": "En",
+        "fromMs": 28769,
+        "toMs": 28977
+      },
+      {
+        "text": " este",
+        "fromMs": 28988,
+        "toMs": 29165
+      },
+      {
+        "text": " caso",
+        "fromMs": 29175,
+        "toMs": 29394
+      },
+      {
+        "text": " de",
+        "fromMs": 29404,
+        "toMs": 29467
+      },
+      {
+        "text": " la",
+        "fromMs": 29477,
+        "toMs": 29550
+      },
+      {
+        "text": " comunidad",
+        "fromMs": 29560,
+        "toMs": 30008
+      },
+      {
+        "text": " podrías",
+        "fromMs": 30217,
+        "toMs": 30560
+      }
+    ],
+    "durationMs": 1802
+  },
+  {
+    "text": "buscar información sobre problemas en",
+    "startMs": 30571,
+    "tokens": [
+      {
+        "text": "buscar",
+        "fromMs": 30571,
+        "toMs": 30852
+      },
+      {
+        "text": " información",
+        "fromMs": 30863,
+        "toMs": 31342
+      },
+      {
+        "text": " sobre",
+        "fromMs": 31352,
+        "toMs": 31540
+      },
+      {
+        "text": " problemas",
+        "fromMs": 31550,
+        "toMs": 31915
+      },
+      {
+        "text": " en",
+        "fromMs": 31925,
+        "toMs": 31977
+      }
+    ],
+    "durationMs": 1417
+  },
+  {
+    "text": "los niños como noticias",
+    "startMs": 31988,
+    "tokens": [
+      {
+        "text": "los",
+        "fromMs": 31988,
+        "toMs": 32112
+      },
+      {
+        "text": " niños",
+        "fromMs": 32123,
+        "toMs": 32456
+      },
+      {
+        "text": " como",
+        "fromMs": 32748,
+        "toMs": 33008
+      },
+      {
+        "text": " noticias",
+        "fromMs": 33019,
+        "toMs": 33446
+      }
+    ],
+    "durationMs": 1468
+  },
+  {
+    "text": "o informes que coincidan con tu creencia",
+    "startMs": 33456,
+    "tokens": [
+      {
+        "text": "o",
+        "fromMs": 33456,
+        "toMs": 33508
+      },
+      {
+        "text": " informes",
+        "fromMs": 33519,
+        "toMs": 33935
+      },
+      {
+        "text": " que",
+        "fromMs": 33946,
+        "toMs": 34019
+      },
+      {
+        "text": " coincidan",
+        "fromMs": 34029,
+        "toMs": 34456
+      },
+      {
+        "text": " con",
+        "fromMs": 34467,
+        "toMs": 34602
+      },
+      {
+        "text": " tu",
+        "fromMs": 34612,
+        "toMs": 34685
+      },
+      {
+        "text": " creencia",
+        "fromMs": 34696,
+        "toMs": 35258
+      }
+    ],
+    "durationMs": 2517
+  },
+  {
+    "text": "A la vez podrías ignorar o no",
+    "startMs": 35973,
+    "tokens": [
+      {
+        "text": "A",
+        "fromMs": 35973,
+        "toMs": 36087
+      },
+      {
+        "text": " la",
+        "fromMs": 36098,
+        "toMs": 36181
+      },
+      {
+        "text": " vez",
+        "fromMs": 36192,
+        "toMs": 36410
+      },
+      {
+        "text": " podrías",
+        "fromMs": 36619,
+        "toMs": 36962
+      },
+      {
+        "text": " ignorar",
+        "fromMs": 36973,
+        "toMs": 37306
+      },
+      {
+        "text": " o",
+        "fromMs": 37317,
+        "toMs": 37358
+      },
+      {
+        "text": " no",
+        "fromMs": 37369,
+        "toMs": 37473
+      }
+    ],
+    "durationMs": 1510
+  },
+  {
+    "text": "darle importancia a los informes que contradigan",
+    "startMs": 37483,
+    "tokens": [
+      {
+        "text": "darle",
+        "fromMs": 37483,
+        "toMs": 37660
+      },
+      {
+        "text": " importancia",
+        "fromMs": 37671,
+        "toMs": 38171
+      },
+      {
+        "text": " a",
+        "fromMs": 38181,
+        "toMs": 38202
+      },
+      {
+        "text": " los",
+        "fromMs": 38212,
+        "toMs": 38348
+      },
+      {
+        "text": " informes",
+        "fromMs": 38358,
+        "toMs": 38754
+      },
+      {
+        "text": " que",
+        "fromMs": 38765,
+        "toMs": 38837
+      },
+      {
+        "text": " contradigan",
+        "fromMs": 38848,
+        "toMs": 39327
+      }
+    ],
+    "durationMs": 1854
+  },
+  {
+    "text": "tu creencia Otro",
+    "startMs": 39337,
+    "tokens": [
+      {
+        "text": "tu",
+        "fromMs": 39337,
+        "toMs": 39410
+      },
+      {
+        "text": " creencia",
+        "fromMs": 39421,
+        "toMs": 39983
+      },
+      {
+        "text": " Otro",
+        "fromMs": 40706,
+        "toMs": 40987
+      }
+    ],
+    "durationMs": 1661
+  },
+  {
+    "text": "ejemplo podría ser en la vida diaria",
+    "startMs": 40998,
+    "tokens": [
+      {
+        "text": "ejemplo",
+        "fromMs": 40998,
+        "toMs": 41342
+      },
+      {
+        "text": " podría",
+        "fromMs": 41352,
+        "toMs": 41665
+      },
+      {
+        "text": " ser",
+        "fromMs": 41675,
+        "toMs": 41842
+      },
+      {
+        "text": " en",
+        "fromMs": 41852,
+        "toMs": 41915
+      },
+      {
+        "text": " la",
+        "fromMs": 41925,
+        "toMs": 41987
+      },
+      {
+        "text": " vida",
+        "fromMs": 41998,
+        "toMs": 42175
+      },
+      {
+        "text": " diaria",
+        "fromMs": 42185,
+        "toMs": 42696
+      }
+    ],
+    "durationMs": 2412
+  },
+  {
+    "text": "Imagina que estás en una relación difícil",
+    "startMs": 43410,
+    "tokens": [
+      {
+        "text": "Imagina",
+        "fromMs": 43410,
+        "toMs": 43869
+      },
+      {
+        "text": " que",
+        "fromMs": 43879,
+        "toMs": 43973
+      },
+      {
+        "text": " estás",
+        "fromMs": 43983,
+        "toMs": 44223
+      },
+      {
+        "text": " en",
+        "fromMs": 44233,
+        "toMs": 44317
+      },
+      {
+        "text": " una",
+        "fromMs": 44327,
+        "toMs": 44442
+      },
+      {
+        "text": " relación",
+        "fromMs": 44452,
+        "toMs": 44796
+      },
+      {
+        "text": " difícil",
+        "fromMs": 44806,
+        "toMs": 45358
+      }
+    ],
+    "durationMs": 2671
+  },
+  {
+    "text": "Puedes ver la otra persona como una",
+    "startMs": 46081,
+    "tokens": [
+      {
+        "text": "Puedes",
+        "fromMs": 46081,
+        "toMs": 46404
+      },
+      {
+        "text": " ver",
+        "fromMs": 46415,
+        "toMs": 46550
+      },
+      {
+        "text": " la",
+        "fromMs": 46560,
+        "toMs": 46633
+      },
+      {
+        "text": " otra",
+        "fromMs": 46644,
+        "toMs": 46831
+      },
+      {
+        "text": " persona",
+        "fromMs": 46842,
+        "toMs": 47185
+      },
+      {
+        "text": " como",
+        "fromMs": 47196,
+        "toMs": 47373
+      },
+      {
+        "text": " una",
+        "fromMs": 47383,
+        "toMs": 47519
+      }
+    ],
+    "durationMs": 1448
+  },
+  {
+    "text": "persona amable y comprensiva o",
+    "startMs": 47529,
+    "tokens": [
+      {
+        "text": "persona",
+        "fromMs": 47529,
+        "toMs": 47873
+      },
+      {
+        "text": " amable",
+        "fromMs": 47883,
+        "toMs": 48165
+      },
+      {
+        "text": " y",
+        "fromMs": 48175,
+        "toMs": 48206
+      },
+      {
+        "text": " comprensiva",
+        "fromMs": 48217,
+        "toMs": 48821
+      },
+      {
+        "text": " o",
+        "fromMs": 49081,
+        "toMs": 49227
+      }
+    ],
+    "durationMs": 1708
+  },
+  {
+    "text": "ve que es una persona abusiva sin importar",
+    "startMs": 49237,
+    "tokens": [
+      {
+        "text": "ve",
+        "fromMs": 49237,
+        "toMs": 49342
+      },
+      {
+        "text": " que",
+        "fromMs": 49352,
+        "toMs": 49446
+      },
+      {
+        "text": " es",
+        "fromMs": 49456,
+        "toMs": 49560
+      },
+      {
+        "text": " una",
+        "fromMs": 49571,
+        "toMs": 49706
+      },
+      {
+        "text": " persona",
+        "fromMs": 49717,
+        "toMs": 50050
+      },
+      {
+        "text": " abusiva",
+        "fromMs": 50060,
+        "toMs": 50446
+      },
+      {
+        "text": " sin",
+        "fromMs": 50456,
+        "toMs": 50602
+      },
+      {
+        "text": " importar",
+        "fromMs": 50612,
+        "toMs": 50977
+      }
+    ],
+    "durationMs": 1750
+  },
+  {
+    "text": "lo que digan otros Esperas",
+    "startMs": 50987,
+    "tokens": [
+      {
+        "text": "lo",
+        "fromMs": 50987,
+        "toMs": 51060
+      },
+      {
+        "text": " que",
+        "fromMs": 51071,
+        "toMs": 51165
+      },
+      {
+        "text": " digan",
+        "fromMs": 51175,
+        "toMs": 51383
+      },
+      {
+        "text": " otros",
+        "fromMs": 51394,
+        "toMs": 51790
+      },
+      {
+        "text": " Esperas",
+        "fromMs": 52508,
+        "toMs": 52967
+      }
+    ],
+    "durationMs": 1990
+  },
+  {
+    "text": "que la otra persona no sea tan buena",
+    "startMs": 52977,
+    "tokens": [
+      {
+        "text": "que",
+        "fromMs": 52977,
+        "toMs": 53060
+      },
+      {
+        "text": " la",
+        "fromMs": 53071,
+        "toMs": 53175
+      },
+      {
+        "text": " otra",
+        "fromMs": 53185,
+        "toMs": 53362
+      },
+      {
+        "text": " persona",
+        "fromMs": 53373,
+        "toMs": 53727
+      },
+      {
+        "text": " no",
+        "fromMs": 53737,
+        "toMs": 53862
+      },
+      {
+        "text": " sea",
+        "fromMs": 53873,
+        "toMs": 54050
+      },
+      {
+        "text": " tan",
+        "fromMs": 54060,
+        "toMs": 54206
+      },
+      {
+        "text": " buena",
+        "fromMs": 54217,
+        "toMs": 54456
+      }
+    ],
+    "durationMs": 1740
+  },
+  {
+    "text": "lo que te mantiene en una relación que no es",
+    "startMs": 54717,
+    "tokens": [
+      {
+        "text": "lo",
+        "fromMs": 54717,
+        "toMs": 54790
+      },
+      {
+        "text": " que",
+        "fromMs": 54800,
+        "toMs": 54883
+      },
+      {
+        "text": " te",
+        "fromMs": 54894,
+        "toMs": 54967
+      },
+      {
+        "text": " mantiene",
+        "fromMs": 54977,
+        "toMs": 55300
+      },
+      {
+        "text": " en",
+        "fromMs": 55310,
+        "toMs": 55383
+      },
+      {
+        "text": " una",
+        "fromMs": 55394,
+        "toMs": 55498
+      },
+      {
+        "text": " relación",
+        "fromMs": 55508,
+        "toMs": 55894
+      },
+      {
+        "text": " que",
+        "fromMs": 55904,
+        "toMs": 55987
+      },
+      {
+        "text": " no",
+        "fromMs": 55998,
+        "toMs": 56102
+      },
+      {
+        "text": " es",
+        "fromMs": 56112,
+        "toMs": 56196
+      }
+    ],
+    "durationMs": 1489
+  },
+  {
+    "text": "saludable En",
+    "startMs": 56206,
+    "tokens": [
+      {
+        "text": "saludable",
+        "fromMs": 56206,
+        "toMs": 56727
+      },
+      {
+        "text": " En",
+        "fromMs": 57446,
+        "toMs": 57633
+      }
+    ],
+    "durationMs": 1438
+  },
+  {
+    "text": "este caso podrías estar",
+    "startMs": 57644,
+    "tokens": [
+      {
+        "text": "este",
+        "fromMs": 57644,
+        "toMs": 57831
+      },
+      {
+        "text": " caso",
+        "fromMs": 57842,
+        "toMs": 58196
+      },
+      {
+        "text": " podrías",
+        "fromMs": 58456,
+        "toMs": 58873
+      },
+      {
+        "text": " estar",
+        "fromMs": 58883,
+        "toMs": 59123
+      }
+    ],
+    "durationMs": 1489
+  },
+  {
+    "text": "usando el Sesgo de Confirmación para",
+    "startMs": 59133,
+    "tokens": [
+      {
+        "text": "usando",
+        "fromMs": 59133,
+        "toMs": 59425
+      },
+      {
+        "text": " el",
+        "fromMs": 59435,
+        "toMs": 59508
+      },
+      {
+        "text": " Sesgo",
+        "fromMs": 59519,
+        "toMs": 59758
+      },
+      {
+        "text": " de",
+        "fromMs": 59769,
+        "toMs": 59831
+      },
+      {
+        "text": " Confirmación",
+        "fromMs": 59842,
+        "toMs": 60446
+      },
+      {
+        "text": " para",
+        "fromMs": 60456,
+        "toMs": 60612
+      }
+    ],
+    "durationMs": 1490
+  },
+  {
+    "text": "validar tu creencia negativa sobre",
+    "startMs": 60623,
+    "tokens": [
+      {
+        "text": "validar",
+        "fromMs": 60623,
+        "toMs": 60935
+      },
+      {
+        "text": " tu",
+        "fromMs": 60946,
+        "toMs": 61040
+      },
+      {
+        "text": " creencia",
+        "fromMs": 61050,
+        "toMs": 61404
+      },
+      {
+        "text": " negativa",
+        "fromMs": 61415,
+        "toMs": 61831
+      },
+      {
+        "text": " sobre",
+        "fromMs": 61842,
+        "toMs": 62050
+      }
+    ],
+    "durationMs": 1437
+  },
+  {
+    "text": "la otra persona El",
+    "startMs": 62060,
+    "tokens": [
+      {
+        "text": "la",
+        "fromMs": 62060,
+        "toMs": 62154
+      },
+      {
+        "text": " otra",
+        "fromMs": 62165,
+        "toMs": 62321
+      },
+      {
+        "text": " persona",
+        "fromMs": 62331,
+        "toMs": 62852
+      },
+      {
+        "text": " El",
+        "fromMs": 63567,
+        "toMs": 63744
+      }
+    ],
+    "durationMs": 1694
+  },
+  {
+    "text": "Sesgo de Confirmación puede ser muy",
+    "startMs": 63754,
+    "tokens": [
+      {
+        "text": "Sesgo",
+        "fromMs": 63754,
+        "toMs": 63962
+      },
+      {
+        "text": " de",
+        "fromMs": 63973,
+        "toMs": 64046
+      },
+      {
+        "text": " Confirmación",
+        "fromMs": 64056,
+        "toMs": 64660
+      },
+      {
+        "text": " puede",
+        "fromMs": 64671,
+        "toMs": 64879
+      },
+      {
+        "text": " ser",
+        "fromMs": 64890,
+        "toMs": 65056
+      },
+      {
+        "text": " muy",
+        "fromMs": 65067,
+        "toMs": 65202
+      }
+    ],
+    "durationMs": 1459
+  },
+  {
+    "text": "perjudicial A",
+    "startMs": 65213,
+    "tokens": [
+      {
+        "text": "perjudicial",
+        "fromMs": 65213,
+        "toMs": 65942
+      },
+      {
+        "text": " A",
+        "fromMs": 66665,
+        "toMs": 66810
+      }
+    ],
+    "durationMs": 1608
+  },
+  {
+    "text": "menudo creemos que las cosas",
+    "startMs": 66821,
+    "tokens": [
+      {
+        "text": "menudo",
+        "fromMs": 66821,
+        "toMs": 67196
+      },
+      {
+        "text": " creemos",
+        "fromMs": 67415,
+        "toMs": 67748
+      },
+      {
+        "text": " que",
+        "fromMs": 67758,
+        "toMs": 67821
+      },
+      {
+        "text": " las",
+        "fromMs": 67831,
+        "toMs": 67967
+      },
+      {
+        "text": " cosas",
+        "fromMs": 67977,
+        "toMs": 68258
+      }
+    ],
+    "durationMs": 1448
+  },
+  {
+    "text": "son más reales o verdaderas si las vemos",
+    "startMs": 68269,
+    "tokens": [
+      {
+        "text": "son",
+        "fromMs": 68269,
+        "toMs": 68415
+      },
+      {
+        "text": " más",
+        "fromMs": 68425,
+        "toMs": 68550
+      },
+      {
+        "text": " reales",
+        "fromMs": 68560,
+        "toMs": 68883
+      },
+      {
+        "text": " o",
+        "fromMs": 68894,
+        "toMs": 68925
+      },
+      {
+        "text": " verdaderas",
+        "fromMs": 68935,
+        "toMs": 69352
+      },
+      {
+        "text": " si",
+        "fromMs": 69362,
+        "toMs": 69446
+      },
+      {
+        "text": " las",
+        "fromMs": 69456,
+        "toMs": 69602
+      },
+      {
+        "text": " vemos",
+        "fromMs": 69612,
+        "toMs": 69852
+      }
+    ],
+    "durationMs": 1593
+  },
+  {
+    "text": "constantemente o si las encontramos",
+    "startMs": 69862,
+    "tokens": [
+      {
+        "text": "constantemente",
+        "fromMs": 69862,
+        "toMs": 70581
+      },
+      {
+        "text": " o",
+        "fromMs": 70848,
+        "toMs": 70994
+      },
+      {
+        "text": " si",
+        "fromMs": 71004,
+        "toMs": 71108
+      },
+      {
+        "text": " las",
+        "fromMs": 71119,
+        "toMs": 71254
+      },
+      {
+        "text": " encontramos",
+        "fromMs": 71265,
+        "toMs": 71796
+      }
+    ],
+    "durationMs": 1944
+  },
+  {
+    "text": "en una y otra ocasión No",
+    "startMs": 71806,
+    "tokens": [
+      {
+        "text": "en",
+        "fromMs": 71806,
+        "toMs": 71890
+      },
+      {
+        "text": " una",
+        "fromMs": 71900,
+        "toMs": 72056
+      },
+      {
+        "text": " y",
+        "fromMs": 72067,
+        "toMs": 72129
+      },
+      {
+        "text": " otra",
+        "fromMs": 72140,
+        "toMs": 72296
+      },
+      {
+        "text": " ocasión",
+        "fromMs": 72306,
+        "toMs": 72879
+      },
+      {
+        "text": " No",
+        "fromMs": 73598,
+        "toMs": 73785
+      }
+    ],
+    "durationMs": 1990
+  },
+  {
+    "text": "nos damos cuenta de que hay otras posibilidades",
+    "startMs": 73796,
+    "tokens": [
+      {
+        "text": "nos",
+        "fromMs": 73796,
+        "toMs": 73942
+      },
+      {
+        "text": " damos",
+        "fromMs": 73952,
+        "toMs": 74202
+      },
+      {
+        "text": " cuenta",
+        "fromMs": 74213,
+        "toMs": 74483
+      },
+      {
+        "text": " de",
+        "fromMs": 74494,
+        "toMs": 74598
+      },
+      {
+        "text": " que",
+        "fromMs": 74608,
+        "toMs": 74712
+      },
+      {
+        "text": " hay",
+        "fromMs": 74723,
+        "toMs": 74817
+      },
+      {
+        "text": " otras",
+        "fromMs": 74827,
+        "toMs": 75035
+      },
+      {
+        "text": " posibilidades",
+        "fromMs": 75046,
+        "toMs": 75671
+      }
+    ],
+    "durationMs": 1885
+  },
+  {
+    "text": "o contradicciones Este",
+    "startMs": 75681,
+    "tokens": [
+      {
+        "text": "o",
+        "fromMs": 75681,
+        "toMs": 75723
+      },
+      {
+        "text": " contradicciones",
+        "fromMs": 75733,
+        "toMs": 76567
+      },
+      {
+        "text": " Este",
+        "fromMs": 77285,
+        "toMs": 77577
+      }
+    ],
+    "durationMs": 1907
+  },
+  {
+    "text": "sesgo puede llevarnos a tomar decisiones",
+    "startMs": 77588,
+    "tokens": [
+      {
+        "text": "sesgo",
+        "fromMs": 77588,
+        "toMs": 77869
+      },
+      {
+        "text": " puede",
+        "fromMs": 77879,
+        "toMs": 78087
+      },
+      {
+        "text": " llevarnos",
+        "fromMs": 78098,
+        "toMs": 78525
+      },
+      {
+        "text": " a",
+        "fromMs": 78535,
+        "toMs": 78577
+      },
+      {
+        "text": " tomar",
+        "fromMs": 78588,
+        "toMs": 78817
+      },
+      {
+        "text": " decisiones",
+        "fromMs": 78827,
+        "toMs": 79317
+      }
+    ],
+    "durationMs": 1739
+  },
+  {
+    "text": "erróneas o a cerrar la mente a nuevas",
+    "startMs": 79327,
+    "tokens": [
+      {
+        "text": "erróneas",
+        "fromMs": 79327,
+        "toMs": 79775
+      },
+      {
+        "text": " o",
+        "fromMs": 79785,
+        "toMs": 79858
+      },
+      {
+        "text": " a",
+        "fromMs": 79869,
+        "toMs": 79921
+      },
+      {
+        "text": " cerrar",
+        "fromMs": 79931,
+        "toMs": 80223
+      },
+      {
+        "text": " la",
+        "fromMs": 80233,
+        "toMs": 80317
+      },
+      {
+        "text": " mente",
+        "fromMs": 80327,
+        "toMs": 80567
+      },
+      {
+        "text": " a",
+        "fromMs": 80577,
+        "toMs": 80598
+      },
+      {
+        "text": " nuevas",
+        "fromMs": 80608,
+        "toMs": 80879
+      }
+    ],
+    "durationMs": 1563
+  },
+  {
+    "text": "ideas o oportunidades Es",
+    "startMs": 80890,
+    "tokens": [
+      {
+        "text": "ideas",
+        "fromMs": 80890,
+        "toMs": 81202
+      },
+      {
+        "text": " o",
+        "fromMs": 81213,
+        "toMs": 81265
+      },
+      {
+        "text": " oportunidades",
+        "fromMs": 81275,
+        "toMs": 82056
+      },
+      {
+        "text": " Es",
+        "fromMs": 82775,
+        "toMs": 82973
+      }
+    ],
+    "durationMs": 2093
+  },
+  {
+    "text": "importante entender que no somos infalibles",
+    "startMs": 82983,
+    "tokens": [
+      {
+        "text": "importante",
+        "fromMs": 82983,
+        "toMs": 83431
+      },
+      {
+        "text": " entender",
+        "fromMs": 83442,
+        "toMs": 83785
+      },
+      {
+        "text": " que",
+        "fromMs": 83796,
+        "toMs": 83890
+      },
+      {
+        "text": " no",
+        "fromMs": 83900,
+        "toMs": 83994
+      },
+      {
+        "text": " somos",
+        "fromMs": 84004,
+        "toMs": 84265
+      },
+      {
+        "text": " infalibles",
+        "fromMs": 84275,
+        "toMs": 84775
+      }
+    ],
+    "durationMs": 1802
+  },
+  {
+    "text": "y que nuestra mente puede ser influenciada",
+    "startMs": 84785,
+    "tokens": [
+      {
+        "text": "y",
+        "fromMs": 84785,
+        "toMs": 84827
+      },
+      {
+        "text": " que",
+        "fromMs": 84838,
+        "toMs": 84921
+      },
+      {
+        "text": " nuestra",
+        "fromMs": 84931,
+        "toMs": 85160
+      },
+      {
+        "text": " mente",
+        "fromMs": 85171,
+        "toMs": 85462
+      },
+      {
+        "text": " puede",
+        "fromMs": 85473,
+        "toMs": 85660
+      },
+      {
+        "text": " ser",
+        "fromMs": 85671,
+        "toMs": 85806
+      },
+      {
+        "text": " influenciada",
+        "fromMs": 85817,
+        "toMs": 86327
+      }
+    ],
+    "durationMs": 1553
+  },
+  {
+    "text": "por estos sesgos La",
+    "startMs": 86338,
+    "tokens": [
+      {
+        "text": "por",
+        "fromMs": 86338,
+        "toMs": 86463
+      },
+      {
+        "text": " estos",
+        "fromMs": 86473,
+        "toMs": 86692
+      },
+      {
+        "text": " sesgos",
+        "fromMs": 86702,
+        "toMs": 87171
+      },
+      {
+        "text": " La",
+        "fromMs": 87894,
+        "toMs": 88112
+      }
+    ],
+    "durationMs": 1785
+  },
+  {
+    "text": "clave para superar el Sesgo de Confirmación",
+    "startMs": 88123,
+    "tokens": [
+      {
+        "text": "clave",
+        "fromMs": 88123,
+        "toMs": 88352
+      },
+      {
+        "text": " para",
+        "fromMs": 88362,
+        "toMs": 88529
+      },
+      {
+        "text": " superar",
+        "fromMs": 88540,
+        "toMs": 88842
+      },
+      {
+        "text": " el",
+        "fromMs": 88852,
+        "toMs": 88956
+      },
+      {
+        "text": " Sesgo",
+        "fromMs": 88967,
+        "toMs": 89185
+      },
+      {
+        "text": " de",
+        "fromMs": 89196,
+        "toMs": 89258
+      },
+      {
+        "text": " Confirmación",
+        "fromMs": 89269,
+        "toMs": 89842
+      }
+    ],
+    "durationMs": 1729
+  },
+  {
+    "text": "es buscar información de múltiples fuentes",
+    "startMs": 89852,
+    "tokens": [
+      {
+        "text": "es",
+        "fromMs": 89852,
+        "toMs": 89935
+      },
+      {
+        "text": " buscar",
+        "fromMs": 89946,
+        "toMs": 90217
+      },
+      {
+        "text": " información",
+        "fromMs": 90227,
+        "toMs": 90696
+      },
+      {
+        "text": " de",
+        "fromMs": 90706,
+        "toMs": 90769
+      },
+      {
+        "text": " múltiples",
+        "fromMs": 90779,
+        "toMs": 91175
+      },
+      {
+        "text": " fuentes",
+        "fromMs": 91185,
+        "toMs": 91519
+      }
+    ],
+    "durationMs": 1677
+  },
+  {
+    "text": "y mantener una mente abierta Siempre",
+    "startMs": 91529,
+    "tokens": [
+      {
+        "text": "y",
+        "fromMs": 91529,
+        "toMs": 91560
+      },
+      {
+        "text": " mantener",
+        "fromMs": 91571,
+        "toMs": 91904
+      },
+      {
+        "text": " una",
+        "fromMs": 91915,
+        "toMs": 92029
+      },
+      {
+        "text": " mente",
+        "fromMs": 92040,
+        "toMs": 92269
+      },
+      {
+        "text": " abierta",
+        "fromMs": 92279,
+        "toMs": 92758
+      },
+      {
+        "text": " Siempre",
+        "fromMs": 92890,
+        "toMs": 93296
+      }
+    ],
+    "durationMs": 1777
+  },
+  {
+    "text": "hay que estar preparado para cambiar tu",
+    "startMs": 93306,
+    "tokens": [
+      {
+        "text": "hay",
+        "fromMs": 93306,
+        "toMs": 93400
+      },
+      {
+        "text": " que",
+        "fromMs": 93410,
+        "toMs": 93494
+      },
+      {
+        "text": " estar",
+        "fromMs": 93504,
+        "toMs": 93733
+      },
+      {
+        "text": " preparado",
+        "fromMs": 93744,
+        "toMs": 94181
+      },
+      {
+        "text": " para",
+        "fromMs": 94192,
+        "toMs": 94348
+      },
+      {
+        "text": " cambiar",
+        "fromMs": 94358,
+        "toMs": 94681
+      },
+      {
+        "text": " tu",
+        "fromMs": 94692,
+        "toMs": 94785
+      }
+    ],
+    "durationMs": 1490
+  },
+  {
+    "text": "creencia si se da la ocasión",
+    "startMs": 94796,
+    "tokens": [
+      {
+        "text": "creencia",
+        "fromMs": 94796,
+        "toMs": 95202
+      },
+      {
+        "text": " si",
+        "fromMs": 95213,
+        "toMs": 95327
+      },
+      {
+        "text": " se",
+        "fromMs": 95338,
+        "toMs": 95452
+      },
+      {
+        "text": " da",
+        "fromMs": 95463,
+        "toMs": 95546
+      },
+      {
+        "text": " la",
+        "fromMs": 95556,
+        "toMs": 95629
+      },
+      {
+        "text": " ocasión",
+        "fromMs": 95640,
+        "toMs": 96181
+      }
+    ],
+    "durationMs": 1385
+  }
+]

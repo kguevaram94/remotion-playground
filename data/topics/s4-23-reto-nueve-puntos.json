@@ -1,0 +1,326 @@
+{
+  "id": "s4-23-reto-nueve-puntos",
+  "title": "Conecta los 9 puntos con solo 4 líneas rectas",
+  "language": "es",
+  "niche": "logic",
+  "format": "logic-puzzle",
+  "targetDurationSeconds": 30,
+  "aspectRatio": "9:16",
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "hook": "¿Puedes conectar estos nueve puntos usando solo cuatro líneas rectas, sin levantar el lápiz?",
+  "narration": "¿Puedes conectar estos nueve puntos usando solo cuatro líneas rectas, sin levantar el lápiz? Debes pasar por los nueve puntos y dibujar las líneas seguidas. Pruébalo mentalmente. ¿Estás usando solo el espacio entre los puntos? Pista: no tienes que quedarte dentro del cuadrado que forman. La solución consiste en prolongar las líneas más allá de los puntos exteriores. Mira cómo una ruta de cuatro segmentos pasa por los nueve. El truco era abandonar el límite imaginario. ¿Lo habías visto?",
+  "scenes": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSeconds": 4,
+      "narration": "¿Puedes conectar estos nueve puntos usando solo cuatro líneas rectas, sin levantar el lápiz?",
+      "onScreenText": "9 PUNTOS\n4 LÍNEAS\nSIN LEVANTAR EL LÁPIZ",
+      "subtitleText": "9 PUNTOS",
+      "transition": "zoom",
+      "visual": {
+        "template": "hook",
+        "badge": "RETO VISUAL",
+        "emphasis": "4 líneas · sin levantar el lápiz"
+      }
+    },
+    {
+      "id": "rules",
+      "type": "instruction",
+      "durationSeconds": 4,
+      "narration": "Debes pasar por los nueve puntos y dibujar las líneas seguidas.",
+      "onScreenText": "PASA POR LOS 9 PUNTOS",
+      "subtitleText": "PASA POR LOS 9 PUNTOS",
+      "transition": "slide-up",
+      "visual": {
+        "template": "text",
+        "headline": "Reglas",
+        "body": "PASA POR LOS 9 PUNTOS",
+        "accent": "Piensa fuera de la caja"
+      }
+    },
+    {
+      "id": "puzzle",
+      "type": "puzzle",
+      "durationSeconds": 3,
+      "narration": "Aquí tienes la cuadrícula.",
+      "onScreenText": "¿Cuál es tu trazo?",
+      "subtitleText": "Observa la cuadrícula",
+      "transition": "fade",
+      "visual": {
+        "template": "logic-puzzle",
+        "variant": "nine-dots",
+        "dots": [
+          {"id": "d00", "x": 0.25, "y": 0.25},
+          {"id": "d01", "x": 0.5, "y": 0.25},
+          {"id": "d02", "x": 0.75, "y": 0.25},
+          {"id": "d10", "x": 0.25, "y": 0.5},
+          {"id": "d11", "x": 0.5, "y": 0.5},
+          {"id": "d12", "x": 0.75, "y": 0.5},
+          {"id": "d20", "x": 0.25, "y": 0.75},
+          {"id": "d21", "x": 0.5, "y": 0.75},
+          {"id": "d22", "x": 0.75, "y": 0.75}
+        ],
+        "lines": [],
+        "objects": [],
+        "revealProgress": 0
+      }
+    },
+    {
+      "id": "think",
+      "type": "countdown",
+      "durationSeconds": 5,
+      "narration": "Pruébalo mentalmente. ¿Estás usando solo el espacio entre los puntos?",
+      "onScreenText": "PIENSA FUERA DE LA CAJA",
+      "subtitleText": "Cuenta atrás",
+      "transition": "none",
+      "visual": {
+        "template": "countdown",
+        "seconds": 5,
+        "label": "PIENSA FUERA DE LA CAJA",
+        "background": "nine-dots"
+      }
+    },
+    {
+      "id": "hint",
+      "type": "hint",
+      "durationSeconds": 4,
+      "narration": "Pista: no tienes que quedarte dentro del cuadrado que forman.",
+      "onScreenText": "PUEDES SALIR DEL CUADRADO",
+      "subtitleText": "PUEDES SALIR DEL CUADRADO",
+      "transition": "fade",
+      "visual": {
+        "template": "text",
+        "headline": "Pista",
+        "body": "PUEDES SALIR DEL CUADRADO",
+        "accent": "Piensa fuera de la caja"
+      }
+    },
+    {
+      "id": "reveal",
+      "type": "reveal",
+      "durationSeconds": 9,
+      "narration": "La solución consiste en prolongar las líneas más allá de los puntos exteriores. Mira cómo una ruta de cuatro segmentos pasa por los nueve.",
+      "onScreenText": "4 SEGMENTOS\n9 PUNTOS CONECTADOS",
+      "subtitleText": "4 SEGMENTOS",
+      "transition": "fade",
+      "visual": {
+        "template": "logic-puzzle",
+        "variant": "nine-dots",
+        "dots": [
+          {
+            "id": "d00",
+            "x": 0.25,
+            "y": 0.25
+          },
+          {
+            "id": "d01",
+            "x": 0.5,
+            "y": 0.25
+          },
+          {
+            "id": "d02",
+            "x": 0.75,
+            "y": 0.25
+          },
+          {
+            "id": "d10",
+            "x": 0.25,
+            "y": 0.5
+          },
+          {
+            "id": "d11",
+            "x": 0.5,
+            "y": 0.5
+          },
+          {
+            "id": "d12",
+            "x": 0.75,
+            "y": 0.5
+          },
+          {
+            "id": "d20",
+            "x": 0.25,
+            "y": 0.75
+          },
+          {
+            "id": "d21",
+            "x": 0.5,
+            "y": 0.75
+          },
+          {
+            "id": "d22",
+            "x": 0.75,
+            "y": 0.75
+          }
+        ],
+        "lines": [
+          {
+            "from": [
+              0.25,
+              0.75
+            ],
+            "to": [
+              1,
+              0.75
+            ]
+          },
+          {
+            "from": [
+              1,
+              0.75
+            ],
+            "to": [
+              0.25,
+              0
+            ]
+          },
+          {
+            "from": [
+              0.25,
+              0
+            ],
+            "to": [
+              0.25,
+              0.75
+            ]
+          },
+          {
+            "from": [
+              0.25,
+              0.75
+            ],
+            "to": [
+              0.75,
+              0.25
+            ]
+          }
+        ],
+        "objects": [],
+        "revealProgress": 1
+      }
+    },
+    {
+      "id": "outro",
+      "type": "outro",
+      "durationSeconds": 4,
+      "narration": "El truco era abandonar el límite imaginario. ¿Lo habías visto? Cuéntalo en los comentarios.",
+      "onScreenText": "¿LO RESOLVISTE?",
+      "subtitleText": "Comenta tu método",
+      "transition": "fade",
+      "visual": {
+        "template": "text",
+        "headline": "¿LO RESOLVISTE?",
+        "body": "Cuéntalo en los comentarios",
+        "accent": "extended-lines"
+      }
+    }
+  ],
+  "solution": {
+    "summary": "Extiende las líneas fuera del cuadrado imaginario. Con coordenadas x,y en {0,1,2}, una ruta válida de cuatro segmentos consecutivos es: (-1,-1) → (2,2) → (-1,2)",
+    "explanation": "Extiende las líneas fuera del cuadrado imaginario. Con coordenadas x,y en {0,1,2}, una ruta válida de cuatro segmentos consecutivos es: (-1,-1) → (2,2) → (-1,2) → (2,-1) → (2,1). Los segmentos pasan por los nueve puntos; algunas líneas empiezan o terminan fuera de la cuadrícula.",
+    "answerKey": {
+      "type": "nine-dots",
+      "lines": [
+        {
+          "from": [
+            0.25,
+            0.75
+          ],
+          "to": [
+            1,
+            0.75
+          ]
+        },
+        {
+          "from": [
+            1,
+            0.75
+          ],
+          "to": [
+            0.25,
+            0
+          ]
+        },
+        {
+          "from": [
+            0.25,
+            0
+          ],
+          "to": [
+            0.25,
+            0.75
+          ]
+        },
+        {
+          "from": [
+            0.25,
+            0.75
+          ],
+          "to": [
+            0.75,
+            0.25
+          ]
+        }
+      ],
+      "dots": [
+        {
+          "id": "d00",
+          "x": 0.25,
+          "y": 0.25
+        },
+        {
+          "id": "d01",
+          "x": 0.5,
+          "y": 0.25
+        },
+        {
+          "id": "d02",
+          "x": 0.75,
+          "y": 0.25
+        },
+        {
+          "id": "d10",
+          "x": 0.25,
+          "y": 0.5
+        },
+        {
+          "id": "d11",
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "id": "d12",
+          "x": 0.75,
+          "y": 0.5
+        },
+        {
+          "id": "d20",
+          "x": 0.25,
+          "y": 0.75
+        },
+        {
+          "id": "d21",
+          "x": 0.5,
+          "y": 0.75
+        },
+        {
+          "id": "d22",
+          "x": 0.75,
+          "y": 0.75
+        }
+      ]
+    },
+    "validationStatus": "auto_validated"
+  },
+  "callToAction": "¿Lo resolviste? Cuéntalo en los comentarios.",
+  "sources": [
+    "Adaptado de guion creativo s4-23-reto-nueve-puntos"
+  ],
+  "createdAt": "2026-10-18T10:38:56.484Z",
+  "schemaVersion": 1
+}

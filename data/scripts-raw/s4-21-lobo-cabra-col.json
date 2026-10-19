@@ -1,0 +1,153 @@
+{
+  "id": "s4-21-lobo-cabra-col",
+  "title": "Lobo, cabra y col: ¿cómo cruzas el río?",
+  "niche": "logica-pensamiento-lateral",
+  "format": "logic-puzzle",
+  "language": "es-ES",
+  "targetDurationSeconds": 34,
+  "aspectRatio": "9:16",
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "fps": 30,
+  "hook": "Tienes que cruzar un río con un lobo, una cabra y una col. Tu barca solo te permite llevar una cosa cada vez.",
+  "solution": "Lleva primero la cabra al otro lado y vuelve solo. Lleva el lobo y regresa con la cabra. Deja la cabra en la orilla inicial y lleva la col al otro lado. Vuelve solo y lleva la cabra al final. Nunca dejes al lobo solo con la cabra ni a la cabra sola con la col.",
+  "callToAction": "¿Habías encontrado el orden correcto?",
+  "sources": [],
+  "validation": {
+    "status": "verified",
+    "method": "La secuencia respeta las restricciones en cada estado de ambas orillas."
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSeconds": 5,
+      "narration": "Cruza el río con un lobo, una cabra y una col. La barca solo te permite llevar una cosa cada vez.",
+      "onScreenText": "LOBO + CABRA + COL\\nUNA COSA POR VIAJE",
+      "visual": {
+        "kind": "river-puzzle",
+        "leftBank": [
+          "farmer",
+          "wolf",
+          "goat",
+          "cabbage"
+        ],
+        "rightBank": [],
+        "boatCapacity": 1
+      },
+      "transition": "quick-zoom"
+    },
+    {
+      "id": "rules",
+      "type": "instruction",
+      "durationSeconds": 4,
+      "narration": "Si dejas solos al lobo y la cabra, el lobo se la come. Si dejas sola a la cabra con la col, se la come.",
+      "onScreenText": "LOBO + CABRA = PELIGRO\\nCABRA + COL = PELIGRO",
+      "visual": {
+        "kind": "constraint-cards",
+        "pairs": [
+          [
+            "wolf",
+            "goat"
+          ],
+          [
+            "goat",
+            "cabbage"
+          ]
+        ]
+      },
+      "transition": "slide"
+    },
+    {
+      "id": "think",
+      "type": "countdown",
+      "durationSeconds": 4,
+      "narration": "¿En qué orden debes hacer los viajes?",
+      "onScreenText": "ENCUENTRA EL ORDEN",
+      "visual": {
+        "kind": "countdown",
+        "seconds": 4,
+        "background": "river-puzzle"
+      },
+      "transition": "hold"
+    },
+    {
+      "id": "step1",
+      "type": "explanation",
+      "durationSeconds": 7,
+      "narration": "Primero cruza con la cabra y vuelve solo. Después lleva al lobo al otro lado, pero regresa con la cabra.",
+      "onScreenText": "1. LLEVA LA CABRA\\n2. VUELVE SOLO\\n3. LLEVA EL LOBO\\n4. REGRESA CON LA CABRA",
+      "visual": {
+        "kind": "river-sequence",
+        "moves": [
+          [
+            "farmer",
+            "goat"
+          ],
+          [
+            "farmer"
+          ],
+          [
+            "farmer",
+            "wolf"
+          ],
+          [
+            "farmer",
+            "goat"
+          ]
+        ],
+        "stepRange": [
+          1,
+          4
+        ]
+      },
+      "transition": "step-reveal"
+    },
+    {
+      "id": "reveal",
+      "type": "reveal",
+      "durationSeconds": 10,
+      "narration": "Ahora deja la cabra en la orilla inicial, lleva la col al otro lado, vuelve solo y finalmente cruza con la cabra. ¡Todos llegan sanos y salvos!",
+      "onScreenText": "5. DEJA LA CABRA\\n6. LLEVA LA COL\\n7. VUELVE SOLO\\n8. LLEVA LA CABRA",
+      "visual": {
+        "kind": "river-sequence",
+        "moves": [
+          [
+            "farmer"
+          ],
+          [
+            "farmer",
+            "cabbage"
+          ],
+          [
+            "farmer"
+          ],
+          [
+            "farmer",
+            "goat"
+          ]
+        ],
+        "stepRange": [
+          5,
+          8
+        ],
+        "finalState": "all-safe"
+      },
+      "transition": "success-reveal"
+    },
+    {
+      "id": "outro",
+      "type": "outro",
+      "durationSeconds": 4,
+      "narration": "La clave es saber cuándo llevar la cabra de vuelta. ¿Lo habías resuelto?",
+      "onScreenText": "LA CLAVE ES EL ORDEN",
+      "visual": {
+        "kind": "answer-card",
+        "accent": "river-crossing"
+      },
+      "transition": "fade"
+    }
+  ]
+}

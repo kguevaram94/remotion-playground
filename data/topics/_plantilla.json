@@ -1,0 +1,7 @@
+{
+  "id": "mi-reto",
+  "title": "¿Puedes resolver este acertijo?",
+  "formatHint": "logic-puzzle",
+  "language": "es",
+  "notes": "Formato oficial: logic-lateral. Usa data/topics/_plantilla-logic-lateral.json y data/templates/script-logic-lateral.json. Flujo: cp data/templates/script-logic-lateral.json data/topics/mi-reto.json → edita → npm run generar-short -- --input data/topics/mi-reto.json. Ejemplo: data/topics/s4-19-interruptores.json"
+}

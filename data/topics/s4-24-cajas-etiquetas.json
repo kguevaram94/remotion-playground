@@ -1,0 +1,138 @@
+{
+  "id": "s4-24-cajas-etiquetas",
+  "title": "Tres cajas, todas mal etiquetadas: ¿cuál abres?",
+  "language": "es",
+  "niche": "logic",
+  "format": "logic-puzzle",
+  "targetDurationSeconds": 32,
+  "aspectRatio": "9:16",
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "hook": "Hay tres cajas: una tiene solo manzanas, otra solo naranjas y otra una mezcla. Las tres etiquetas están equivocadas. ¿De cuál sacas una fruta para descubrirlas todas?",
+  "narration": "Hay tres cajas: manzanas, naranjas y mezcla. Todas las etiquetas están equivocadas. ¿De cuál sacas una fruta para descubrirlas todas? Cada caja contiene manzanas, naranjas o una mezcla, y ninguna etiqueta coincide con su contenido. Solo puedes sacar una fruta de una caja. ¿Cuál eliges? Empieza por la caja que dice «Mezcla». Recuerda: esa etiqueta también está mal. Esa caja no puede contener mezcla. Si sacas una manzana, sabes que solo contiene manzanas; si sacas una naranja, solo contiene naranjas. Las otras dos se identifican por eliminación. La mejor pista era la etiqueta que sabías que mentía. ¿Lo resolviste?",
+  "scenes": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSeconds": 5,
+      "narration": "Hay tres cajas: manzanas, naranjas y mezcla. Todas las etiquetas están equivocadas. ¿De cuál sacas una fruta para descubrirlas todas?",
+      "onScreenText": "3 CAJAS\n3 ETIQUETAS INCORRECTAS",
+      "subtitleText": "3 CAJAS",
+      "transition": "zoom",
+      "visual": {
+        "template": "labeled-boxes",
+        "labels": [
+          "Manzanas",
+          "Naranjas",
+          "Mezcla"
+        ],
+        "contentsHidden": true
+      }
+    },
+    {
+      "id": "rules",
+      "type": "instruction",
+      "durationSeconds": 4,
+      "narration": "Cada caja contiene manzanas, naranjas o una mezcla, y ninguna etiqueta coincide con su contenido.",
+      "onScreenText": "NINGUNA ETIQUETA ES CORRECTA",
+      "subtitleText": "NINGUNA ETIQUETA ES CORRECTA",
+      "transition": "slide-up",
+      "visual": {
+        "template": "labeled-boxes",
+        "labels": [
+          "Manzanas",
+          "Naranjas",
+          "Mezcla"
+        ],
+        "crossOutLabels": true
+      }
+    },
+    {
+      "id": "think",
+      "type": "countdown",
+      "durationSeconds": 5,
+      "narration": "Solo puedes sacar una fruta de una caja. ¿Cuál eliges?",
+      "onScreenText": "¿QUÉ CAJA ABRES?",
+      "subtitleText": "Cuenta atrás",
+      "transition": "none",
+      "visual": {
+        "template": "countdown",
+        "seconds": 5,
+        "label": "¿QUÉ CAJA ABRES?",
+        "background": "labeled-boxes"
+      }
+    },
+    {
+      "id": "hint",
+      "type": "hint",
+      "durationSeconds": 4,
+      "narration": "Empieza por la caja que dice «Mezcla». Recuerda: esa etiqueta también está mal.",
+      "onScreenText": "EMPIEZA POR «MEZCLA»",
+      "subtitleText": "EMPIEZA POR «MEZCLA»",
+      "transition": "fade",
+      "visual": {
+        "template": "labeled-boxes",
+        "labels": ["Manzanas", "Naranjas", "Mezcla"],
+        "highlightLabel": "Mezcla",
+        "contentsHidden": true,
+        "crossOutLabels": false
+      }
+    },
+    {
+      "id": "reveal",
+      "type": "reveal",
+      "durationSeconds": 10,
+      "narration": "Esa caja no puede contener mezcla. Si sacas una manzana, sabes que solo contiene manzanas; si sacas una naranja, solo contiene naranjas. Las otras dos se identifican por eliminación.",
+      "onScreenText": "LA CAJA «MEZCLA» NO ES MEZCLA\nUNA FRUTA REVELA SU CONTENIDO",
+      "subtitleText": "LA CAJA «MEZCLA» NO ES MEZCLA",
+      "transition": "fade",
+      "visual": {
+        "template": "box-deduction",
+        "firstBoxLabel": "Mezcla",
+        "sampleOneFruit": true,
+        "deduceRemainingBoxes": true
+      }
+    },
+    {
+      "id": "outro",
+      "type": "outro",
+      "durationSeconds": 4,
+      "narration": "La mejor pista era la etiqueta que sabías que mentía. ¿Lo resolviste?",
+      "onScreenText": "¿LO RESOLVISTE?",
+      "subtitleText": "Comenta tu método",
+      "transition": "fade",
+      "visual": {
+        "template": "text",
+        "headline": "¿LO RESOLVISTE?",
+        "body": "Cuéntalo en los comentarios",
+        "accent": "fruit-boxes"
+      }
+    }
+  ],
+  "solution": {
+    "summary": "Saca una fruta de la caja etiquetada «Mezcla». Como todas las etiquetas son incorrectas, esa caja no puede ser la mezcla: contiene solo manzanas o solo naranjas",
+    "explanation": "Saca una fruta de la caja etiquetada «Mezcla». Como todas las etiquetas son incorrectas, esa caja no puede ser la mezcla: contiene solo manzanas o solo naranjas. La fruta que saques identifica su contenido. Después, las otras dos cajas se deducen porque sus etiquetas también son falsas.",
+    "answerKey": {
+      "type": "s4-24-cajas-etiquetas",
+      "validation": {
+        "status": "verified",
+        "method": "Con tres contenidos distintos (solo manzanas, solo naranjas, mezcla) y tres etiquetas todas incorrectas, extraer una fruta de la caja etiquetada Mezcla identifica su contenido y determina los otros dos por eliminación.",
+        "assumptions": [
+          "Cada caja contiene exactamente uno de los tres tipos: solo manzanas, solo naranjas o mezcla.",
+          "Todas las etiquetas son incorrectas.",
+          "La fruta extraída se puede identificar claramente."
+        ]
+      }
+    },
+    "validationStatus": "partial"
+  },
+  "callToAction": "¿Lo resolviste? Cuéntalo en los comentarios.",
+  "sources": [
+    "Adaptado de guion creativo s4-24-cajas-etiquetas"
+  ],
+  "createdAt": "2026-10-18T10:38:56.484Z",
+  "schemaVersion": 1
+}

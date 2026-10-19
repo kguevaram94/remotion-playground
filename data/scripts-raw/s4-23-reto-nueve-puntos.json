@@ -1,0 +1,129 @@
+{
+  "id": "s4-23-reto-nueve-puntos",
+  "title": "Conecta los 9 puntos con solo 4 líneas rectas",
+  "niche": "logica-pensamiento-lateral",
+  "format": "logic-puzzle",
+  "language": "es-ES",
+  "targetDurationSeconds": 30,
+  "aspectRatio": "9:16",
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "fps": 30,
+  "hook": "¿Puedes conectar estos nueve puntos usando solo cuatro líneas rectas, sin levantar el lápiz?",
+  "solution": "Extiende las líneas fuera del cuadrado imaginario. Con coordenadas x,y en {0,1,2}, una ruta válida de cuatro segmentos consecutivos es: (-1,-1) → (2,2) → (-1,2) → (2,-1) → (2,1). Los segmentos pasan por los nueve puntos; algunas líneas empiezan o terminan fuera de la cuadrícula.",
+  "callToAction": "¿La clave era salirte del cuadrado imaginario?",
+  "sources": [],
+  "validation": {
+    "status": "verified",
+    "method": "Ruta comprobada geométricamente: cuatro segmentos consecutivos cubren los nueve puntos de la cuadrícula 3×3; las líneas pueden extenderse fuera de sus límites.",
+    "assumptions": [
+      "Los puntos están en una cuadrícula regular de 3 por 3.",
+      "Se permite que las líneas sobresalgan del cuadrado imaginario.",
+      "No se puede levantar el lápiz entre segmentos."
+    ]
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSeconds": 4,
+      "narration": "¿Puedes conectar estos nueve puntos usando solo cuatro líneas rectas, sin levantar el lápiz?",
+      "onScreenText": "9 PUNTOS\\n4 LÍNEAS\\nSIN LEVANTAR EL LÁPIZ",
+      "visual": {
+        "kind": "nine-dots",
+        "gridSize": 3,
+        "showSolution": false
+      },
+      "transition": "quick-zoom"
+    },
+    {
+      "id": "rules",
+      "type": "instruction",
+      "durationSeconds": 4,
+      "narration": "Debes pasar por los nueve puntos y dibujar las líneas seguidas.",
+      "onScreenText": "PASA POR LOS 9 PUNTOS",
+      "visual": {
+        "kind": "nine-dots",
+        "gridSize": 3,
+        "highlightRules": true
+      },
+      "transition": "slide"
+    },
+    {
+      "id": "think",
+      "type": "countdown",
+      "durationSeconds": 5,
+      "narration": "Pruébalo mentalmente. ¿Estás usando solo el espacio entre los puntos?",
+      "onScreenText": "PIENSA FUERA DE LA CAJA",
+      "visual": {
+        "kind": "countdown",
+        "seconds": 5,
+        "background": "nine-dots"
+      },
+      "transition": "hold"
+    },
+    {
+      "id": "hint",
+      "type": "hint",
+      "durationSeconds": 4,
+      "narration": "Pista: no tienes que quedarte dentro del cuadrado que forman.",
+      "onScreenText": "PUEDES SALIR DEL CUADRADO",
+      "visual": {
+        "kind": "nine-dots",
+        "showOuterGuide": true,
+        "showSolution": false
+      },
+      "transition": "glow"
+    },
+    {
+      "id": "reveal",
+      "type": "reveal",
+      "durationSeconds": 9,
+      "narration": "La solución consiste en prolongar las líneas más allá de los puntos exteriores. Mira cómo una ruta de cuatro segmentos pasa por los nueve.",
+      "onScreenText": "4 SEGMENTOS\\n9 PUNTOS CONECTADOS",
+      "visual": {
+        "kind": "nine-dots",
+        "gridSize": 3,
+        "solutionPath": [
+          [
+            -1,
+            -1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            -1,
+            2
+          ],
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "drawProgressively": true,
+        "showOutsideBounds": true
+      },
+      "transition": "path-draw"
+    },
+    {
+      "id": "outro",
+      "type": "outro",
+      "durationSeconds": 4,
+      "narration": "El truco era abandonar el límite imaginario. ¿Lo habías visto?",
+      "onScreenText": "PIENSA FUERA DE LA CAJA",
+      "visual": {
+        "kind": "answer-card",
+        "accent": "extended-lines"
+      },
+      "transition": "fade"
+    }
+  ]
+}

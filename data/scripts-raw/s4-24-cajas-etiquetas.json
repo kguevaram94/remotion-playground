@@ -1,0 +1,115 @@
+{
+  "id": "s4-24-cajas-etiquetas",
+  "title": "Tres cajas, todas mal etiquetadas: ¿cuál abres?",
+  "niche": "logica-pensamiento-lateral",
+  "format": "logic-puzzle",
+  "language": "es-ES",
+  "targetDurationSeconds": 32,
+  "aspectRatio": "9:16",
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "fps": 30,
+  "hook": "Hay tres cajas: una tiene solo manzanas, otra solo naranjas y otra una mezcla. Las tres etiquetas están equivocadas. ¿De cuál sacas una fruta para descubrirlas todas?",
+  "solution": "Saca una fruta de la caja etiquetada «Mezcla». Como todas las etiquetas son incorrectas, esa caja no puede ser la mezcla: contiene solo manzanas o solo naranjas. La fruta que saques identifica su contenido. Después, las otras dos cajas se deducen porque sus etiquetas también son falsas.",
+  "callToAction": "¿Por qué hay que empezar por la caja etiquetada «Mezcla»?",
+  "sources": [],
+  "validation": {
+    "status": "verified",
+    "method": "Con tres contenidos distintos (solo manzanas, solo naranjas, mezcla) y tres etiquetas todas incorrectas, extraer una fruta de la caja etiquetada Mezcla identifica su contenido y determina los otros dos por eliminación.",
+    "assumptions": [
+      "Cada caja contiene exactamente uno de los tres tipos: solo manzanas, solo naranjas o mezcla.",
+      "Todas las etiquetas son incorrectas.",
+      "La fruta extraída se puede identificar claramente."
+    ]
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSeconds": 5,
+      "narration": "Hay tres cajas: manzanas, naranjas y mezcla. Todas las etiquetas están equivocadas. ¿De cuál sacas una fruta para descubrirlas todas?",
+      "onScreenText": "3 CAJAS\\n3 ETIQUETAS INCORRECTAS",
+      "visual": {
+        "kind": "labeled-boxes",
+        "labels": [
+          "Manzanas",
+          "Naranjas",
+          "Mezcla"
+        ],
+        "contentsHidden": true
+      },
+      "transition": "quick-zoom"
+    },
+    {
+      "id": "rules",
+      "type": "instruction",
+      "durationSeconds": 4,
+      "narration": "Cada caja contiene manzanas, naranjas o una mezcla, y ninguna etiqueta coincide con su contenido.",
+      "onScreenText": "NINGUNA ETIQUETA ES CORRECTA",
+      "visual": {
+        "kind": "labeled-boxes",
+        "labels": [
+          "Manzanas",
+          "Naranjas",
+          "Mezcla"
+        ],
+        "crossOutLabels": true
+      },
+      "transition": "slide"
+    },
+    {
+      "id": "think",
+      "type": "countdown",
+      "durationSeconds": 5,
+      "narration": "Solo puedes sacar una fruta de una caja. ¿Cuál eliges?",
+      "onScreenText": "¿QUÉ CAJA ABRES?",
+      "visual": {
+        "kind": "countdown",
+        "seconds": 5,
+        "background": "labeled-boxes"
+      },
+      "transition": "hold"
+    },
+    {
+      "id": "hint",
+      "type": "hint",
+      "durationSeconds": 4,
+      "narration": "Empieza por la caja que dice «Mezcla». Recuerda: esa etiqueta también está mal.",
+      "onScreenText": "EMPIEZA POR «MEZCLA»",
+      "visual": {
+        "kind": "labeled-boxes",
+        "highlightLabel": "Mezcla",
+        "contentsHidden": true
+      },
+      "transition": "glow"
+    },
+    {
+      "id": "reveal",
+      "type": "reveal",
+      "durationSeconds": 10,
+      "narration": "Esa caja no puede contener mezcla. Si sacas una manzana, sabes que solo contiene manzanas; si sacas una naranja, solo contiene naranjas. Las otras dos se identifican por eliminación.",
+      "onScreenText": "LA CAJA «MEZCLA» NO ES MEZCLA\\nUNA FRUTA REVELA SU CONTENIDO",
+      "visual": {
+        "kind": "box-deduction",
+        "firstBoxLabel": "Mezcla",
+        "sampleOneFruit": true,
+        "deduceRemainingBoxes": true
+      },
+      "transition": "box-reveal"
+    },
+    {
+      "id": "outro",
+      "type": "outro",
+      "durationSeconds": 4,
+      "narration": "La mejor pista era la etiqueta que sabías que mentía. ¿Lo resolviste?",
+      "onScreenText": "USA LA INFORMACIÓN QUE SÍ CONOCES",
+      "visual": {
+        "kind": "answer-card",
+        "accent": "fruit-boxes"
+      },
+      "transition": "fade"
+    }
+  ]
+}

@@ -1,28 +1,62 @@
 {
   "name": "remotion-playground",
   "version": "1.0.0",
-  "description": "My Remotion video",
+  "description": "Fábrica de YouTube Shorts con Remotion",
   "repository": {},
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
+    "@remotion/captions": "^4.0.535",
     "@remotion/cli": "4.0.535",
+    "@remotion/media": "^4.0.535",
+    "@remotion/media-utils": "^4.0.535",
+    "@remotion/paths": "^4.0.535",
+    "@remotion/transitions": "^4.0.535",
+    "@resvg/resvg-js": "^2.6.2",
+    "commander": "^15.0.0",
+    "dotenv": "^18.0.8",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "remotion": "4.0.535"
+    "react-peeps": "^0.1.10",
+    "remotion": "4.0.535",
+    "satori": "^0.62.0",
+    "zod": "^4.5.4"
   },
   "devDependencies": {
+    "@remotion/bundler": "^4.0.535",
     "@remotion/eslint-config-flat": "4.0.535",
+    "@remotion/media-parser": "^4.0.535",
+    "@remotion/renderer": "^4.0.535",
+    "@types/node": "^26.6.5",
     "@types/react": "19.2.7",
     "@types/web": "0.0.166",
     "eslint": "9.39.5",
     "prettier": "3.8.1",
-    "typescript": "5.9.3"
+    "tsx": "^4.23.15",
+    "typescript": "5.9.3",
+    "vitest": "^5.0.5"
   },
   "scripts": {
     "dev": "remotion studio",
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
-    "lint": "eslint src && tsc"
+    "lint": "eslint src && tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "short": "tsx src/cli/short.ts",
+    "generar-short": "bash scripts/generar-short.sh",
+    "short:script": "tsx src/cli/short.ts --mode script",
+    "short:render": "tsx src/cli/short.ts --mode render",
+    "short:preview": "tsx src/cli/short.ts --mode preview",
+    "short:resume": "tsx src/cli/short.ts --mode resume",
+    "short:validate": "tsx src/cli/short.ts --mode validate",
+    "short:voice": "tsx src/cli/short.ts --mode voice",
+    "short:voices": "tsx src/cli/short.ts --mode voices",
+    "short:post": "tsx src/cli/short.ts --mode post",
+    "short:record": "tsx src/cli/record-voice.ts",
+    "short:clone-voice": "tsx src/cli/clone-voice.ts",
+    "short:preview-voices": "tsx src/cli/preview-openai-voices.ts",
+    "sfx:generate": "node scripts/generate-sfx.mjs"
   }
 }

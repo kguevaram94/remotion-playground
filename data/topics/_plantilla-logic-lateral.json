@@ -1,0 +1,7 @@
+{
+  "id": "mi-reto-logic-lateral",
+  "title": "¿Puedes resolver este acertijo de lógica lateral?",
+  "formatHint": "logic-puzzle",
+  "language": "es",
+  "notes": "Formato oficial logic-lateral. 1) cp data/templates/script-logic-lateral.json data/topics/mi-reto.json 2) Edita id, title, narrations y visuals 3) npm run generar-short -- --input data/topics/mi-reto.json. Referencia: data/topics/s4-19-interruptores.json y output/s4-19-interruptores/video.mp4. Beat: hook → rules → countdown → explanation → reveal → outro (CTA comentar)."
+}
