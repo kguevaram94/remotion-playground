@@ -31,7 +31,7 @@ npx remotion studio --props=output/s4-19-interruptores/studio-props.json
 
 El JSON incluye `script`, subtítulos (si hay SRT) y rutas `public/` de audio/música **si** existen bajo `public/shorts/<id>/`.
 
-**Limitación:** si el job nunca se renderizó (o no publicó narración), Studio irá sin audio. Eso es esperado.
+**Dependencia de audio:** narración y BGM en Studio **solo** funcionan si los archivos están publicados en `public/shorts/<id>/` (p. ej. `narration-*.wav`, `bg.mp3`). Sin esos archivos, Studio va mudo aunque exista `output/<id>/`. Eso es esperado.
 
 ### Otras familias (math / memory / illusion)
 

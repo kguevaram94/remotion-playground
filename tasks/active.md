@@ -13,10 +13,10 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 ## Estado de aprobación
 
-`review_required`
+`accepted`
 
-> Implementado 2026-10-19. Esperando revisión humana.  
-> P8 `blocked`. Sin commit/push/merge. Sin YouTube.
+> Aceptado 2026-10-19 por humano (chat Cursor) tras comprobaciones finales.  
+> P0–P6 `accepted`. P7 `accepted`. P8 `blocked`. Sin YouTube. Sin commit/push/merge en este acto.
 
 ## Objetivo
 
@@ -28,7 +28,6 @@ Studio / preview documentado y estable (tres vías + defaults + helper props).
 2. `shortVideoDefaultProps` ← plantilla logic-lateral (visual).
 3. `short:studio-props` → `studio-props.json` desde job.
 4. D015; tests `studio-preview.test.ts`.
-5. `npm test` 102 · `typecheck` OK · helper verificado con `s4-19-interruptores`.
 
 ## Criterios de aceptación
 
@@ -38,25 +37,30 @@ Studio / preview documentado y estable (tres vías + defaults + helper props).
 - [x] HelloRemotion / ScriptVideo / beats A–D no alterados (solo default ShortVideo).
 - [x] `npm test` + `typecheck` OK.
 - [x] Sin deps; sin publish.
-- [ ] Humano marca `accepted` (o rechaza).
+- [x] Humano marca `accepted` (2026-10-19, chat Cursor, sujeto a comprobaciones finales).
 
-## Pruebas ejecutadas
+## Pruebas de aceptación (re-ejecutadas 2026-10-19)
 
 ```bash
 npm test          # 21 files / 102 tests passed
 npm run typecheck # OK
 npm run short:studio-props -- --id s4-19-interruptores
 # → output/s4-19-interruptores/studio-props.json (hasAudio/hasMusic true)
+# Audio/música referencian public/shorts/s4-19-interruptores/
 ```
 
-**Nota:** no se afirma render/AV de aceptación; Studio default = visual sin voz.
+Default Studio verificado: familia `logic-lateral`, beat oficial, sin audio en defaults.
 
-## Limitaciones
+**Nota:** no se afirma render ni inspección audiovisual de aceptación.
+
+## Limitaciones / pendientes
 
 - Default Studio ≠ job con narración real.
-- Audio en Studio solo si existe bajo `public/shorts/<id>/`.
-- P8 / YouTube fuera de alcance.
+- **Audio en Studio depende de archivos disponibles en `public/shorts/<id>/`.**
+- Validación audiovisual real: **pendiente** (no bloquea el `accepted` de P7 código/docs).
+- P8 / YouTube fuera de alcance (`blocked`).
 
 ## Notas
 
-- Informe en `tasks/approvals.md`. Esperando humano antes de marcar P7 `accepted`.
+- Sin tarea de implementación siguiente autorizada. P8 permanece `blocked` hasta nueva decisión humana.
+- Evidencias y firma de aceptación en `tasks/approvals.md`.

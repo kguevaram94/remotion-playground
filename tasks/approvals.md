@@ -30,7 +30,7 @@ Código terminado ≠ `accepted`.
 | P4 | CI GitHub Actions | `accepted` | `.github/workflows/ci.yml`; run [39237385007](https://github.com/kguevaram94/remotion-playground/actions/runs/39237385007) en commit `fd74e44abe169808faf90132ce52960df33dd7ef` (success: `npm ci`, `npm run typecheck`, `npm test`) | humano (chat Cursor: aceptación explícita con evidencia CI) | 2026-10-19 |
 | P5 | Pulido logic-lateral | `accepted` | `T-POLISH-001` + `T-QC-LOUDNORM-001` `accepted`. BGM=0 pistas; sin validación audiovisual MP4 no-mock | humano (chat Cursor; código/tests/typecheck; limitación AV doc.) | 2026-10-19 |
 | P6 | Más familias plantilla | `accepted` | A+B+C+D `accepted`. Incorporación técnica (validate/tests); no AV de todos los formatos | humano (chat Cursor: aceptación D + cierre P6) | 2026-10-19 |
-| P7 | Studio/preview estable | `review_required` | `T-STUDIO-001` informe abajo | humano (approved); agente → review_required | 2026-10-19 |
+| P7 | Studio/preview estable | `accepted` | `T-STUDIO-001` aceptación abajo; re-verificación 2026-10-19 (test/typecheck/studio-props); AV pendiente | humano (chat Cursor: aceptación explícita sujeta a comprobaciones) | 2026-10-19 |
 | P8 | Publicación YouTube | `blocked` | Descartado por ahora (`ROADMAP` / D-future) | — | — |
 
 ## Tablero de tareas
@@ -42,7 +42,7 @@ Código terminado ≠ `accepted`.
 | `T-POLISH-001` | P5 | Pulido logic-lateral (SFX, BGM curada, thumb Satori, loudnorm narración→MP4) | `accepted` | Aceptado 2026-10-19 (código/tests/typecheck; limitación AV documentada). Sin commit/push |
 | `T-QC-LOUDNORM-001` | P5 | Gate QC loudnorm + publishEligibility | `accepted` | Aceptado 2026-10-19 (auditoría final 7/7 PASS; 72 tests; typecheck OK) |
 | `T-MULTIFORMAT-001` | P6 | Multiformato (entregas A–D) | A+B+C+D: `accepted` · P6: `accepted` | Cierre 2026-10-19; P8 `blocked` |
-| `T-STUDIO-001` | P7 | Studio / preview workflow estable | `review_required` | Informe abajo; P8 `blocked` |
+| `T-STUDIO-001` | P7 | Studio / preview workflow estable | `accepted` | Aceptado 2026-10-19; audio Studio = `public/shorts/<id>/`; AV pendiente; P8 `blocked` |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -60,18 +60,36 @@ Código terminado ≠ `accepted`.
 
 ## Tarea activa / alcance aprobado
 
-> Tarea activa: `T-STUDIO-001` · P7 · **`review_required`**.  
-> P6 = `accepted`. P7 = `review_required`. P8 = `blocked`. P5 / QC = `accepted`.
+> Última tarea cerrada: `T-STUDIO-001` · P7 · **`accepted`**.  
+> P0–P6 = `accepted`. P7 = `accepted`. P8 = `blocked`. Sin implementación siguiente autorizada. Sin YouTube.
 
-### `T-STUDIO-001` · P7 · `review_required`
+### `T-STUDIO-001` · P7 · `accepted`
 
-#### Aprobación humana — P7 / T-STUDIO-001 (2026-10-19)
+#### Aceptación humana — P7 / T-STUDIO-001 (2026-10-19)
+
+Estado: **`accepted`**. Fase P7: **`accepted`** (humano, chat Cursor 2026-10-19).
+
+La revisión humana acepta el alcance entregado **sujeto a comprobaciones finales**, que el agente re-ejecutó y pasó:
+
+- Diff (commit `1e2151c`) dentro del alcance P7: docs Studio, defaults ShortVideo ← logic-lateral, helper `short:studio-props`, tests, D015; sin deps; sin P5/QC; sin alterar beats A–D ni contratos HelloRemotion/ScriptVideo.
+- `npm test` → 21 files / **102** tests passed.
+- `npm run typecheck` → OK.
+- `npm run short:studio-props -- --id s4-19-interruptores` → `studio-props.json` con `hasAudio: true`, `hasMusic: true` (rutas bajo `public/shorts/s4-19-interruptores/`).
+- Default Studio: familia resuelta `logic-lateral`, beat oficial; audio/música `null` en defaults (solo visual).
+
+**Documentado explícitamente:** el audio en Studio depende de los archivos disponibles en `public/shorts/<id>/`. Sin esos archivos, Studio va mudo (esperado).
+
+**Pendiente (no bloquea `accepted` de P7):** validación audiovisual real (render/inspección humana de preview). **No** se afirma render ni inspección AV en este acto.
+
+**No autorizado en este acto:** P8 / YouTube; deps nuevas; tocar P5/QC o beats; commit/push/merge.
+
+#### Aprobación humana de inicio — P7 / T-STUDIO-001 (2026-10-19)
 
 - **Alcance autorizado:** Studio/preview documentado y estable (docs, defaults ShortVideo en Studio, helper `studio-props`, tests); sin YouTube; sin alterar beats ni HelloRemotion/ScriptVideo; sin deps; sin P5/QC; sin commit/push/merge.
 - **Aprobado por:** humano (chat Cursor: `approved`).
-- **Estado:** `approved` → `in_progress` → **`review_required`**.
+- **Estado:** `approved` → `in_progress` → `review_required` → **`accepted`**.
 
-#### Informe de revisión — `T-STUDIO-001` / P7
+#### Informe de revisión — `T-STUDIO-001` / P7 (pre-aceptación)
 
 - **Cambios:**
   - Nuevo: `docs/studio-preview.md`, `src/shorts/remotion/studio-defaults.ts`, `studio-props.ts`, `src/cli/studio-props.ts`, `tests/unit/studio-preview.test.ts`
@@ -79,12 +97,11 @@ Código terminado ≠ `accepted`.
   - `package.json` script `short:studio-props`
   - Docs: README, usage, tooling, troubleshooting, ARCHITECTURE, D015
 - **Decisiones:** tres vías (Studio / CLI preview / post preview); Studio no vacío; helper props desde job.
-- **Comandos:**
+- **Comandos (implementación + re-verificación de aceptación):**
   - `npm test` → 21 files / **102** tests passed · `typecheck` OK
-  - `npm run short:studio-props -- --id s4-19-interruptores` → `studio-props.json` (audio+music)
-- **Limitaciones:** default Studio sin voz; no render/AV de aceptación; P8 blocked.
-- **Estado propuesto:** `review_required`; P7 no `accepted` hasta humano.
-- **Siguiente:** humano acepta P7; P8 sigue `blocked` hasta nueva decisión.
+  - `npm run short:studio-props -- --id s4-19-interruptores` → `studio-props.json` (audio+music vía `public/shorts/<id>/`)
+- **Limitaciones:** default Studio sin voz; audio Studio = `public/shorts/<id>/`; AV real pendiente; P8 blocked.
+- **Estado final:** `accepted` (P7); P8 `blocked`.
 
 ---
 

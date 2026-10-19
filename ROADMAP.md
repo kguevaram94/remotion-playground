@@ -8,7 +8,7 @@ Protocolo: `AGENTS.md` (ChatGPT planifica/revisa · Cursor implementa · GitHub 
 
 1. **P5 pulido logic-lateral** — `accepted` (2026-10-19). `T-POLISH-001` + `T-QC-LOUDNORM-001` `accepted` (limitación audiovisual documentada en `tasks/approvals.md`).
 2. **P6 / `T-MULTIFORMAT-001`:** `accepted` (2026-10-19). A+B+C+D `accepted`. Incorporación técnica de familias; no validación audiovisual de todos los formatos.
-3. **P7 / `T-STUDIO-001`:** `review_required` (2026-10-19). P8 permanece `blocked`.
+3. **P7 / `T-STUDIO-001`:** `accepted` (2026-10-19). Studio/preview documentado y estable; audio Studio depende de `public/shorts/<id>/`; validación AV real pendiente. P8 permanece `blocked`.
 4. P3: `accepted` (2026-10-19, informe de revisión).
 5. P4: `accepted` (2026-10-19, evidencia CI run 39237385007).
 
@@ -23,7 +23,7 @@ Protocolo: `AGENTS.md` (ChatGPT planifica/revisa · Cursor implementa · GitHub 
 | P4 | CI GitHub Actions (`test` + `typecheck`) | — | P0 | `accepted` |
 | P5 | Pulido logic-lateral (SFX, música, thumbnail, loudnorm) | P1 | P1 | `accepted` |
 | P6 | Más familias de plantilla (math, memory, illusion) al nivel logic-lateral | P1, P2 | P2 | `accepted` |
-| P7 | Studio / preview workflow documentado y estable | P0 | P2 | `review_required` |
+| P7 | Studio / preview workflow documentado y estable | P0 | P2 | `accepted` |
 | P8 | Publicación YouTube (metadata, upload, schedule) | P5 | P3 | `blocked` |
 
 Estados: `proposed` · `approved` · `in_progress` · `review_required` · `accepted` · `blocked`  
@@ -37,7 +37,8 @@ P0 ──► P1 ──► P5 ──► P8 (futuro / blocked)
  │      └──► P6 (accepted)
  ├──► P2
  ├──► P3
- └──► P4
+ ├──► P4
+ └──► P7 (accepted)
 ```
 
 ## Criterios para avanzar de fase
@@ -52,11 +53,11 @@ P0 ──► P1 ──► P5 ──► P8 (futuro / blocked)
 
 | Campo | Valor |
 | --- | --- |
-| ID | `T-STUDIO-001` |
-| Fase | P7 |
-| Estado | P7 `review_required` · P8 `blocked` |
-| Objetivo | Studio / preview workflow documentado y estable |
-| Depende de | P0 `accepted`; P6 `accepted` |
+| ID | — (ninguna implementación activa) |
+| Fase | P0–P7 `accepted` · P8 `blocked` |
+| Estado | Esperando decisión humana; P8 no iniciado |
+| Última cerrada | `T-STUDIO-001` / P7 `accepted` (2026-10-19) |
+| Nota P7 | Audio Studio = `public/shorts/<id>/`; AV real pendiente |
 | Nota P6 | Incorporación técnica de familias; no AV de todos los formatos |
 | Nota P5 | Limitación audiovisual documentada |
 
