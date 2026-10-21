@@ -13,12 +13,12 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 ## Estado de aprobación
 
-`review_required` (**fase 2B** implementada + correcciones auditoría #4/#9) · fase 2C **no autorizada** · fase 2A permanece `accepted` (con reserva técnica) · fase 1 permanece `accepted` (con reservas I-R*/M-R*)
+`accepted` (**fase 2B** con limitaciones explícitas; hallazgos #4/#9 cerrados) · fase 2C **no autorizada / no iniciada** · fase 2A permanece `accepted` (con reserva técnica) · fase 1 permanece `accepted` (con reservas I-R*/M-R*)
 
-> Autorización humana 2026-10-21 (chat Cursor): **fase 2B** — identidad de caché (SHA-256 contenido ref) + huella de pins declarados + params de síntesis.  
-> Autorización humana 2026-10-21 (chat Cursor): correcciones auditoría 2B **solo** hallazgos **#4** (pins estrictos) y **#9** (test cableado `generate-voice`).  
+> Aceptación humana 2026-10-21 (chat Cursor): **fase 2B** — identidad de caché Chatterbox (`accepted` + limitaciones; esquema sin `accepted_with_reservation`).  
+> Base: auditoría final (hallazgos **#4** / **#9** PASS; `npm test` 141; `npm run typecheck` OK; entrega `c119717`).  
 > **No** autorizado: 2C, QC, `verified_provenance`, pipeline render/post, inferencia real, descargas, commit/push/merge/rebase, P8.  
-> Fase 2A: `accepted` con reserva técnica (`exists`/`size`/`mtimeMs`) — **intacta**.  
+> Fase 2A: `accepted` con reserva técnica (`exists`/`size`/`mtimeMs`) — **abierta / intacta**.  
 > Fase 1: `accepted` con reservas I-R1–I-R4 / M-R1–M-R5 (**abiertas**).  
 > P0–P7 `accepted`. `T-AV-QC-001` `accepted`. P8 `blocked`.  
 > `T-CHATTERBOX-001` intacto (`proposed`).
@@ -73,7 +73,7 @@ Ampliar la clave de caché de narración **solo para Chatterbox** con identidad 
 - [x] Otros providers conservan comportamiento de clave.
 - [x] Serialización determinista; sin red/pesos/inferencia en tests.
 - [x] Limitación documentada: pins declarados ≠ prueba de paquetes instalados.
-- [ ] Revisión humana de fase 2B — **no** `accepted` automático.
+- [x] Revisión humana de fase 2B — `accepted` (con limitaciones; 2026-10-21).
 - [ ] Fase 2C: **no autorizada / no iniciada**.
 
 ## Pruebas a ejecutar
@@ -94,5 +94,6 @@ npm run typecheck
 
 ## Notas
 
-- Estado tras implementación + correcciones #4/#9: `review_required` (fase 2B). Esperando humano. **No** `accepted`.
+- Estado tras aceptación humana: fase 2B **`accepted` (con limitaciones)**. Hallazgos #4/#9 cerrados. **No** `verified_provenance`.
+- Reservas fase 1 I-R*/M-R* y reserva técnica 2A **siguen abiertas**.
 - Siguiente propuesta: fase 2C (pipeline/QC) en `proposed` — **requiere nuevo `approved`**; **no** iniciar.
