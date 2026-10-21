@@ -44,6 +44,8 @@ Código terminado ≠ `accepted`.
 | `T-MULTIFORMAT-001` | P6 | Multiformato (entregas A–D) | A+B+C+D: `accepted` · P6: `accepted` | Cierre 2026-10-19; P8 `blocked` |
 | `T-STUDIO-001` | P7 | Studio / preview workflow estable | `accepted` | Aceptado 2026-10-19; audio Studio = `public/shorts/<id>/`; AV → `T-AV-QC-001` `accepted`; P8 `blocked` |
 | `T-AV-QC-001` | post-P7 / pre-P8 | Validación audiovisual real (4 familias) | `accepted` | Aceptado 2026-10-19 (chat Cursor); 4× MP4 Cedar; P8 `blocked` |
+| `T-CHATTERBOX-001` | transversal post-P7 / pre-P8 | Estudio + piloto Chatterbox (fuera del pipeline) | `proposed` | Historial intacto. Nota 2026-10-21: piloto técnico MPS OK; humano aceptó la muestra. **No** `accepted`. Integración → `T-CHATTERBOX-002`. P8 `blocked` |
+| `T-CHATTERBOX-002` | transversal post-P7 / pre-P8 | Integración Chatterbox (`VoiceProvider`) | fase 1: `accepted` (con reservas) · fase 2: **no autorizada** | Aceptación acotada 2026-10-21 (chat Cursor). Reservas I-R1–I-R4, M-R1–M-R5 abiertas. Sin inferencia real. P8 `blocked` |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -61,8 +63,308 @@ Código terminado ≠ `accepted`.
 
 ## Tarea activa / alcance aprobado
 
-> Última tarea cerrada: `T-AV-QC-001` · **`accepted`** (2026-10-19).  
-> P0–P7 = `accepted`. P8 = `blocked`. Sin implementación siguiente autorizada. Sin YouTube.
+> Tarea activa: `T-CHATTERBOX-002` · **fase 1 `accepted` (con reservas)** · **fase 2 no autorizada** (2026-10-21).  
+> Precedente: `T-CHATTERBOX-001` permanece **`proposed`** (historial intacto; **no** marcado `accepted`).  
+> Nota piloto (001, 2026-10-21): generación técnica OK en Apple Silicon (MPS); el humano aceptó la muestra de audio.  
+> Última entrega cerrada (acotada): fase 1 de `T-CHATTERBOX-002` · `accepted` con reservas I-R1–I-R4 / M-R1–M-R5.  
+> Prevía cerrada completa: `T-AV-QC-001` · `accepted` (2026-10-19).  
+> P0–P7 = `accepted`. P8 = `blocked`. Sin YouTube. **Fase 2 / Node / pipeline no autorizados.** Sin inferencia real en remediación.
+
+---
+
+### `T-CHATTERBOX-002` · transversal post-P7 / pre-P8 · fase 1 `accepted` (con reservas) · fase 2 no autorizada
+
+#### Resumen
+
+Fase 1 (CLI Python + docs + pins + tests aislados) implementada, remediada (B1–B2, I1–I6, M1–M8) y **aceptada con reservas** por humano (2026-10-21). Diseño de integración Node permanece documentado abajo; **fase 2 no iniciada ni autorizada**.
+
+#### Aceptación humana — fase 1 únicamente (2026-10-21)
+
+Estado de **fase 1:** **`accepted` (con reservas)**.  
+Estado de **fase 2:** **no autorizada** (sigue pendiente de decisión humana).  
+Estado de la tarea en tablero: compuesto (fase 1 aceptada acotada · fase 2 no autorizada) — **no** implica cierre completo de `T-CHATTERBOX-002`.
+
+**Elección de estado:** el esquema oficial (`proposed` \| `approved` \| `in_progress` \| `review_required` \| `accepted` \| `blocked`) **no** define `accepted_with_reservations`. Se usa el equivalente ya establecido en el proyecto: **`accepted` + limitaciones/reservas explícitas y vinculantes** (mismo patrón que P5/P7 con limitaciones documentadas). No se inventó un estado nuevo incompatible.
+
+**Aceptado por:** humano (chat Cursor: aceptación acotada de fase 1 CLI aislado, docs, pins y tests sintéticos).  
+**Alcance aceptado:** únicamente fase 1 remediada bajo `tools/chatterbox/` + gobernanza asociada.  
+**Explícito:** **no** se realizó inferencia real durante la remediación ni en este acto de registro.
+
+**Reservas vigentes (abiertas — no son verificaciones superadas):**
+
+| ID | Hallazgo | Tipo | Notas de trazabilidad |
+| --- | --- | --- | --- |
+| **I-R1** | WAV huérfano si falla `--meta-out` tras WAV OK | importante | Sin transacción WAV+meta; exit 1 pero el WAV puede permanecer |
+| **I-R2** | Parche MPS más ancho que “solo carga” | importante | Context manager cubre generate+write; comportamiento real de `torch.load` no demostrado sin PyTorch |
+| **I-R3** | Meta `weights_only` / `mps_patch` mezclan piloto con runtime | importante | Claims de corrida ≠ hechos solo de esta ejecución |
+| **I-R4** | Cleanup de temp ante fallo post-escritura casi sin test | importante | Gap de cobertura sintética |
+| **M-R1** | Sin test dedicado `--meta-out == --ref` | menor | Código presente; test solo `output==ref` |
+| **M-R2** | Sin test symlink / permisos / destino=directorio | menor | Preflight presente; permisos = manual |
+| **M-R3** | Sin `peak_abs_after` explícito | menor | Tras clamp implícito ≤1 |
+| **M-R4** | Rangos 0–1 / temp≤2 documentados, no medidos vs modelo real | menor | Requiere smoke manual |
+| **M-R5** | Tipado `preflight` → `dict[str, Path]` con `meta: None` | menor | Estático |
+
+**Pruebas manuales pendientes (no superadas en esta fase):**
+
+- [ ] Checkpoints / carga real de pesos
+- [ ] Compatibilidad real de `conds.pt`
+- [ ] MPS real (`torch.load` / device)
+- [ ] Watermark Perth (política documentada ≠ verificación)
+
+**No autorizado en este acto:** fase 2; provider Node / factory / env / caché / pipeline / QC / elegibilidad de publicación; instalar deps; descargar pesos; inferencia; modificar código CLI; commit/push/merge; P8; YouTube; APIs de pago; daemon.
+
+#### Historial — remediación fase 1 (2026-10-21) — evidencias (conservadas)
+
+Ciclo previo: remediación autorizada → `in_progress` → `review_required` → **aceptación acotada arriba**.
+
+| Hallazgo | Estado | Notas |
+| --- | --- | --- |
+| B1 protección archivos | corregido | `--force`; nunca sobre `--ref`; atomic replace; tests integridad |
+| B2 NaN/±Inf | corregido | fail-fast antes de pico/PCM16; tests NaN/+Inf/-Inf |
+| I1 parche `torch.load` | corregido | context manager + solo `device=mps`; restore sintético sin torch |
+| I2 `weights_only` / checkpoints | corregido (docs) | README hecho vs hipótesis; `conds.pt` pendiente manual |
+| I3 integridad WAV | corregido | ≥1 sample; duración >0; RIFF/WAVE; tests |
+| I4 CLI | corregido | rangos finitos; preflight paths; exit codes documentados |
+| I5 README tests | corregido | solo `cd tools/chatterbox && python3.11 -m unittest …` |
+| I6 cobertura tests | corregido | ampliada; límites de inferencia explícitos |
+| M1–M8 | corregido / doc | ver informe de revisión del agente |
+
+**Prueba local (sin torch/pesos/inferencia):** `cd tools/chatterbox && python3.11 -m unittest test_synthesize -v`  
+**Nota vinculante:** esa suite **no** valida inferencia real, checkpoints, `conds.pt`, MPS real ni Perth.
+
+#### Estado de aprobación (histórico pre-aceptación)
+
+`review_required` — 2026-10-21 (agente, tras remediación).  
+Autorización humana de remediación **exclusiva** de fase 1 (2026-10-21). En ese momento: **No** `accepted`. **No** fase 2.  
+Superseded por la aceptación acotada de fase 1 (sección anterior).
+
+**Diseño condicional original (integración futura)** — conservado:
+
+#### Nota de continuidad respecto a `T-CHATTERBOX-001`
+
+- Historial y estado oficial de **001** se conservan (`proposed`); **no** se marca `accepted` en este acto.
+- Registro separado (hecho humano, 2026-10-21): piloto técnico fuera del repo generó audio en **MPS**; el usuario **aceptó la muestra** para el uso previsto.
+- Stack medido en piloto (no afirmar compatibilidad general): Python **3.11.17**, torch/torchaudio **2.6.0**, `chatterbox-tts==0.1.7`, modelo `ResembleAI/Chatterbox-Multilingual-es-es`, loader custom es-es con `strict=False` + parche MPS `torch.load`/`map_location`.
+- WAV piloto: IEEE Float32, picos abs ≈ 1.12 (≈0,06 % muestras >1) → la integración exige clamp + PCM S16LE 24 kHz mono antes de concat/loudnorm.
+
+#### Requisitos condicionados (vinculantes para una futura implementación)
+
+1. **Caché:** SHA-256 del **contenido** de la ref vocal + identificación reproducible de modelo (manifiesto de pesos) + runtime pin; no depender solo de mtime/size.
+2. **CLI:** validar WAV (formato/dims); tratar Float32 >1,0 con hard clamp → PCM16; meta con `peak_abs_before` / `samples_clamped`.
+3. **Procedencia:** sin debilitar `verified_provenance` ni cambiar elegibilidad QC; render sigue ligado al WAV loudnorm exacto (`render-narration.json` + sha1).
+4. **Versiones:** fijar solo las probadas (arriba); documentar loader custom / `strict=False` / parche MPS.
+5. **Segmentos/pausas:** documentar coste ≈ N×(load+gen) por cold start; **sin** daemon ni cambio de segmentación sin decisión explícita. Timeout dedicado (`CHATTERBOX_TIMEOUT_MS`, sugerido ≥300000).
+6. **Paths:** sin rutas absolutas personales en código versionado; `.env` local → runtime/pesos fuera de Git.
+7. **Ignore:** proteger `data/voices/*.wav`, venvs, cachés HF, pesos; **no** borrar artefactos locales existentes.
+8. Piloto / pesos / ref permanecen fuera del tree de Git.
+
+#### Archivos previstos (solo tras `approved` de implementación)
+
+| Área | Paths |
+| --- | --- |
+| CLI Python | `tools/chatterbox/synthesize.py`, README, pins documentados |
+| Provider | `src/shorts/voice/chatterbox.ts`, `provider.ts`, `config/env.ts` |
+| Pipeline | `generate-voice.ts` (cache key SHA-256 + runtime pin) |
+| Docs / env | `.env.example` (placeholders), `docs/voice.md`, `ARCHITECTURE.md`, `DECISIONS.md` |
+| Ignore / tests | `.gitignore`, `tests/unit/voice*.test.ts` (spawn mock; sin pesos en CI) |
+
+**No tocar en implementación:** beats, plantillas, gate QC loudnorm, orden voice→loudnorm→render→post, `HelloRemotion` / `ScriptVideo`, P8.
+
+#### Criterios de aceptación (implementación futura)
+
+- [ ] CLI → PCM16 24 kHz mono; clamp documentado; fallos ≠ mock.
+- [ ] Caché con SHA-256 ref + manifiesto/runtime pin.
+- [ ] Job de prueba: loudnorm + `verified_provenance`; elegibilidad sin cambio de criterio.
+- [ ] Docs de stack pinneado + coste por segmento; sin daemon.
+- [ ] Sin paths personales en tree; gitignore; sin muestras/pesos en Git.
+- [ ] `npm test` + `typecheck`; providers actuales sin regresión.
+
+#### Recomendación (tras aceptación acotada de fase 1)
+
+1. Fase 1 queda **`accepted` con reservas** (I-R1–I-R4, M-R1–M-R5 abiertas; sin inferencia real).
+2. **No** iniciar fase 2 ni § archivos de integración Node hasta `approved` / autorización humana explícita.
+3. Conservar OpenAI / file / ElevenLabs / macos-say / mock.
+4. Pendientes manuales (checkpoints, `conds.pt`, MPS, Perth) no cuentan como superados.
+
+---
+
+### `T-CHATTERBOX-001` · transversal post-P7 / pre-P8 · `proposed`
+
+#### Resumen
+
+Estudiar Chatterbox como proveedor local de voz (clonación con muestra propia) para Shorts, sin tocar Remotion ni el contrato loudnorm/QC aceptado. Esta entrega es **solo propuesta**.
+
+#### Estado de aprobación
+
+`proposed` — 2026-10-21 (agente, chat Cursor). Historial **conservado**; **no** pasado a `accepted` en el registro de 002.
+
+##### Nota posterior (2026-10-21) — piloto / muestra (sin cerrar la tarea)
+
+Registro **separado** del estado oficial (sigue `proposed`):
+
+- Piloto técnico fuera de Git: generación OK en Apple Silicon vía **MPS** (métricas en entorno piloto local).
+- Humano (chat Cursor): escuchó el resultado y **aceptó la muestra** para el uso previsto.
+- La planificación de integración continúa en **`T-CHATTERBOX-002`** (`proposed`); 001 no se marca `accepted` sin autorización expresa.
+
+**No autorizado (001):** marcar `accepted` automáticamente; integrar pipeline; commit/push/merge; P8; publicar; APIs de pago.
+
+#### Diagnóstico Git (2026-10-21)
+
+| Campo | Valor |
+| --- | --- |
+| Branch | `main` sync con `origin/main` |
+| Working tree | limpio |
+| HEAD | `5e9ce16` (aceptación `T-AV-QC-001`) |
+| Cambios ajenos | ninguno a sobrescribir |
+
+#### 1. Diagnóstico del sistema de voz actual
+
+| Pieza | Hecho verificado en repo |
+| --- | --- |
+| Interfaz | `VoiceProvider` en `src/shorts/voice/provider.ts`: `synthesize(text, outputPath, ctx?) → VoiceResult` |
+| Factory | `createVoiceProvider(config)`: `mock` \| `macos-say` \| `openai-tts` \| `elevenlabs` \| `file` |
+| Config | `VoiceProviderName` + env en `src/shorts/config/env.ts`; `.env.example` documenta los cinco |
+| Pipeline | `runGenerateVoice` → `narration.wav` + `voice-meta.json` → loudnorm (no mock) → subtítulos → render usa WAV normalizado → post **no** crea loudnorm → QC por provenance |
+| Caché | `narrationCacheKey(text+pausas, provider, model|name|speed|instructions|…)` evita regenerar si hash coincide |
+| Mock | `isTestAudio=true`, banner, loudnorm omitido, nunca `eligible` |
+| Procedencia | `render-narration.json` / `NarrationRenderKind`: `loudnorm` \| `raw` \| `mock`; QC `verified_provenance` |
+| Sample rates | macOS→WAV 22050; OpenAI/concat documentados a 24 kHz; `concatWavFiles` **no** resamplea |
+| Tests | `tests/unit/voice.test.ts` solo cubre `MockVoiceProvider` |
+| Docs | `docs/voice.md`, `docs/openai-tts.md`, `docs/ARCHITECTURE.md` |
+| Muestra propia hoy | `VOICE_PROVIDER=file` o ElevenLabs clone (`data/voices/me.wav` documentado; **no** gitignored aún salvo `output/voice-samples/`) |
+
+Flujo de referencia (intacto):  
+`generating_voice` → `ensureNarrationLoudnorm` → `generating_subtitles` (cues de `voice-meta`) → `rendering` (`selectNarrationSourceForRender` + publish) → `post_process` → `quality_check`.
+
+#### 2. Compatibilidad y requisitos Chatterbox
+
+Fuente principal: [resemble-ai/chatterbox](https://github.com/resemble-ai/chatterbox) + card HF [`ResembleAI/Chatterbox-Multilingual-es-es`](https://huggingface.co/ResembleAI/Chatterbox-Multilingual-es-es).
+
+##### Hechos confirmados (documentación upstream)
+
+| Tema | Hecho |
+| --- | --- |
+| Software | Repo MIT; card `es-es` también `license: mit` |
+| Multilingual V3 | ~500M; 23+ idiomas incl. `es`; API `ChatterboxMultilingualTTS.from_pretrained(..., t3_model="v3")` |
+| Single Language Pack | Finetune España: `ResembleAI/Chatterbox-Multilingual-es-es` (locale `es-ES`, language_id `es`); pesos T3 ~2.14 GB + S3Gen ~1.06 GB |
+| Clonación | `audio_prompt_path` / referencia WAV en `generate(...)` |
+| Sample rate salida | `S3GEN_SR = 24000` (compatible con concat OpenAI del repo) |
+| Python | Desarrollado/probado en **Python 3.11** (Debian); `pip install chatterbox-tts` |
+| Device API | Docs admiten `"cuda"` / `"cpu"` / `"mps"` |
+| Watermark | Perth implícito en **todo** audio generado |
+| Turbo/Nano | Solo inglés; **no** aptos como sustituto es-ES de producción |
+
+##### Hipótesis / pendientes de medir en este Mac
+
+| Tema | Estado |
+| --- | --- |
+| MPS estable en Multilingual V3 / `es-es` | Comunidad: hace falta parche `torch.load` `map_location` (`example_for_mac.py`); issues de install Apple Silicon (#336, #275). **No ejecutado aquí.** |
+| RAM / tiempo cold-start / RTF | No medido; comunidad ~5–6 GB VRAM en NVIDIA para 500M — en Apple Silicon es unificado, cifra local desconocida |
+| Calidad es-ES + acento andaluz con *tu* referencia | No afirmable sin piloto + escucha humana |
+| Loader oficial del pack `es-es` vs demo Space | Card indica assets del Space + código compartido; integración local exacta **por verificar** en piloto |
+| Memory leak en workers largos MPS | Reportado en comunidad (#218) — favorece proceso efímero (opción A) |
+
+#### 3. Comparación de arquitecturas
+
+| | **A. Proceso Python one-shot** (Node `spawn`) | **B. Servicio HTTP localhost** |
+| --- | --- | --- |
+| Patrón | Como `macos-say` / CLI | Daemon + `POST /synthesize` |
+| Cold start | Cada invocación carga modelo (coste alto si el load es lento) | Load una vez; requests baratos |
+| Memoria | Se libera al salir | Resident; riesgo leak MPS en sesiones largas |
+| Ops | Sin puerto ni healthcheck | Puerto, restart, logs, conflicto de puerto |
+| Encaje repo | Mínimo; fácil de gitignore el venv | Más superficie (systemd/launchd, CORS, auth local) |
+| Escala batch | Peor si N shorts seguidos | Mejor |
+
+**Recomendación:** **A** para piloto e integración inicial.  
+Justificación: generación es batch (1 narración/short), el repo ya spawnea procesos externos, evita daemon y leak MPS, y el CLI Python puede reutilizarse luego detrás de B sin cambiar `VoiceProvider`. Revisar B solo si el piloto demuestra que el cold-start domina el tiempo total en sesiones multi-short.
+
+#### 4. Archivos que previsiblemente cambiarían (solo tras `approved` de integración)
+
+| Área | Paths previstos |
+| --- | --- |
+| Provider | `src/shorts/voice/chatterbox.ts` (nuevo), `provider.ts` (`case 'chatterbox'`), `config/env.ts` (`VoiceProviderName`) |
+| Pipeline | `generate-voice.ts` (extender `narrationCacheKey` con path muestra + model id + device + exaggeration/cfg) |
+| Config docs | `.env.example`, `docs/voice.md`, `docs/ARCHITECTURE.md`, `docs/DECISIONS.md` (entrada nueva) |
+| Gobernanza | `tasks/*`, posiblemente `ROADMAP.md` nota |
+| Tests | `tests/unit/voice.test.ts` (+ mocks spawn; sin pesos en CI) |
+| Gitignore | `data/voices/*.wav`, caché HF local, venv Python, artefactos piloto |
+| Piloto (fuera pipeline) | Script Python local / path gitignored — **no** en `src/shorts/pipeline/` |
+
+**No tocar en integración:** beats, plantillas aceptadas, `quality-check` gate loudnorm, orden voice→loudnorm→render→post, `HelloRemotion` / `ScriptVideo`.
+
+#### 5. Diseño de configuración y errores (propuesto)
+
+```bash
+# .env (local; nunca secretos de API para Chatterbox)
+VOICE_PROVIDER=chatterbox
+CHATTERBOX_PYTHON=/path/to/venv/bin/python   # o CHATTERBOX_BIN=...
+CHATTERBOX_MODEL=es-es                       # es-es | multilingual-v3
+CHATTERBOX_REF_WAV=/absolute/or/local/path/to/me.wav  # fuera de Git
+CHATTERBOX_LANGUAGE_ID=es
+CHATTERBOX_DEVICE=auto                       # auto → mps|cpu
+CHATTERBOX_EXAGGERATION=0.5
+CHATTERBOX_CFG_WEIGHT=0.5
+CHATTERBOX_TIMEOUT_MS=300000                 # load+gen; > SHORTS_REQUEST_TIMEOUT_MS típico
+```
+
+- **WAV:** PCM mono 16-bit 24 kHz (nativo Chatterbox) → mismo contrato que OpenAI hacia `concatWavFiles` / loudnorm.
+- **Errores:** fallo spawn / timeout / missing ref / missing python → fase `generating_voice` `failed` con mensaje claro; no degradar silenciosamente a mock.
+- **Caché:** incluir en hash: texto+pausas, provider, model id, path/mtime/hash de `REF_WAV`, device, exaggeration, cfg.
+- **Regeneración:** `short:voice --force` o cambio de hash.
+- **Procedencia:** `providerMeta.voiceProvider='chatterbox'`, `model` = id real (p. ej. `chatterbox-mtl-es-es` / `v3`); `isTestAudio=false` solo si WAV real; mock sigue separado.
+- **Proveedores actuales:** rama `switch` aditiva; default sin cambio.
+- **Downstream:** sin cambios de contrato — loudnorm → SRT → Remotion → QC provenance.
+
+#### 6. Plan de prueba piloto (fuera del pipeline)
+
+**Prerrequisitos humanos:** Python 3.11, muestra limpia 10–30 s (silencio de fondo bajo, misma lengua/acento, mono preferible), espacio disco ≥10 GB, OK a descargar pesos (solo en máquina local).
+
+1. Texto corto es-ES (≈1 frase de Shorts), p. ej. gancho + CTA.
+2. Generar WAV con Multilingual V3 + `language_id=es` y, si el loader lo permite, con `Chatterbox-Multilingual-es-es`.
+3. Medir: wall-clock load, wall-clock generate, device usado (`mps`/`cpu`), RAM pico.
+4. Inspección técnica: duración, `sr==24000`, canales, bits, silencio inicial/final.
+5. Escucha humana: inteligibilidad, naturalidad, pausas, **parecido a tu voz**, sesgo castizo vs andaluz.
+6. **No** afirmar éxito de clonación/MPS hasta esos resultados.
+7. Criterio go/no-go antes de cualquier PR de integración.
+
+#### 7. Riesgos, licencia y privacidad
+
+| Riesgo | Mitigación |
+| --- | --- |
+| Muestra biométrica de voz en Git | Path fuera de repo; ampliar `.gitignore`; no commitear WAV/pesos |
+| Watermark Perth | Documentar; no eliminarlo; coherente con uso responsable |
+| MIT software ≠ calidad dialéctica | Piloto de escucha obligatorio |
+| Install frágil en Apple Silicon | Venv aislado; pin versiones; documentar parche mac |
+| CI sin GPU/modelos | Tests solo contrato Node + mock spawn; piloto manual local |
+| Confusión mock/real | Mantener `isTestAudio` estricto; nunca fingir provenance |
+
+#### 8. Criterios de aceptación
+
+**Piloto (tarea/autorización posterior):**
+
+- [ ] WAV local generado sin pasar por `generar-short`.
+- [ ] Métricas técnicas registradas (duración, sr, canales, tiempos).
+- [ ] Escucha humana pass / pass-with-notes / fail.
+- [ ] Comparación V3 vs `es-es` si ambas corrieron (o “es-es no cargó” documentado).
+- [ ] Decisión go/no-go para integración.
+
+**Integración futura (otra aprobación):**
+
+- [ ] `VOICE_PROVIDER=chatterbox` produce `narration.wav` + loudnorm + QC `verified_provenance` en un job de prueba.
+- [ ] Mock y providers actuales sin regresión (`npm test`, `typecheck`).
+- [ ] Caché evita regen si texto+config+ref estables.
+- [ ] Fallos no caen a mock.
+- [ ] Docs + `.env.example` + gitignore; sin muestras/pesos en Git.
+- [ ] Beats/QC/loudnorm/procedencia intactos.
+
+#### 9. Recomendación final
+
+1. Aceptar esta propuesta como diseño (`proposed` → revisión).
+2. Autorizar **solo el piloto local** (install fuera del repo o venv gitignored).
+3. Si el piloto es pass: nueva tarea `approved` de integración con arquitectura **A**.
+4. Mantener OpenAI Cedar / file / ElevenLabs como alternativas; Chatterbox = opción local de clonación sin API de pago.
+
+---
 
 ### `T-AV-QC-001` · post-P7 / pre-P8 · `accepted`
 

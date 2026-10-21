@@ -1,0 +1,6 @@
+# Pilot-verified pins for tools/chatterbox (T-CHATTERBOX-002 · phase 1).
+# Python interpreter: 3.11.17
+# Do NOT install from CI. Local venv only; weights/ref stay outside Git.
+torch==2.6.0
+torchaudio==2.6.0
+chatterbox-tts==0.1.7

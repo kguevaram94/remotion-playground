@@ -17,3 +17,14 @@ public/shorts/
 
 # Muestras locales de voces (regenerables)
 output/voice-samples/
+
+# Python tooling (Chatterbox CLI — no venv/weights/WAV in Git)
+# *.py[cod] = .pyc/.pyo/.pyd only (does NOT ignore .py source).
+**/__pycache__/
+*.py[cod]
+tools/chatterbox/.venv/
+# Runtime artefacts only under tools/chatterbox/ (not src/ or Node fixtures).
+# If a committed WAV fixture is added later, use a targeted ! exception.
+tools/chatterbox/**/*.wav
+tools/chatterbox/**/*.pt
+tools/chatterbox/**/*.safetensors
