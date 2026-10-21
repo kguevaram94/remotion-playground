@@ -45,7 +45,7 @@ Código terminado ≠ `accepted`.
 | `T-STUDIO-001` | P7 | Studio / preview workflow estable | `accepted` | Aceptado 2026-10-19; audio Studio = `public/shorts/<id>/`; AV → `T-AV-QC-001` `accepted`; P8 `blocked` |
 | `T-AV-QC-001` | post-P7 / pre-P8 | Validación audiovisual real (4 familias) | `accepted` | Aceptado 2026-10-19 (chat Cursor); 4× MP4 Cedar; P8 `blocked` |
 | `T-CHATTERBOX-001` | transversal post-P7 / pre-P8 | Estudio + piloto Chatterbox (fuera del pipeline) | `proposed` | Historial intacto. Nota 2026-10-21: piloto técnico MPS OK; humano aceptó la muestra. **No** `accepted`. Integración → `T-CHATTERBOX-002`. P8 `blocked` |
-| `T-CHATTERBOX-002` | transversal post-P7 / pre-P8 | Integración Chatterbox (`VoiceProvider`) | fase 1: `accepted` (con reservas) · fase 2A: `accepted` (con reserva técnica) · **fase 2B: `review_required`** · 2C **no autorizada** | 2B implementada 2026-10-21 (chat Cursor): SHA-256 ref + huella pins declarados + params. Sin 2C/QC/inferencia. Reservas I-R*/M-R* y reserva 2A abiertas. P8 `blocked` |
+| `T-CHATTERBOX-002` | transversal post-P7 / pre-P8 | Integración Chatterbox (`VoiceProvider`) | fase 1: `accepted` (con reservas) · fase 2A: `accepted` (con reserva técnica) · **fase 2B: `review_required`** · 2C **no autorizada** | 2B + correcciones auditoría #4/#9 (2026-10-21): pins estrictos + test cableado `generate-voice`. Sin 2C/QC/inferencia. Reservas I-R*/M-R* y reserva 2A abiertas. P8 `blocked` |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -81,7 +81,7 @@ Código terminado ≠ `accepted`.
 
 Fase 1 (CLI Python + docs + pins + tests aislados) implementada, remediada (B1–B2, I1–I6, M1–M8) y **aceptada con reservas** por humano (2026-10-21). Smoke test real del CLI (mismo día) registrado abajo.  
 **Fase 2A** (provider Node + factory + env + corrección anti-reuso + tests mock spawn) autorizada, implementada y **aceptada con reserva técnica** por humano (2026-10-21).  
-**Fase 2B** (identidad de caché: SHA-256 ref + huella pins declarados + params) autorizada e implementada 2026-10-21 → estado **`review_required`** (pendiente humano). **2C no autorizada / no iniciada.**
+**Fase 2B** (identidad de caché: SHA-256 ref + huella pins declarados + params) autorizada e implementada 2026-10-21 → estado **`review_required`** (pendiente humano). Correcciones auditoría **#4** / **#9** autorizadas e implementadas 2026-10-21 (mismo estado `review_required`; **no** `accepted`). **2C no autorizada / no iniciada.**
 
 #### Aceptación humana — fase 1 únicamente (2026-10-21)
 
@@ -196,8 +196,9 @@ Esta limitación se acepta como reserva explícita de la fase 2A. **No** debe de
 | --- | --- |
 | Helpers | `src/shorts/voice/chatterbox-cache.ts` — SHA-256 streaming de ref; parse/normalización/`runtimePinSha256` de `requirements-pin.txt`; identidad `2b\|…` |
 | Pipeline | `src/shorts/pipeline/generate-voice.ts` — solo si `voiceProvider === 'chatterbox'`; otros providers sin cambio de clave |
-| Docs | `docs/voice.md` — nota 2B + límites (pins declarados ≠ venv instalado) |
+| Docs | `docs/voice.md` — nota 2B + límites (pins declarados ≠ venv instalado) + parseo estricto |
 | Tests | `tests/unit/voice-chatterbox-cache.test.ts` — fixtures sintéticas; sin red/pesos/inferencia |
+| Tests cableado | `tests/unit/generate-voice-chatterbox-cache.test.ts` — ejercita `runGenerateVoice` (stub synthesize; sin inferencia) |
 
 **Esquema de identidad Chatterbox (`model` → `narrationCacheKey`):**
 
@@ -207,8 +208,16 @@ Esta limitación se acepta como reserva explícita de la fase 2A. **No** debe de
 
 - `refSha256`: SHA-256 de **bytes** de la ref (chunked); no ruta/mtime.
 - `runtimePinSha256`: SHA-256 UTF-8 de JSON canónico `{python?, packages:{…}}` parseado de `requirements-pin.txt` junto al CLI (`name==version` + comentario `# Python interpreter:`).
-- Fallo explícito si falta ref o pins / pins vacíos → **no** reuso silencioso de caché.
+- Parseo estricto (corrección auditoría **#4**): comentarios/líneas vacías ignorados; líneas malformadas y paquetes duplicados → **throw** (sin huella parcial).
+- Fallo explícito si falta ref o pins / pins vacíos / pins inválidos → **no** reuso silencioso de caché.
 - Version prefix `2b` para migraciones futuras de serialización.
+
+**Correcciones auditoría 2B (2026-10-21, chat Cursor — solo #4 y #9):**
+
+| Hallazgo | Remedio |
+| --- | --- |
+| **#4** | `parseRequirementsPinText` fail-loud en malformadas/duplicados + tests |
+| **#9** | Test de integración del cableado vía `runGenerateVoice` (mock synthesize) |
 
 **Límites explícitos (no cerrados por 2B):**
 
@@ -217,20 +226,20 @@ Esta limitación se acepta como reserva explícita de la fase 2A. **No** debe de
 - Hash de ref distingue entradas de caché; **no** prueba que el audio final proceda de esa ref.
 - **No** `verified_provenance`; reservas I-R*/M-R* y reserva técnica 2A **siguen abiertas**.
 
-**Comandos ejecutados (agente):**
+**Comandos ejecutados (agente — correcciones #4/#9, 2026-10-21):**
 
 ```bash
-npm test -- tests/unit/voice-chatterbox-cache.test.ts tests/unit/voice-chatterbox.test.ts tests/unit/voice.test.ts
-# Test Files  3 passed · Tests  33 passed
+npm test -- tests/unit/voice-chatterbox-cache.test.ts tests/unit/generate-voice-chatterbox-cache.test.ts tests/unit/voice-chatterbox.test.ts tests/unit/voice.test.ts
+# Test Files  4 passed · Tests  40 passed
 
 npm test
-# Test Files  23 passed · Tests  134 passed
+# Test Files  24 passed · Tests  141 passed
 
 npm run typecheck
-# OK
+# OK (tsc --noEmit)
 ```
 
-**Confirmaciones:** sin descargas HF; sin inferencia real; sin muestra vocal personal; sin cambios QC/CI/CLI Python/otros providers (claves); sin commit/push/merge/rebase; fase 2A aceptación + reserva técnica intactas; 2C no iniciada.
+**Confirmaciones:** sin descargas HF; sin inferencia real; sin muestra vocal personal; sin cambios QC/CI/CLI Python/`chatterbox.ts`/fase 2A; sin commit/push/merge/rebase; fase 2A aceptación + reserva técnica intactas; reservas I-R*/M-R* abiertas; 2C no iniciada; estado sigue **`review_required`** (**no** `accepted`).
 
 **Fuera de 2B (no autorizado / no iniciado):** 2C; pipeline render/post; loudnorm/QC; elegibilidad; daemon; verificación live del venv.
 

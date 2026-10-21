@@ -13,9 +13,10 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 ## Estado de aprobación
 
-`review_required` (**fase 2B** implementada) · fase 2C **no autorizada** · fase 2A permanece `accepted` (con reserva técnica) · fase 1 permanece `accepted` (con reservas I-R*/M-R*)
+`review_required` (**fase 2B** implementada + correcciones auditoría #4/#9) · fase 2C **no autorizada** · fase 2A permanece `accepted` (con reserva técnica) · fase 1 permanece `accepted` (con reservas I-R*/M-R*)
 
 > Autorización humana 2026-10-21 (chat Cursor): **fase 2B** — identidad de caché (SHA-256 contenido ref) + huella de pins declarados + params de síntesis.  
+> Autorización humana 2026-10-21 (chat Cursor): correcciones auditoría 2B **solo** hallazgos **#4** (pins estrictos) y **#9** (test cableado `generate-voice`).  
 > **No** autorizado: 2C, QC, `verified_provenance`, pipeline render/post, inferencia real, descargas, commit/push/merge/rebase, P8.  
 > Fase 2A: `accepted` con reserva técnica (`exists`/`size`/`mtimeMs`) — **intacta**.  
 > Fase 1: `accepted` con reservas I-R1–I-R4 / M-R1–M-R5 (**abiertas**).  
@@ -78,7 +79,7 @@ Ampliar la clave de caché de narración **solo para Chatterbox** con identidad 
 ## Pruebas a ejecutar
 
 ```bash
-npm test -- tests/unit/voice-chatterbox-cache.test.ts tests/unit/voice-chatterbox.test.ts tests/unit/voice.test.ts
+npm test -- tests/unit/voice-chatterbox-cache.test.ts tests/unit/generate-voice-chatterbox-cache.test.ts tests/unit/voice-chatterbox.test.ts tests/unit/voice.test.ts
 npm test
 npm run typecheck
 ```
@@ -93,5 +94,5 @@ npm run typecheck
 
 ## Notas
 
-- Estado tras implementación agente: `review_required` (fase 2B). Esperando humano.
+- Estado tras implementación + correcciones #4/#9: `review_required` (fase 2B). Esperando humano. **No** `accepted`.
 - Siguiente propuesta: fase 2C (pipeline/QC) en `proposed` — **requiere nuevo `approved`**; **no** iniciar.

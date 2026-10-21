@@ -201,6 +201,57 @@ describe('chatterbox cache identity (phase 2B)', () => {
     );
   });
 
+  it('rejects malformed pin lines instead of ignoring them', () => {
+    expect(() =>
+      parseRequirementsPinText('torch==2.6.0\nnot-a-pin\n'),
+    ).toThrow(/línea de pin malformada/);
+    expect(() =>
+      parseRequirementsPinText('torch>=2.6.0\n'),
+    ).toThrow(/línea de pin malformada/);
+    expect(() =>
+      parseRequirementsPinText('torch\n'),
+    ).toThrow(/línea de pin malformada/);
+  });
+
+  it('rejects duplicate packages even with the same version', () => {
+    expect(() =>
+      parseRequirementsPinText('torch==2.6.0\ntorch==2.6.0\n'),
+    ).toThrow(/paquete duplicado.*torch/);
+    expect(() =>
+      parseRequirementsPinText('torch==2.6.0\ntorch==2.7.0\n'),
+    ).toThrow(/paquete duplicado.*torch/);
+  });
+
+  it('fails fingerprint when valid pins are mixed with invalid lines', () => {
+    const mixed = path.join(dir, 'mixed-pins.txt');
+    writeFileSync(
+      mixed,
+      `# Python interpreter: 3.11.17
+torch==2.6.0
+bad-line-without-version
+chatterbox-tts==0.1.7
+`,
+      'utf8',
+    );
+    expect(() => loadDeclaredRuntimePinFingerprint(mixed)).toThrow(
+      /línea de pin malformada/,
+    );
+  });
+
+  it('still ignores blank lines and non-interpreter comments', () => {
+    const pin = parseRequirementsPinText(`# noise
+
+# Python interpreter: 3.11.17
+torch==2.6.0
+
+# trailing comment
+`);
+    expect(pin).toEqual({
+      python: '3.11.17',
+      packages: {torch: '2.6.0'},
+    });
+  });
+
   it('serializes declared pins deterministically (order-independent input)', () => {
     const shuffled = `# Python interpreter: 3.11.17
 chatterbox-tts==0.1.7

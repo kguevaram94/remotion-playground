@@ -78,7 +78,7 @@ CHATTERBOX_TIMEOUT_MS=300000    # dedicado; no reutiliza SHORTS_REQUEST_TIMEOUT_
 
 Requisitos locales: Python 3.11 + pins de `tools/chatterbox/requirements-pin.txt` + pack es-es fuera de Git. Ver `tools/chatterbox/README.md`. Config inválida con `VOICE_PROVIDER=chatterbox` **falla** (no cae a mock).
 
-**Caché (fase 2B):** la clave de narración para Chatterbox incluye SHA-256 del **contenido** de `CHATTERBOX_REF_WAV`, una huella de los pins **declarados** en `requirements-pin.txt` (junto al CLI) y los parámetros de síntesis relevantes. Eso invalida la caché si cambian la ref o los pins declarados; **no** prueba que el venv instalado coincida con los pins ni que el audio final proceda de la ref. Otros providers conservan su clave previa. QC / `verified_provenance` / fase 2C: fuera de alcance.
+**Caché (fase 2B):** la clave de narración para Chatterbox incluye SHA-256 del **contenido** de `CHATTERBOX_REF_WAV`, una huella de los pins **declarados** en `requirements-pin.txt` (junto al CLI) y los parámetros de síntesis relevantes. Eso invalida la caché si cambian la ref o los pins declarados; **no** prueba que el venv instalado coincida con los pins ni que el audio final proceda de la ref. El parseo de pins es estricto: comentarios y líneas vacías se ignoran; líneas que no sean `name==version` y paquetes duplicados **fallan** (no se genera huella parcial). Otros providers conservan su clave previa. QC / `verified_provenance` / fase 2C: fuera de alcance.
 
 ## Comparativa
 

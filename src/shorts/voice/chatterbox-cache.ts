@@ -89,13 +89,17 @@ export const sha256FileContent = async (filePath: string): Promise<string> => {
 
 /**
  * Parse `requirements-pin.txt` into a declared pin set.
- * Comments (except the Python interpreter line) and blank lines are ignored.
- * Package lines are `name==version` only — no paths or timestamps.
+ * Blank lines and comments (except the Python interpreter line) are ignored.
+ * Package lines must be exactly `name==version` — malformed lines throw.
+ * Duplicate package names throw even if the version is identical.
+ * No paths or timestamps enter the declared pin set.
  */
 export const parseRequirementsPinText = (raw: string): DeclaredRuntimePin => {
   const packages: Record<string, string> = {};
   let python: string | undefined;
+  let lineNo = 0;
   for (const line of raw.split(/\r?\n/)) {
+    lineNo += 1;
     const trimmed = line.trim();
     if (!trimmed) continue;
     const py = trimmed.match(PIN_PYTHON_RE);
@@ -105,9 +109,19 @@ export const parseRequirementsPinText = (raw: string): DeclaredRuntimePin => {
     }
     if (trimmed.startsWith('#')) continue;
     const pkg = trimmed.match(PIN_PACKAGE_RE);
-    if (pkg) {
-      packages[pkg[1]!] = pkg[2]!;
+    if (!pkg) {
+      throw new Error(
+        `Chatterbox cache identity: línea de pin malformada (línea ${lineNo}): se espera name==version`,
+      );
     }
+    const name = pkg[1]!;
+    const version = pkg[2]!;
+    if (Object.prototype.hasOwnProperty.call(packages, name)) {
+      throw new Error(
+        `Chatterbox cache identity: paquete duplicado en pins (${name}, línea ${lineNo})`,
+      );
+    }
+    packages[name] = version;
   }
   return python ? {python, packages} : {packages};
 };
