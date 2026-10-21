@@ -234,27 +234,32 @@ export const buildChatterboxArgs = (opts: {
   return args;
 };
 
-export const defaultChatterboxSpawn: ChatterboxSpawnFn = (
-  command,
-  args,
-  {timeoutMs},
-) =>
+type SpawnImpl = typeof spawn;
+
+/**
+ * Factory for the real child_process spawn (testable; default uses node:spawn).
+ * `timer` is declared before use so a synchronous spawn throw cannot hit TDZ.
+ */
+export const createChatterboxSpawnFn = (
+  spawnImpl: SpawnImpl = spawn,
+): ChatterboxSpawnFn => (command, args, {timeoutMs}) =>
   new Promise((resolve) => {
     let timedOut = false;
     let settled = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
     const stdoutChunks: Buffer[] = [];
     const stderrChunks: Buffer[] = [];
 
     const finish = (result: ChatterboxSpawnResult) => {
       if (settled) return;
       settled = true;
-      clearTimeout(timer);
+      if (timer !== undefined) clearTimeout(timer);
       resolve(result);
     };
 
     let child;
     try {
-      child = spawn(command, [...args], {
+      child = spawnImpl(command, [...args], {
         stdio: ['ignore', 'pipe', 'pipe'],
         // No shell — argv is already separated.
         shell: false,
@@ -271,7 +276,7 @@ export const defaultChatterboxSpawn: ChatterboxSpawnFn = (
       return;
     }
 
-    const timer = setTimeout(() => {
+    timer = setTimeout(() => {
       timedOut = true;
       try {
         child.kill('SIGTERM');
@@ -311,6 +316,67 @@ export const defaultChatterboxSpawn: ChatterboxSpawnFn = (
       });
     });
   });
+
+export const defaultChatterboxSpawn: ChatterboxSpawnFn = createChatterboxSpawnFn();
+
+/** Snapshot of a destination path before spawn — used to detect stale reuse. */
+export type ArtifactFingerprint =
+  | {exists: false}
+  | {exists: true; size: number; mtimeMs: number};
+
+export const fingerprintArtifact = (filePath: string): ArtifactFingerprint => {
+  if (!existsSync(filePath)) return {exists: false};
+  const st = statSync(filePath);
+  return {exists: true, size: st.size, mtimeMs: st.mtimeMs};
+};
+
+/**
+ * True iff the path exists now and differs from the pre-spawn snapshot
+ * (new file, or size/mtime changed). Does not delete anything.
+ */
+export const artifactUpdatedSince = (
+  before: ArtifactFingerprint,
+  filePath: string,
+): boolean => {
+  if (!existsSync(filePath)) return false;
+  if (!before.exists) return true;
+  const st = statSync(filePath);
+  return st.size !== before.size || st.mtimeMs !== before.mtimeMs;
+};
+
+/**
+ * Both WAV and meta must be produced/updated by this run — leftover matching
+ * artefacts from a prior success must not count as success (audit 2A #4).
+ */
+export const assertOutputsFreshFromThisRun = (
+  wavPath: string,
+  metaPath: string,
+  beforeWav: ArtifactFingerprint,
+  beforeMeta: ArtifactFingerprint,
+): void => {
+  const wavFresh = artifactUpdatedSince(beforeWav, wavPath);
+  const metaFresh = artifactUpdatedSince(beforeMeta, metaPath);
+  if (wavFresh && metaFresh) return;
+
+  const parts: string[] = [];
+  if (!wavFresh) {
+    parts.push(
+      beforeWav.exists
+        ? `WAV sin cambios desde antes del spawn (${safePathLabel(wavPath)})`
+        : `WAV ausente tras exit 0 (${safePathLabel(wavPath)})`,
+    );
+  }
+  if (!metaFresh) {
+    parts.push(
+      beforeMeta.exists
+        ? `meta sin cambios desde antes del spawn (${safePathLabel(metaPath)})`
+        : `meta ausente tras exit 0 (${safePathLabel(metaPath)})`,
+    );
+  }
+  throw new Error(
+    `Artefactos no actualizados en esta ejecución (posible reuso de WAV/meta previos): ${parts.join('; ')}`,
+  );
+};
 
 const pathsReferSameFile = (a: string, b: string): boolean => {
   try {
@@ -438,6 +504,9 @@ export class ChatterboxVoiceProvider implements VoiceProvider {
 
     mkdirSync(path.dirname(outputPath), {recursive: true});
     const metaOut = `${outputPath}.chatterbox-meta.json`;
+    // Snapshot destinations only — do not delete caller/preexisting paths.
+    const beforeWav = fingerprintArtifact(outputPath);
+    const beforeMeta = fingerprintArtifact(metaOut);
     const args = buildChatterboxArgs({
       scriptPath: this.options.scriptPath,
       text,
@@ -492,7 +561,17 @@ export class ChatterboxVoiceProvider implements VoiceProvider {
       );
     }
 
-    // Exit 0 is necessary but not sufficient: require valid WAV + meta (I-R1).
+    // Exit 0 is necessary but not sufficient: artefacts must be from this run.
+    try {
+      assertOutputsFreshFromThisRun(outputPath, metaOut, beforeWav, beforeMeta);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      throw new Error(
+        `chatterbox: exit 0 pero ${msg}. No se acepta como éxito.`,
+      );
+    }
+
+    // Then require valid WAV + meta structure (I-R1: orphan WAV ≠ success).
     let probe: WavProbe;
     try {
       probe = assertChatterboxWav(outputPath);

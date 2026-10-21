@@ -22,6 +22,7 @@ import {
   CHATTERBOX_MODEL_ID,
   CHATTERBOX_TARGET_SAMPLE_RATE,
   buildChatterboxArgs,
+  createChatterboxSpawnFn,
   safePathLabel,
   type ChatterboxSpawnFn,
   type ChatterboxSpawnResult,
@@ -407,17 +408,19 @@ describe('chatterbox voice provider (fase 2A · sin inferencia real)', () => {
 
   it('rejects missing / invalid / incompatible metadata (orphan WAV not success)', async () => {
     const out = path.join(dir, 'orphan.wav');
-    writePcm16Mono24k(out);
 
-    // Missing meta
+    // Missing meta: WAV rewritten this run, meta never written → fresh-check / I-R1.
     {
-      const spawnFn: ChatterboxSpawnFn = async () => ({
-        code: 0,
-        signal: null,
-        stdout: '',
-        stderr: '',
-        timedOut: false,
-      });
+      const spawnFn: ChatterboxSpawnFn = async () => {
+        writePcm16Mono24k(out, 3600);
+        return {
+          code: 0,
+          signal: null,
+          stdout: '',
+          stderr: '',
+          timedOut: false,
+        };
+      };
       const provider = new ChatterboxVoiceProvider({
         pythonPath: 'python3.11',
         scriptPath: 'synthesize.py',
@@ -428,14 +431,15 @@ describe('chatterbox voice provider (fase 2A · sin inferencia real)', () => {
         spawnFn,
       });
       await expect(provider.synthesize('hola', out)).rejects.toThrow(
-        /metadatos|huérfano|ausentes/i,
+        /metadatos|huérfano|ausentes|meta ausente|no actualizados/i,
       );
     }
 
-    // Invalid JSON meta
+    // Invalid JSON meta (both artefacts rewritten so freshness passes)
     {
       const meta = `${out}.chatterbox-meta.json`;
       const spawnFn: ChatterboxSpawnFn = async () => {
+        writePcm16Mono24k(out, 4000);
         writeFileSync(meta, '{not-json');
         return {
           code: 0,
@@ -457,10 +461,11 @@ describe('chatterbox voice provider (fase 2A · sin inferencia real)', () => {
       await expect(provider.synthesize('hola', out)).rejects.toThrow(/JSON|inválidos/i);
     }
 
-    // Incompatible text_chars / output_wav
+    // Incompatible text_chars / output_wav (both rewritten; structural meta fails)
     {
       const meta = `${out}.chatterbox-meta.json`;
       const spawnFn: ChatterboxSpawnFn = async () => {
+        writePcm16Mono24k(out, 4400);
         writeMeta(meta, {
           output_wav: path.join(dir, 'other.wav'),
           text_chars: 999,
@@ -515,6 +520,100 @@ describe('chatterbox voice provider (fase 2A · sin inferencia real)', () => {
       spawnFn,
     });
     await expect(provider.synthesize('hola', out)).rejects.toThrow(/exit=2/);
+  });
+
+  it('rejects exit 0 that reuses prior WAV+meta without updating them', async () => {
+    const out = path.join(dir, 'stale.wav');
+    const text = 'hola';
+    writePcm16Mono24k(out, 4800);
+    writeMeta(`${out}.chatterbox-meta.json`, {
+      output_wav: out,
+      text_chars: text.length,
+      device_requested: 'auto',
+      model_id: CHATTERBOX_MODEL_ID,
+    });
+
+    // Simulated CLI: exit 0 but does not rewrite destinations (stale leftovers).
+    const spawnFn: ChatterboxSpawnFn = async () => ({
+      code: 0,
+      signal: null,
+      stdout: '',
+      stderr: '',
+      timedOut: false,
+    });
+    const provider = new ChatterboxVoiceProvider({
+      pythonPath: 'python3.11',
+      scriptPath: 'synthesize.py',
+      ckptDir: '/ckpts',
+      refWav: '/ref.wav',
+      device: 'auto',
+      timeoutMs: 30_000,
+      spawnFn,
+    });
+
+    await expect(provider.synthesize(text, out)).rejects.toThrow(
+      /no actualizados|reuso|sin cambios/i,
+    );
+  });
+
+  it('accepts exit 0 when preexisting destinations are rewritten', async () => {
+    const out = path.join(dir, 'rewritten.wav');
+    const text = 'hola';
+    writePcm16Mono24k(out, 2400);
+    writeMeta(`${out}.chatterbox-meta.json`, {
+      output_wav: out,
+      text_chars: text.length,
+      device_requested: 'auto',
+    });
+
+    const spawnFn: ChatterboxSpawnFn = async (_cmd, args) => {
+      const outIdx = args.indexOf('--output');
+      const metaIdx = args.indexOf('--meta-out');
+      const outputPath = String(args[outIdx + 1]);
+      const metaPath = String(args[metaIdx + 1]);
+      // Distinct size → fingerprint change even on coarse mtime filesystems.
+      writePcm16Mono24k(outputPath, 7200);
+      writeMeta(metaPath, {
+        output_wav: outputPath,
+        text_chars: text.length,
+        device_requested: 'auto',
+        model_id: CHATTERBOX_MODEL_ID,
+      });
+      return {
+        code: 0,
+        signal: null,
+        stdout: '',
+        stderr: '',
+        timedOut: false,
+      };
+    };
+    const provider = new ChatterboxVoiceProvider({
+      pythonPath: 'python3.11',
+      scriptPath: 'synthesize.py',
+      ckptDir: '/ckpts',
+      refWav: '/ref.wav',
+      device: 'auto',
+      timeoutMs: 30_000,
+      spawnFn,
+    });
+
+    const result = await provider.synthesize(text, out);
+    expect(result.provider).toBe('chatterbox');
+    expect(result.durationSeconds).toBeGreaterThan(0);
+  });
+
+  it('sync spawn throw surfaces as spawnError (no timer TDZ)', async () => {
+    const spawnFn = createChatterboxSpawnFn((() => {
+      throw Object.assign(new Error('sync spawn boom'), {
+        code: 'ERR_INVALID_ARG_TYPE',
+      });
+    }) as typeof import('node:child_process').spawn);
+
+    const result = await spawnFn('python', ['synthesize.py'], {timeoutMs: 5_000});
+    expect(result.spawnError).toBeDefined();
+    expect(result.spawnError?.message).toMatch(/sync spawn boom/);
+    expect(result.timedOut).toBe(false);
+    expect(result.code).toBeNull();
   });
 
   it('logs/errors do not expose full narration text or unnecessary personal paths', async () => {
