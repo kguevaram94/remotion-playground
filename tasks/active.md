@@ -17,39 +17,42 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 > Aceptación humana acotada 2026-10-21 (chat Cursor): fase 1 CLI Python aislado + docs + pins + tests sintéticos → **`accepted` con reservas** (equivalente de proyecto; no existe `accepted_with_reservations` en el esquema oficial).  
 > Reservas vigentes (no son verificaciones superadas): **I-R1–I-R4**, **M-R1–M-R5**.  
-> **No** se realizó inferencia real en la remediación. Pendiente manual: checkpoints, `conds.pt`, MPS real, watermark Perth.  
+> Smoke test real autorizado y ejecutado 2026-10-21 (macOS Apple Silicon, CLI aislado): exit 0; MPS real sin fallback CPU; artefactos **fuera** del repo. Detalle en `tasks/approvals.md`.  
+> Pendiente manual aún abierto: `conds.pt` (ausente; conditionals no ejercitado), auditoría watermark Perth (sigue `left_intact` ≠ verificación).  
 > **Fase 2 / Node / pipeline / QC / caché / elegibilidad: no autorizados.**  
 > P0–P7 `accepted`. `T-AV-QC-001` `accepted`. P8 `blocked`.  
 > `T-CHATTERBOX-001` intacto (`proposed`).
 
 ## Objetivo
 
-Registrar el cierre documental de la fase 1 remediada (CLI aislado) tras decisión humana de aceptación con reservas — **sin** iniciar fase 2 ni tocar código.
+Registrar evidencia documental del smoke test real de fase 1 (CLI aislado) en macOS Apple Silicon — **sin** iniciar fase 2 ni tocar código.
 
-## Alcance (sí — registro de aceptación fase 1)
+## Alcance (sí — registro de evidencia smoke fase 1)
 
-1. Gobernanza: `tasks/active.md`, `tasks/approvals.md`, `ROADMAP.md` — aceptación acotada + trazabilidad de reservas.
-2. Conservar historial de remediación B1–B2 / I1–I6 / M1–M8 y evidencias previas.
-3. Mantener explícito: sin inferencia real; reservas I-R*/M-R* abiertas; fase 2 no autorizada.
+1. Gobernanza: `tasks/active.md`, `tasks/approvals.md`, `ROADMAP.md` — hechos observados del smoke + trazabilidad de reservas aún abiertas.
+2. Conservar historial de aceptación acotada, remediación B1–B2 / I1–I6 / M1–M8 y evidencias previas.
+3. Mantener explícito: fase 2 no autorizada; `conds.pt` / Perth no validados como cerrados; sin integración Node/pipeline.
 
 ## Fuera de alcance (no)
 
 - Modificar `tools/chatterbox/synthesize.py`, tests u otro código.
 - Fase 2: provider Node, factory, env, caché, QC, elegibilidad, orden pipeline.
-- Instalar deps, descargar pesos, inferencia real.
+- Instalar deps, descargar pesos, nueva inferencia.
 - Commit / push / merge / publicar.
-- Presentar reservas como verificaciones superadas.
+- Copiar referencia vocal ni WAV generados al repositorio.
+- Presentar reservas I-R*/M-R* ni Perth/`conds.pt` como verificaciones superadas.
+- Afirmar integración Node/pipeline.
 
 ## Archivos afectados previstos
 
 | Path | Rol |
 | --- | --- |
-| `tasks/active.md`, `tasks/approvals.md`, `ROADMAP.md` | Solo registro de aceptación acotada |
+| `tasks/active.md`, `tasks/approvals.md`, `ROADMAP.md` | Solo registro documental del smoke |
 
 ## Dependencias
 
-- Remediación fase 1 entregada + revisión independiente (I-R*/M-R*).
-- Decisión humana 2026-10-21: aceptar fase 1 con reservas.
+- Fase 1 `accepted` con reservas (2026-10-21).
+- Autorización humana 2026-10-21: smoke test real controlado del CLI (sin fase 2, sin cambios de código).
 - P8 `blocked`.
 
 ## Criterios de aceptación
@@ -60,8 +63,9 @@ Registrar el cierre documental de la fase 1 remediada (CLI aislado) tras decisi�
 - [x] M1–M8 abordados sin complejidad innecesaria.
 - [x] Tests locales sin PyTorch/pesos/inferencia ejecutados.
 - [x] Humano acepta **fase 1** con reservas (2026-10-21) — ver `tasks/approvals.md`.
+- [x] Smoke real 2026-10-21: inferencia CLI exit 0 en MPS; pins observados; WAV PCM16 mono 24 kHz (detalle en approvals) — **sin** copiar artefactos al repo.
 - [ ] Reservas I-R1–I-R4 / M-R1–M-R5: **abiertas** (no verificadas como resueltas).
-- [ ] Manual pendiente: checkpoints, `conds.pt`, MPS real, watermark Perth.
+- [ ] Manual pendiente: `conds.pt` (no presente; conditionals sin verificar), watermark Perth (política `left_intact` ≠ auditoría).
 - [ ] Fase 2: **no autorizada** (espera instrucción humana).
 
 ## Pruebas a ejecutar
@@ -70,18 +74,20 @@ Registrar el cierre documental de la fase 1 remediada (CLI aislado) tras decisi�
 cd tools/chatterbox && python3.11 -m unittest test_synthesize -v
 ```
 
-*(Ya corridas en remediación/revisión; esta operación de gobernanza no re-ejecuta ni afirma inferencia.)*
+*(Suite sintética ya corrida en remediación/revisión.)*
+
+Smoke real (autorizado 2026-10-21; una sola frase; `--device mps`; sin `--force`; sin instalar/descargar): ejecutado — ver `tasks/approvals.md` § evidencia smoke. Artefactos fuera de Git.
 
 ## Riesgos y pendientes
 
-- **Sin inferencia real** en remediación ni en este registro.
 - Reservas abiertas: I-R1 (WAV huérfano si falla meta), I-R2 (parche MPS amplio), I-R3 (meta mezcla piloto/runtime), I-R4 (cleanup temp poco testeado); M-R1–M-R5 (gaps tests/docs/tipado).
-- Manual pendiente: checkpoints, `conds.pt`, MPS real, watermark Perth.
+- `conds.pt` ausente en el smoke → `Conditionals.load` **no** ejercitado / **no** validado.
+- Perth: solo política documentada `left_intact`; **sin** auditoría del watermark.
 - Fase 2 no iniciada / no autorizada.
 - Cold start × N segmentos documentado en diseño; sin daemon.
 
 ## Notas
 
 - Estado oficial usado: `accepted` + reservas explícitas (patrón P5/P7 con limitaciones). No se inventó un estado nuevo en el esquema.
-- Detalle y tablas I-R*/M-R*: `tasks/approvals.md` § `T-CHATTERBOX-002`.
+- Detalle y tablas I-R*/M-R* + evidencia smoke: `tasks/approvals.md` § `T-CHATTERBOX-002`.
 - Esperando nuevas instrucciones humanas; **no** iniciar fase 2.

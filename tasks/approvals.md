@@ -45,7 +45,7 @@ Código terminado ≠ `accepted`.
 | `T-STUDIO-001` | P7 | Studio / preview workflow estable | `accepted` | Aceptado 2026-10-19; audio Studio = `public/shorts/<id>/`; AV → `T-AV-QC-001` `accepted`; P8 `blocked` |
 | `T-AV-QC-001` | post-P7 / pre-P8 | Validación audiovisual real (4 familias) | `accepted` | Aceptado 2026-10-19 (chat Cursor); 4× MP4 Cedar; P8 `blocked` |
 | `T-CHATTERBOX-001` | transversal post-P7 / pre-P8 | Estudio + piloto Chatterbox (fuera del pipeline) | `proposed` | Historial intacto. Nota 2026-10-21: piloto técnico MPS OK; humano aceptó la muestra. **No** `accepted`. Integración → `T-CHATTERBOX-002`. P8 `blocked` |
-| `T-CHATTERBOX-002` | transversal post-P7 / pre-P8 | Integración Chatterbox (`VoiceProvider`) | fase 1: `accepted` (con reservas) · fase 2: **no autorizada** | Aceptación acotada 2026-10-21 (chat Cursor). Reservas I-R1–I-R4, M-R1–M-R5 abiertas. Sin inferencia real. P8 `blocked` |
+| `T-CHATTERBOX-002` | transversal post-P7 / pre-P8 | Integración Chatterbox (`VoiceProvider`) | fase 1: `accepted` (con reservas) · fase 2: **no autorizada** | Aceptación acotada 2026-10-21. Smoke real MPS 2026-10-21 (exit 0; artefactos fuera de Git). Reservas I-R1–I-R4, M-R1–M-R5 abiertas. `conds.pt`/Perth pendientes. P8 `blocked` |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -66,9 +66,10 @@ Código terminado ≠ `accepted`.
 > Tarea activa: `T-CHATTERBOX-002` · **fase 1 `accepted` (con reservas)** · **fase 2 no autorizada** (2026-10-21).  
 > Precedente: `T-CHATTERBOX-001` permanece **`proposed`** (historial intacto; **no** marcado `accepted`).  
 > Nota piloto (001, 2026-10-21): generación técnica OK en Apple Silicon (MPS); el humano aceptó la muestra de audio.  
+> Smoke CLI fase 1 (2026-10-21, chat Cursor): inferencia real MPS exit 0; evidencia abajo; artefactos **fuera** del repo.  
 > Última entrega cerrada (acotada): fase 1 de `T-CHATTERBOX-002` · `accepted` con reservas I-R1–I-R4 / M-R1–M-R5.  
 > Prevía cerrada completa: `T-AV-QC-001` · `accepted` (2026-10-19).  
-> P0–P7 = `accepted`. P8 = `blocked`. Sin YouTube. **Fase 2 / Node / pipeline no autorizados.** Sin inferencia real en remediación.
+> P0–P7 = `accepted`. P8 = `blocked`. Sin YouTube. **Fase 2 / Node / pipeline no autorizados.**
 
 ---
 
@@ -76,7 +77,7 @@ Código terminado ≠ `accepted`.
 
 #### Resumen
 
-Fase 1 (CLI Python + docs + pins + tests aislados) implementada, remediada (B1–B2, I1–I6, M1–M8) y **aceptada con reservas** por humano (2026-10-21). Diseño de integración Node permanece documentado abajo; **fase 2 no iniciada ni autorizada**.
+Fase 1 (CLI Python + docs + pins + tests aislados) implementada, remediada (B1–B2, I1–I6, M1–M8) y **aceptada con reservas** por humano (2026-10-21). Smoke test real del CLI (mismo día, autorización separada) registrado abajo. Diseño de integración Node permanece documentado; **fase 2 no iniciada ni autorizada**.
 
 #### Aceptación humana — fase 1 únicamente (2026-10-21)
 
@@ -88,30 +89,50 @@ Estado de la tarea en tablero: compuesto (fase 1 aceptada acotada · fase 2 no a
 
 **Aceptado por:** humano (chat Cursor: aceptación acotada de fase 1 CLI aislado, docs, pins y tests sintéticos).  
 **Alcance aceptado:** únicamente fase 1 remediada bajo `tools/chatterbox/` + gobernanza asociada.  
-**Explícito:** **no** se realizó inferencia real durante la remediación ni en este acto de registro.
+**Explícito en el acto de aceptación:** **no** se había realizado inferencia real durante la remediación ni en ese registro de aceptación (el smoke posterior es un acto separado, abajo).
 
 **Reservas vigentes (abiertas — no son verificaciones superadas):**
 
 | ID | Hallazgo | Tipo | Notas de trazabilidad |
 | --- | --- | --- | --- |
 | **I-R1** | WAV huérfano si falla `--meta-out` tras WAV OK | importante | Sin transacción WAV+meta; exit 1 pero el WAV puede permanecer |
-| **I-R2** | Parche MPS más ancho que “solo carga” | importante | Context manager cubre generate+write; comportamiento real de `torch.load` no demostrado sin PyTorch |
+| **I-R2** | Parche MPS más ancho que “solo carga” | importante | Context manager cubre generate+write; smoke MPS OK no cierra el hallazgo de alcance del parche |
 | **I-R3** | Meta `weights_only` / `mps_patch` mezclan piloto con runtime | importante | Claims de corrida ≠ hechos solo de esta ejecución |
 | **I-R4** | Cleanup de temp ante fallo post-escritura casi sin test | importante | Gap de cobertura sintética |
 | **M-R1** | Sin test dedicado `--meta-out == --ref` | menor | Código presente; test solo `output==ref` |
 | **M-R2** | Sin test symlink / permisos / destino=directorio | menor | Preflight presente; permisos = manual |
 | **M-R3** | Sin `peak_abs_after` explícito | menor | Tras clamp implícito ≤1 |
-| **M-R4** | Rangos 0–1 / temp≤2 documentados, no medidos vs modelo real | menor | Requiere smoke manual |
+| **M-R4** | Rangos 0–1 / temp≤2 documentados, no medidos vs modelo real | menor | Smoke usó defaults; no midió límites del modelo |
 | **M-R5** | Tipado `preflight` → `dict[str, Path]` con `meta: None` | menor | Estático |
 
-**Pruebas manuales pendientes (no superadas en esta fase):**
+**Pruebas manuales (estado tras smoke 2026-10-21):**
 
-- [ ] Checkpoints / carga real de pesos
-- [ ] Compatibilidad real de `conds.pt`
-- [ ] MPS real (`torch.load` / device)
-- [ ] Watermark Perth (política documentada ≠ verificación)
+- [x] Checkpoints requeridos del pack es-es: carga real ejercitada en smoke (ve / t3_es_es / s3gen_v3 / grapheme) — **no** implica cierre de reservas I-R*/M-R*
+- [x] MPS real: `device_requested=mps`, `device_used=mps`, sin fallback a CPU
+- [ ] Compatibilidad real de `conds.pt` — **archivo ausente** en el smoke; `Conditionals.load` **no** ejercitado / **no** validado
+- [ ] Watermark Perth — política documentada `left_intact`; **sin** auditoría del watermark
 
-**No autorizado en este acto:** fase 2; provider Node / factory / env / caché / pipeline / QC / elegibilidad de publicación; instalar deps; descargar pesos; inferencia; modificar código CLI; commit/push/merge; P8; YouTube; APIs de pago; daemon.
+**No autorizado en el acto de aceptación ni en el registro de smoke:** fase 2; provider Node / factory / env / caché / pipeline / QC / elegibilidad de publicación; modificar código CLI; commit/push/merge; P8; YouTube; APIs de pago; daemon; copiar ref/WAV al repo.
+
+#### Evidencia — smoke test real CLI (2026-10-21, macOS Apple Silicon)
+
+**Autorización:** humano (chat Cursor) — inspección + **una** inferencia controlada del CLI `tools/chatterbox/synthesize.py` únicamente. **No** fase 2. **No** cambios de código. **No** instalar/actualizar deps. **No** descargar pesos. **No** `--force`. Artefactos y ref vocal **fuera** de Git (sin rutas personales en este registro).
+
+| Hecho observado | Valor |
+| --- | --- |
+| Stack | Python **3.11.17**, PyTorch **2.6.0**, torchaudio **2.6.0**, chatterbox-tts **0.1.7** |
+| Dispositivo | MPS disponible y **utilizado** (`device_used=mps`); sin fallback a CPU |
+| Resultado | Inferencia real completada; **exit code 0** |
+| Audio | WAV **PCM16 mono 24 kHz**; duración **3,68 s** |
+| Tiempos | `load_seconds≈18.6`; `generate_seconds≈25.0` |
+| Clamp | `peak_abs_before≈1.08`; **64** muestras clampadas |
+| `s3gen_missing_keys` | `tokenizer._mel_filters`, `tokenizer.window` (esperado vs 0.1.7) |
+| Referencia vocal | Intacta (comprobación de tamaño y mtime; sin contenido biométrico en repo) |
+| Instalaciones / descargas | **Ninguna** en la corrida |
+| `conds.pt` | **No presente**; carga de conditionals **sigue sin verificarse** |
+| Perth | Meta `perth_watermark: "left_intact"`; **sin** auditoría del watermark |
+
+**Límites explícitos de esta evidencia:** no valida `conds.pt`, no audita Perth, no valida integración Node/pipeline, **no** autoriza ni inicia fase 2, **no** cierra reservas I-R1–I-R4 / M-R1–M-R5.
 
 #### Historial — remediación fase 1 (2026-10-21) — evidencias (conservadas)
 
@@ -130,7 +151,8 @@ Ciclo previo: remediación autorizada → `in_progress` → `review_required` �
 | M1–M8 | corregido / doc | ver informe de revisión del agente |
 
 **Prueba local (sin torch/pesos/inferencia):** `cd tools/chatterbox && python3.11 -m unittest test_synthesize -v`  
-**Nota vinculante:** esa suite **no** valida inferencia real, checkpoints, `conds.pt`, MPS real ni Perth.
+**Nota vinculante (suite):** esa suite **no** valida inferencia real, checkpoints, `conds.pt`, MPS real ni Perth.  
+**Nota (smoke posterior):** la inferencia MPS del 2026-10-21 (sección evidencia arriba) **sí** ejercitó carga de pesos requeridos + device MPS; **sigue sin** validar `conds.pt`, auditoría Perth ni Node/pipeline.
 
 #### Estado de aprobación (histórico pre-aceptación)
 
@@ -179,12 +201,12 @@ Superseded por la aceptación acotada de fase 1 (sección anterior).
 - [ ] Sin paths personales en tree; gitignore; sin muestras/pesos en Git.
 - [ ] `npm test` + `typecheck`; providers actuales sin regresión.
 
-#### Recomendación (tras aceptación acotada de fase 1)
+#### Recomendación (tras aceptación acotada + smoke documentado)
 
-1. Fase 1 queda **`accepted` con reservas** (I-R1–I-R4, M-R1–M-R5 abiertas; sin inferencia real).
+1. Fase 1 queda **`accepted` con reservas** (I-R1–I-R4, M-R1–M-R5 abiertas). Smoke MPS exit 0 documentado; **no** cierra reservas ni fase 2.
 2. **No** iniciar fase 2 ni § archivos de integración Node hasta `approved` / autorización humana explícita.
 3. Conservar OpenAI / file / ElevenLabs / macos-say / mock.
-4. Pendientes manuales (checkpoints, `conds.pt`, MPS, Perth) no cuentan como superados.
+4. Pendientes manuales aún abiertos: **`conds.pt`**, auditoría **Perth**. No afirmarlos como superados.
 
 ---
 
