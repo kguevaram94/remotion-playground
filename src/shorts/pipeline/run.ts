@@ -135,6 +135,8 @@ export const runPipeline = async (args: PipelineArgs): Promise<JobRecord> => {
     }
 
     const needsAi = args.mode === 'full' || args.mode === 'script';
+    // Voice preflight follows execution mode, not a single provider.
+    // assertConfigForMode validates the configured provider when needsVoice.
     const needsVoice =
       args.mode === 'full' ||
       args.mode === 'resume' ||
@@ -143,7 +145,7 @@ export const runPipeline = async (args: PipelineArgs): Promise<JobRecord> => {
     assertConfigForMode(
       config,
       needsAi && config.aiProvider !== 'template',
-      needsVoice && config.voiceProvider === 'openai-tts',
+      needsVoice,
     );
 
     if (args.mode === 'validate') {

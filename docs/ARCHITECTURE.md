@@ -41,7 +41,7 @@ título / --input JSON
 | IA | `src/shorts/ai/` | Proveedor LLM + prompts versionados |
 | Plantillas | `src/shorts/templates/` | Generadores deterministas por familia |
 | Pipeline | `src/shorts/pipeline/` | Fases persistentes y reanudación |
-| Voz | `src/shorts/voice/` | `VoiceProvider` (mock / macOS / OpenAI / …) |
+| Voz | `src/shorts/voice/` | `VoiceProvider` (mock / macOS / OpenAI / ElevenLabs / file / Chatterbox) |
 | Subtítulos | `src/shorts/subtitles/` | SRT + alineación |
 | Remotion | `src/shorts/remotion/` | Composición `ShortVideo` + componentes |
 | Media | `src/shorts/media/` | FFmpeg, thumbnail, bundle cache, BGM |
@@ -113,6 +113,12 @@ Política: `SHORTS_HUMAN_REVIEW_POLICY` (`warn_and_continue` | bloqueo según co
 `metadata.json` guarda fases, hashes y artefactos. `npm run short:resume -- --id <id>` salta fases `done`. Lock file `.lock` evita carreras.
 
 Fases del job: `generating_script` → `validating` → `planning_scenes` → `generating_voice` → `generating_subtitles` → `rendering` → `post_process` → `quality_check` → `completed`.
+
+## Voz Chatterbox en el pipeline (T-CHATTERBOX-002 · 2C)
+
+Preflight (`assertConfigForMode` en `run.ts`) valida el provider según el **modo** (`full`/`resume`/`render`/`voice`) y la config; incompleto → error explícito, sin degradar a mock.
+
+Flujo de voz real (incl. Chatterbox): `generating_voice` (N invocaciones CLI si hay N segmentos) → `ensureNarrationLoudnorm` → subtítulos → render publica bytes loudnorm (`render-narration.json`) → post → QC. `verified_provenance` = control P5 de bytes loudnorm publicados; **no** procedencia de modelo/checkpoints/ref. Sin daemon; coste potencial N× cold-start. Detalle: [voice.md](voice.md).
 
 ## Fronteras que no se cruzan
 

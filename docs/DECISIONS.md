@@ -133,6 +133,14 @@ Formato: fecha · decisión · contexto · alternativa · consecuencia.
 - **Consecuencia:** Jobs de evidencia en `output/av-qc-*/`. Limitaciones documentadas (BGM vacío, placeholders de plantilla, tipografía memory `RECORDISTE`). P8 sigue `blocked`.
 - **Aceptación:** `T-AV-QC-001` → `accepted` 2026-10-19 (humano, chat Cursor; revisión de los cuatro MP4 Cedar).
 
+## D017 — Chatterbox en pipeline: preflight + integración offline (fase 2C)
+
+- **Fecha:** 2026-10-21
+- **Decisión (`T-CHATTERBOX-002` fase 2C · H1–H4):** (1) Preflight de voz según **modo de ejecución** y provider configurado (`assertConfigForMode`); Chatterbox/OpenAI/ElevenLabs incompletos fallan temprano sin degradar a mock. (2) Integración verificada offline con provider simulado + loudnorm stub/fixtures + QC real; sin inferencia ni descargas en esta fase. (3) Documentar coste N× CLI/cold-start, límites de caché/trazabilidad, y que `verified_provenance` sigue siendo solo el control P5 de loudnorm (no modelo/checkpoints/ref).
+- **Alternativas descartadas:** Dejar el preflight gated solo a `openai-tts`; daemon persistente; afirmar procedencia verificada de modelo/ref vía caché; cambiar umbrales QC / `publishEligibility`; inferencia real en el mismo acto.
+- **Consecuencia:** Reservas fase 1 / 2A / limitaciones 2B **intactas**. Inferencia real y job con pesos requieren `approved` humano independiente. Docs: `docs/voice.md`, `docs/generar-short.md`, `docs/ARCHITECTURE.md`.
+- **Estado:** entrega en `review_required` tras H4; `accepted` solo humano.
+
 ---
 
 Al descartar o adoptar algo nuevo: añadir **D00N** aquí y enlazar desde el PR / `tasks/approvals.md`.

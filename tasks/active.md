@@ -13,12 +13,12 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 ## Estado de aprobación
 
-`approved` (**fase 2C** · alcance mínimo H1–H4) · **no iniciada** (`in_progress` solo tras confirmar este registro) · fase 2B permanece `accepted` (con limitaciones) · fase 2A permanece `accepted` (con reserva técnica) · fase 1 permanece `accepted` (con reservas I-R*/M-R*)
+`review_required` (**fase 2C** · alcance mínimo H1–H4) · fase 2B permanece `accepted` (con limitaciones) · fase 2A permanece `accepted` (con reserva técnica) · fase 1 permanece `accepted` (con reservas I-R*/M-R*)
 
-> Aprobación humana 2026-10-21 (chat Cursor): **fase 2C** — alcance H1–H4 únicamente (`approved`).  
-> Base: auditoría de preparación (solo lectura) + solicitud explícita de aprobación de alcance.  
-> **Autorizado:** H1 preflight; H2 integración offline (stub/fixtures); H3 documentación; H4 `npm test` + `typecheck` + diffs para revisión.  
-> **No** autorizado: inferencia real; descargas de modelos; cerrar reservas 1/2A/2B; declarar procedencia modelo/ref/checkpoints como verificada; cambiar umbrales QC / `publishEligibility` / P8 / YouTube; commit/push/merge/rebase; proveedores ajenos al alcance.  
+> Aprobación humana 2026-10-21 (chat Cursor): **fase 2C** — alcance H1–H4 únicamente.  
+> Implementación 2026-10-21: `approved` → `in_progress` → **`review_required`** (entrega H1–H4).  
+> **Entregado:** H1 preflight; H2 integración offline (stub/fixtures); H3 documentación; H4 `npm test` + `typecheck`.  
+> **No** autorizado / **no** hecho: inferencia real; descargas de modelos; cerrar reservas 1/2A/2B; declarar procedencia modelo/ref/checkpoints como verificada; cambiar umbrales QC / `publishEligibility` / P8 / YouTube; commit/push/merge/rebase.  
 > Fase 2B: `accepted` con limitaciones — **abiertas / intactas**.  
 > Fase 2A: `accepted` con reserva técnica (`exists`/`size`/`mtimeMs`) — **abierta / intacta**.  
 > Fase 1: `accepted` con reservas I-R1–I-R4 / M-R1–M-R5 (**abiertas**).  
@@ -85,34 +85,38 @@ Integrar Chatterbox en el pipeline de producción **sin inferencia real**: prefl
 
 ## Criterios de aceptación
 
-- [ ] H1: config Chatterbox incompleta → fallo explícito temprano; válida → no mock; tests cubren ambos casos.
-- [ ] H2: flujo offline stub + fixtures loudnorm/QC; multisegmento; fallo de segmento sin artefactos de éxito incorrectos; semántica loudnorm/`publishEligibility` intacta.
-- [ ] H3: docs con flujo, coste por segmento, y distinción `verified_provenance` (QC loudnorm P5) ≠ procedencia modelo/ref/checkpoints.
-- [ ] H4: `npm test` y `npm run typecheck` ejecutados de verdad; diffs/evidencias en informe `review_required`.
-- [ ] Reservas 1 / 2A / 2B **siguen abiertas**; sin claims de procedencia modelo/ref/checkpoints.
-- [ ] Sin inferencia real ni descargas en esta fase.
-- [ ] Sin commit/push/merge/rebase salvo petición humana aparte.
+- [x] H1: config Chatterbox incompleta → fallo explícito temprano; válida → no mock; tests cubren ambos casos.
+- [x] H2: flujo offline stub + fixtures loudnorm/QC; multisegmento; fallo de segmento sin artefactos de éxito incorrectos; semántica loudnorm/`publishEligibility` intacta.
+- [x] H3: docs con flujo, coste por segmento, y distinción `verified_provenance` (QC loudnorm P5) ≠ procedencia modelo/ref/checkpoints.
+- [x] H4: `npm test` y `npm run typecheck` ejecutados de verdad; diffs/evidencias en informe `review_required`.
+- [x] Reservas 1 / 2A / 2B **siguen abiertas**; sin claims de procedencia modelo/ref/checkpoints.
+- [x] Sin inferencia real ni descargas en esta fase.
+- [x] Sin commit/push/merge/rebase salvo petición humana aparte.
 - [ ] Revisión humana de fase 2C — pendiente (`accepted` solo humano).
 
 ## Pruebas a ejecutar
 
 ```bash
-npm test
-npm run typecheck
-```
+npm test -- tests/unit/pipeline-voice-preflight.test.ts tests/integration/chatterbox-voice-qc-offline.test.ts tests/unit/voice-chatterbox.test.ts tests/unit/voice-chatterbox-cache.test.ts tests/unit/generate-voice-chatterbox-cache.test.ts tests/unit/narration-loudnorm.test.ts tests/unit/quality-check.test.ts
+# → 7 files / 83 passed
 
-(Pruebas unitarias/integración nuevas del alcance H1–H2 se listarán en el informe de revisión.)
+npm test
+# → 26 files / 158 passed
+
+npm run typecheck
+# → OK (tsc --noEmit)
+```
 
 ## Riesgos y pendientes
 
-- Preflight mal cableado puede dejar fallos tardíos en voz (hallazgo de preparación en `run.ts`).
-- Multisegmento: coste N×cold-start solo documentado aquí; sin daemon.
+- Multisegmento: coste N×cold-start documentado; sin daemon.
 - Reserva 2A (`exists`/`size`/`mtimeMs`) y limitaciones 2B siguen: no elevar claims de identidad/procedencia.
 - Reservas fase 1 (incl. `conds.pt`, Perth) abiertas; 2C **no** las cierra.
 - Inferencia real = **fuera**; requiere autorización independiente.
+- H2: render MP4 **simulado** en tests de QC (placeholder bytes + provenance); sin FFmpeg loudnorm real (stub `loudnormAudio`).
 
 ## Notas
 
-- Estado tras aprobación humana: fase 2C **`approved`** (alcance H1–H4). **No** implementar hasta confirmar este registro; luego `in_progress`.
+- Estado tras entrega H1–H4 (2026-10-21): fase 2C **`review_required`**. Esperar `accepted` humano.
 - Fases 1/2A/2B aceptadas acotadas; reservas/limitaciones **intactas**.
-- Tras H4: dejar `review_required` y esperar `accepted` humano. Inferencia real sigue `proposed` hasta nuevo `approved`.
+- Inferencia real sigue `proposed` hasta nuevo `approved`.

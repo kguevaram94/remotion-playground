@@ -45,7 +45,7 @@ Código terminado ≠ `accepted`.
 | `T-STUDIO-001` | P7 | Studio / preview workflow estable | `accepted` | Aceptado 2026-10-19; audio Studio = `public/shorts/<id>/`; AV → `T-AV-QC-001` `accepted`; P8 `blocked` |
 | `T-AV-QC-001` | post-P7 / pre-P8 | Validación audiovisual real (4 familias) | `accepted` | Aceptado 2026-10-19 (chat Cursor); 4× MP4 Cedar; P8 `blocked` |
 | `T-CHATTERBOX-001` | transversal post-P7 / pre-P8 | Estudio + piloto Chatterbox (fuera del pipeline) | `proposed` | Historial intacto. Nota 2026-10-21: piloto técnico MPS OK; humano aceptó la muestra. **No** `accepted`. Integración → `T-CHATTERBOX-002`. P8 `blocked` |
-| `T-CHATTERBOX-002` | transversal post-P7 / pre-P8 | Integración Chatterbox (`VoiceProvider`) | fase 1: `accepted` (con reservas) · fase 2A: `accepted` (con reserva técnica) · fase 2B: `accepted` (con limitaciones) · **fase 2C: `approved` (H1–H4; no iniciada)** | 2C alcance H1–H4 aprobado 2026-10-21 (chat Cursor). Sin inferencia real. Reservas I-R*/M-R* y reserva 2A **abiertas**; limitaciones 2B **intactas**. P8 `blocked` |
+| `T-CHATTERBOX-002` | transversal post-P7 / pre-P8 | Integración Chatterbox (`VoiceProvider`) | fase 1: `accepted` (con reservas) · fase 2A: `accepted` (con reserva técnica) · fase 2B: `accepted` (con limitaciones) · **fase 2C: `review_required` (H1–H4)** | 2C H1–H4 entregada 2026-10-21; espera `accepted` humano. Sin inferencia real. Reservas I-R*/M-R* y reserva 2A **abiertas**; limitaciones 2B **intactas**. P8 `blocked` |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -63,33 +63,33 @@ Código terminado ≠ `accepted`.
 
 ## Tarea activa / alcance aprobado
 
-> Tarea activa: `T-CHATTERBOX-002` · **fase 1 `accepted` (con reservas)** · **fase 2A `accepted` (con reserva técnica)** · **fase 2B `accepted` (con limitaciones)** · **fase 2C `approved` (H1–H4; 2026-10-21; no iniciada)**.  
+> Tarea activa: `T-CHATTERBOX-002` · **fase 1 `accepted` (con reservas)** · **fase 2A `accepted` (con reserva técnica)** · **fase 2B `accepted` (con limitaciones)** · **fase 2C `review_required` (H1–H4; 2026-10-21)**.  
 > Precedente: `T-CHATTERBOX-001` permanece **`proposed`** (historial intacto; **no** marcado `accepted`).  
 > Nota piloto (001, 2026-10-21): generación técnica OK en Apple Silicon (MPS); el humano aceptó la muestra de audio.  
 > Smoke CLI fase 1 (2026-10-21, chat Cursor): inferencia real MPS exit 0; evidencia abajo; artefactos **fuera** del repo.  
-> Alcance activo: **fase 2C** H1–H4 (`approved`) — preflight, integración offline stub/fixtures, docs, verificación. **Sin** inferencia real.  
+> Alcance activo: **fase 2C** H1–H4 (`review_required`) — entrega lista; espera `accepted` humano. **Sin** inferencia real.  
 > Última entrega cerrada (acotada): **fase 2B** · `accepted` con limitaciones (identidad de caché; #4/#9 cerrados).  
 > Cerrada previa (acotada): **fase 2A** · `accepted` con reserva técnica (`exists`/`size`/`mtimeMs`) — **sigue abierta**.  
 > Cerrada previa (acotada): fase 1 · `accepted` con reservas I-R1–I-R4 / M-R1–M-R5 (**siguen abiertas**).  
 > Prevía cerrada completa: `T-AV-QC-001` · `accepted` (2026-10-19).  
-> P0–P7 = `accepted`. P8 = `blocked`. Sin YouTube. Inferencia real 2C **no** autorizada (requiere `approved` aparte).
+> P0–P7 = `accepted`. P8 = `blocked`. Sin YouTube. Inferencia real **no** autorizada (requiere `approved` aparte).
 
 ---
 
-### `T-CHATTERBOX-002` · transversal post-P7 / pre-P8 · fase 1 `accepted` (con reservas) · fase 2A `accepted` (con reserva técnica) · fase 2B `accepted` (con limitaciones) · fase 2C `approved` (H1–H4)
+### `T-CHATTERBOX-002` · transversal post-P7 / pre-P8 · fase 1 `accepted` (con reservas) · fase 2A `accepted` (con reserva técnica) · fase 2B `accepted` (con limitaciones) · fase 2C `review_required` (H1–H4)
 
 #### Resumen
 
 Fase 1 (CLI Python + docs + pins + tests aislados) implementada, remediada (B1–B2, I1–I6, M1–M8) y **aceptada con reservas** por humano (2026-10-21). Smoke test real del CLI (mismo día) registrado abajo.  
 **Fase 2A** (provider Node + factory + env + corrección anti-reuso + tests mock spawn) autorizada, implementada y **aceptada con reserva técnica** por humano (2026-10-21).  
 **Fase 2B** (identidad de caché: SHA-256 ref + huella pins declarados + params; correcciones auditoría **#4** / **#9**) autorizada, implementada y **aceptada con limitaciones** por humano (2026-10-21).  
-**Fase 2C** (pipeline mínimo H1–H4: preflight + integración offline + docs + verificación) — **`approved`** por humano (2026-10-21); **no iniciada** hasta confirmación de este registro. **Sin** inferencia real en este alcance.
+**Fase 2C** (pipeline mínimo H1–H4: preflight + integración offline + docs + verificación) — **`approved`** → **`in_progress`** → **`review_required`** (2026-10-21). **Sin** inferencia real en este alcance. **`accepted` solo humano.**
 
 #### Aprobación humana — fase 2C alcance H1–H4 únicamente (2026-10-21)
 
 **Decisión humana:** aprobar inicio del alcance mínimo de fase 2C (H1–H4).  
-**Estado de gobernanza registrado:** **`approved`** (autoriza implementar solo H1–H4; **no** `accepted`; **no** `in_progress` en este acto de registro).  
-**Aprobado por:** humano (chat Cursor: solicitud explícita de aprobación de alcance tras auditoría de preparación solo lectura).  
+**Estado de gobernanza registrado:** **`approved`** → **`in_progress`** → **`review_required`** (entrega H1–H4; **no** `accepted`).  
+**Aprobado por:** humano (chat Cursor: solicitud explícita de aprobación de alcance tras auditoría de preparación solo lectura; luego autorización expresa de implementación H1–H4).  
 **Alcance aprobado:**
 
 | Hito | Contenido |
@@ -110,7 +110,22 @@ Fase 1 (CLI Python + docs + pins + tests aislados) implementada, remediada (B1�
 
 **Discrepancias con el plan de preparación:** ninguna bloqueante. El plan de preparación proponía inferencia real como hito opcional separado; esta aprobación **excluye** inferencia y numera docs como H3 y verificación como H4 — alineado con la recomendación de 2C mínimo.
 
-**Siguiente paso operativo:** confirmar `approved` en `tasks/active.md` (este registro) → agente puede pasar a `in_progress` e implementar **solo** H1–H4. Al cerrar código/tests/docs: `review_required` + informe; **esperar** `accepted` humano.
+#### Entrega agente — fase 2C H1–H4 (`review_required`, 2026-10-21)
+
+**HEAD (inicio = fin; sin commit):** `49321b93bfb811b4c7887c0e0eb10a27f2576779`
+
+**Implementado:**
+
+| Hito | Cambio |
+| --- | --- |
+| **H1** | `run.ts`: `needsVoice` ya no se AND-ea con `openai-tts`. `env.ts`: ElevenLabs exige también `ELEVENLABS_VOICE_ID`. Tests: `tests/unit/pipeline-voice-preflight.test.ts` |
+| **H2** | `tests/integration/chatterbox-voice-qc-offline.test.ts` — stub Chatterbox PCM16 24 kHz + stub `loudnormAudio` + `runGenerateVoice` / `runQualityCheck` reales; multisegmento; fallo mid-segment; caché; QC/`publishEligibility`. Render MP4 **simulado** |
+| **H3** | `docs/voice.md`, `docs/generar-short.md`, `docs/ARCHITECTURE.md`, `docs/DECISIONS.md` (D017) |
+| **H4** | Suites dirigidas 83 passed; `npm test` 26 files / **158 passed**; `npm run typecheck` OK |
+
+**Confirmaciones:** sin inferencia Chatterbox real; sin descargas de modelos; sin commit/push/merge/rebase; umbrales QC / `publishEligibility` intactos; reservas I-R*/M-R*, reserva 2A, limitaciones 2B **abiertas**; `verified_provenance` solo = loudnorm P5.
+
+**Siguiente:** revisión humana → `accepted` (solo humano) o correcciones. Inferencia real / job con pesos = **nuevo** `approved` aparte.
 
 #### Aceptación humana — fase 1 únicamente (2026-10-21)
 
@@ -395,12 +410,12 @@ Superseded por la aceptación acotada de fase 1 (sección anterior).
 - [ ] Sin paths personales en tree; gitignore; sin muestras/pesos en Git.
 - [ ] `npm test` + `typecheck`; providers actuales sin regresión.
 
-#### Recomendación (tras aprobación 2C H1–H4)
+#### Recomendación (tras entrega 2C H1–H4 → `review_required`)
 
 1. Fase 1 permanece **`accepted` con reservas** (I-R1–I-R4, M-R1–M-R5 **abiertas**). Smoke MPS exit 0 documentado; **no** cierra reservas.
 2. Fase 2A permanece **`accepted` con reserva técnica** (`exists`/`size`/`mtimeMs` ≠ garantía criptográfica) — **abierta**.
 3. Fase 2B **`accepted` con limitaciones** (2026-10-21); #4/#9 cerrados. **No** `verified_provenance` de modelo/ref vía caché.
-4. Fase 2C **`approved`** (H1–H4, 2026-10-21): implementar solo ese alcance; **sin** inferencia real; al cerrar → `review_required`.
+4. Fase 2C **`review_required`** (H1–H4 entregada 2026-10-21): espera `accepted` humano; **sin** inferencia real en esta entrega.
 5. Conservar OpenAI / file / ElevenLabs / macos-say / mock; Chatterbox solo con config explícita válida.
 6. Pendientes manuales aún abiertos: **`conds.pt`**, auditoría **Perth**. No afirmarlos como superados. Pins declarados ≠ venv instalado.
 7. Inferencia real / job con pesos: **fuera** de H1–H4; requiere nuevo `approved` humano.

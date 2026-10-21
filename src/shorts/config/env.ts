@@ -240,13 +240,19 @@ export const assertConfigForMode = (
     );
   }
 
-  if (
-    needsVoice &&
-    config.voiceProvider === 'elevenlabs' &&
-    !config.elevenLabsApiKey
-  ) {
-    throw new Error('Falta ELEVENLABS_API_KEY.');
+  if (needsVoice && config.voiceProvider === 'elevenlabs') {
+    if (!config.elevenLabsApiKey) {
+      throw new Error('Falta ELEVENLABS_API_KEY.');
+    }
+    if (!config.elevenLabsVoiceId) {
+      throw new Error(
+        'Falta ELEVENLABS_VOICE_ID. Clona tu voz con: npm run short:clone-voice -- --sample data/voices/me.wav',
+      );
+    }
   }
+
+  // file / macos-say / mock: no required secrets at preflight.
+  // file may resolve VOICE_FILE or output/<id>/narration.custom.wav at synthesize time.
 
   if (needsVoice && config.voiceProvider === 'chatterbox') {
     const missing: string[] = [];

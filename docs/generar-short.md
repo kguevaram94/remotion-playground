@@ -143,6 +143,12 @@ npm run short -- --id s4-19-interruptores --mode voice
 npm run short -- --id s4-19-interruptores --mode render
 ```
 
+### Chatterbox local (opcional)
+
+Si usas `VOICE_PROVIDER=chatterbox`, configura las variables locales en `.env` (ver [voice.md](voice.md)). El preflight de modos `full` / `resume` / `render` / `voice` exige `CHATTERBOX_PYTHON`, `CHATTERBOX_CKPT_DIR` y `CHATTERBOX_REF_WAV`; si faltan, el pipeline **falla de inmediato** (no cae a mock).
+
+Cada segmento de narración es una invocación CLI (posible N× carga de modelo). Flujo: voz → loudnorm → render → QC. `verified_provenance` en el informe QC es la procedencia de **loudnorm** (bytes publicados), no la del modelo ni de los checkpoints. Detalle y límites: [voice.md](voice.md).
+
 ## 4. Qué incluye el formato automáticamente
 
 | Pieza | Dónde |
@@ -215,8 +221,9 @@ Si `quality_check` ya está `done` con un informe antiguo, `resume` no lo reabre
 
 | Síntoma | Qué hacer |
 | --- | --- |
-| Voz robótica / tono beep | `VOICE_PROVIDER=openai-tts` + `OPENAI_API_KEY` |
+| Voz robótica / tono beep | `VOICE_PROVIDER=openai-tts` + `OPENAI_API_KEY` (o Chatterbox local; ver [voice.md](voice.md)) |
 | Misma voz antigua tras cambiar `.env` | `npm run short -- --id <id> --mode voice` |
+| Fallo temprano `VOICE_PROVIDER=chatterbox requiere…` | Completa `CHATTERBOX_PYTHON` / `CKPT_DIR` / `REF_WAV` en `.env` |
 | QC falla por loudnorm / sin provenance | Regenerar con `--mode voice` (loudnorm antes del render) o `short:post` si ya hay provenance |
 | `eligible=false` con mock | Esperado: no publicar audio de prueba |
 | Sin música | Añade pista **con licencia** a `songs/catalog.json` (ver README) y vuelve a renderizar |

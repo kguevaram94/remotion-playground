@@ -6,7 +6,7 @@ Protocolo: `AGENTS.md` (ChatGPT planifica/revisa · Cursor implementa · GitHub 
 
 ## Prioridad actual
 
-1. **`T-CHATTERBOX-002`:** fase 1 CLI — `accepted` con reservas I-R1–I-R4 / M-R1–M-R5 (2026-10-21). Smoke real MPS documentado. **Fase 2A** — `accepted` con reserva técnica (`exists`/`size`/`mtimeMs`) (2026-10-21). **Fase 2B** (caché SHA-256 ref + huella pins declarados; #4/#9 cerrados) — `accepted` con limitaciones (2026-10-21). **Fase 2C** alcance H1–H4 — **`approved`** (2026-10-21; no iniciada; sin inferencia real). `conds.pt`/Perth pendientes. Piloto 001 OK (MPS). P8 `blocked`.
+1. **`T-CHATTERBOX-002`:** fase 1 CLI — `accepted` con reservas I-R1–I-R4 / M-R1–M-R5 (2026-10-21). Smoke real MPS documentado. **Fase 2A** — `accepted` con reserva técnica (`exists`/`size`/`mtimeMs`) (2026-10-21). **Fase 2B** (caché SHA-256 ref + huella pins declarados; #4/#9 cerrados) — `accepted` con limitaciones (2026-10-21). **Fase 2C** alcance H1–H4 — **`review_required`** (2026-10-21; sin inferencia real; pendiente `accepted` humano). `conds.pt`/Perth pendientes. Piloto 001 OK (MPS). P8 `blocked`.
 2. **`T-AV-QC-001`:** validación audiovisual real de las 4 familias — `accepted` (2026-10-19, OpenAI Cedar). P8 permanece `blocked`.
 3. **P5 pulido logic-lateral** — `accepted` (2026-10-19). `T-POLISH-001` + `T-QC-LOUDNORM-001` `accepted`.
 4. **P6 / `T-MULTIFORMAT-001`:** `accepted` (2026-10-19). A+B+C+D `accepted`.
@@ -55,11 +55,11 @@ P0 ──► P1 ──► P5 ──► P8 (futuro / blocked)
 
 | Campo | Valor |
 | --- | --- |
-| ID | `T-CHATTERBOX-002` (fase 1 `accepted` con reservas; fase 2A `accepted` con reserva técnica; fase 2B `accepted` con limitaciones; fase 2C `approved` H1–H4) |
+| ID | `T-CHATTERBOX-002` (fase 1 `accepted` con reservas; fase 2A `accepted` con reserva técnica; fase 2B `accepted` con limitaciones; fase 2C `review_required` H1–H4) |
 | Fase | P0–P7 `accepted` · `T-AV-QC-001` `accepted` · P8 `blocked` |
-| Estado | Fases 1/2A/2B cerradas acotadas (reservas/limitaciones abiertas). 2C **`approved`** (H1–H4; no iniciada; sin inferencia real). Manual aún abierto: `conds.pt`, auditoría Perth. P8 no iniciado |
+| Estado | Fases 1/2A/2B cerradas acotadas (reservas/limitaciones abiertas). 2C **`review_required`** (H1–H4 entregada; sin inferencia real; espera `accepted` humano). Manual aún abierto: `conds.pt`, auditoría Perth. P8 no iniciado |
 | Última cerrada (acotada) | `T-CHATTERBOX-002` fase 2B `accepted` con limitaciones (2026-10-21); fase 2A `accepted` con reserva técnica; fase 1 `accepted` con reservas + smoke MPS |
-| Alcance activo | Fase 2C H1–H4 `approved` (2026-10-21): preflight + integración offline + docs + verificación |
+| Alcance activo | Fase 2C H1–H4 `review_required` (2026-10-21): preflight + integración offline + docs + verificación — pendiente revisión humana |
 | Última cerrada (completa previa) | `T-AV-QC-001` `accepted` (2026-10-19) |
 | Nota AV | 4 familias renderizadas (Cedar) + inspección humana aceptada |
 | Nota P7 | `accepted`; audio Studio = `public/shorts/<id>/` |
