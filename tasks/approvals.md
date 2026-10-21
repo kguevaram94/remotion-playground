@@ -45,7 +45,7 @@ Código terminado ≠ `accepted`.
 | `T-STUDIO-001` | P7 | Studio / preview workflow estable | `accepted` | Aceptado 2026-10-19; audio Studio = `public/shorts/<id>/`; AV → `T-AV-QC-001` `accepted`; P8 `blocked` |
 | `T-AV-QC-001` | post-P7 / pre-P8 | Validación audiovisual real (4 familias) | `accepted` | Aceptado 2026-10-19 (chat Cursor); 4× MP4 Cedar; P8 `blocked` |
 | `T-CHATTERBOX-001` | transversal post-P7 / pre-P8 | Estudio + piloto Chatterbox (fuera del pipeline) | `proposed` | Historial intacto. Nota 2026-10-21: piloto técnico MPS OK; humano aceptó la muestra. **No** `accepted`. Integración → `T-CHATTERBOX-002`. P8 `blocked` |
-| `T-CHATTERBOX-002` | transversal post-P7 / pre-P8 | Integración Chatterbox (`VoiceProvider`) | fase 1: `accepted` (con reservas) · **fase 2A: `review_required`** · 2B/2C no iniciadas | 2A autorizada e implementada 2026-10-21 (chat Cursor). Provider Node + factory + env + tests mock spawn. Sin inferencia/red/pesos. Sin pipeline/caché. Reservas fase 1 abiertas. P8 `blocked` |
+| `T-CHATTERBOX-002` | transversal post-P7 / pre-P8 | Integración Chatterbox (`VoiceProvider`) | fase 1: `accepted` (con reservas) · **fase 2A: `accepted` (con reserva técnica)** · 2B/2C **no autorizadas** | 2A aceptada 2026-10-21 (chat Cursor) con reserva `size`/`mtimeMs`. Provider Node + factory + env + anti-reuso. Sin 2B/2C/pipeline/caché. Reservas I-R*/M-R* abiertas. P8 `blocked` |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -63,23 +63,23 @@ Código terminado ≠ `accepted`.
 
 ## Tarea activa / alcance aprobado
 
-> Tarea activa: `T-CHATTERBOX-002` · **fase 1 `accepted` (con reservas)** · **fase 2A `review_required`** (2026-10-21) · **2B/2C no iniciadas**.  
+> Tarea activa: `T-CHATTERBOX-002` · **fase 1 `accepted` (con reservas)** · **fase 2A `accepted` (con reserva técnica)** (2026-10-21) · **2B/2C no autorizadas**.  
 > Precedente: `T-CHATTERBOX-001` permanece **`proposed`** (historial intacto; **no** marcado `accepted`).  
 > Nota piloto (001, 2026-10-21): generación técnica OK en Apple Silicon (MPS); el humano aceptó la muestra de audio.  
 > Smoke CLI fase 1 (2026-10-21, chat Cursor): inferencia real MPS exit 0; evidencia abajo; artefactos **fuera** del repo.  
-> Entrega pendiente de revisión: **fase 2A** (provider Node + factory + config + tests deterministas).  
-> Última entrega cerrada (acotada): fase 1 de `T-CHATTERBOX-002` · `accepted` con reservas I-R1–I-R4 / M-R1–M-R5.  
+> Última entrega cerrada (acotada): **fase 2A** de `T-CHATTERBOX-002` · `accepted` con reserva técnica (detección `exists`/`size`/`mtimeMs` ≠ garantía criptográfica).  
+> Cerrada previa (acotada): fase 1 · `accepted` con reservas I-R1–I-R4 / M-R1–M-R5 (siguen abiertas).  
 > Prevía cerrada completa: `T-AV-QC-001` · `accepted` (2026-10-19).  
-> P0–P7 = `accepted`. P8 = `blocked`. Sin YouTube. **Sin pipeline/caché/QC en 2A.**
+> P0–P7 = `accepted`. P8 = `blocked`. Sin YouTube. **2B/2C / pipeline / caché / QC no autorizados.**
 
 ---
 
-### `T-CHATTERBOX-002` · transversal post-P7 / pre-P8 · fase 1 `accepted` (con reservas) · fase 2A `review_required`
+### `T-CHATTERBOX-002` · transversal post-P7 / pre-P8 · fase 1 `accepted` (con reservas) · fase 2A `accepted` (con reserva técnica)
 
 #### Resumen
 
 Fase 1 (CLI Python + docs + pins + tests aislados) implementada, remediada (B1–B2, I1–I6, M1–M8) y **aceptada con reservas** por humano (2026-10-21). Smoke test real del CLI (mismo día) registrado abajo.  
-**Fase 2A** (provider Node + factory + env + tests mock spawn) autorizada e implementada 2026-10-21 → estado **`review_required`** (pendiente humano). **2B/2C no iniciadas.**
+**Fase 2A** (provider Node + factory + env + corrección anti-reuso + tests mock spawn) autorizada, implementada y **aceptada con reserva técnica** por humano (2026-10-21). **2B/2C no autorizadas / no iniciadas.**
 
 #### Aceptación humana — fase 1 únicamente (2026-10-21)
 
@@ -117,20 +117,23 @@ Estado de la tarea en tablero: compuesto (fase 1 aceptada acotada · fase 2 no a
 **No autorizado en el acto de aceptación ni en el registro de smoke (histórico):** fase 2 completa; caché / pipeline / QC / elegibilidad; modificar código CLI; commit/push/merge; P8; YouTube; APIs de pago; daemon; copiar ref/WAV al repo.  
 **Autorización posterior (2026-10-21):** solo **fase 2A** (provider Node + factory + config + tests deterministas). Ver sección fase 2A abajo.
 
-#### Fase 2A — provider Node / factory / config (`review_required`, 2026-10-21)
+#### Fase 2A — provider Node / factory / config (`accepted` con reserva técnica, 2026-10-21)
 
 **Autorizado por:** humano (chat Cursor: alcance explícito solo 2A).  
-**Estado:** `approved` (autorización en chat) → `in_progress` → **`review_required`**. **No** `accepted`.  
+**Estado de implementación (histórico):** `approved` (autorización en chat) → `in_progress` → `review_required`.  
+**Estado de aceptación (acto humano):** **`accepted` (con reserva técnica)** — ver sección de aceptación abajo.  
+El esquema oficial **no** define `accepted_with_reservation`; se registra **`accepted` + reserva técnica vinculante** (mismo patrón que fase 1).
+
 **Implementado (agente):**
 
 | Pieza | Path / nota |
 | --- | --- |
-| Provider | `src/shorts/voice/chatterbox.ts` — spawn argv-safe, timeout 300000, WAV PCM16 mono 24 kHz + meta de esta ejecución |
+| Provider | `src/shorts/voice/chatterbox.ts` — spawn argv-safe, timeout 300000, WAV PCM16 mono 24 kHz + meta de esta ejecución; anti-reuso por `exists`/`size`/`mtimeMs` |
 | Factory | `src/shorts/voice/provider.ts` — `case 'chatterbox'`; default y demás providers intactos; config inválida → throw (no mock) |
 | Config | `src/shorts/config/env.ts` — `CHATTERBOX_*`; placeholders `.env.example`; nota `docs/voice.md` |
 | Tests | `tests/unit/voice-chatterbox.test.ts` — spawn simulado; sin red/pesos/inferencia |
 
-**Comandos ejecutados (agente):**
+**Comandos ejecutados (agente, entrega inicial):**
 
 ```bash
 npm test -- tests/unit/voice-chatterbox.test.ts tests/unit/voice.test.ts  # 18 passed
@@ -138,11 +141,52 @@ npm test          # 22 files / 119 passed
 npm run typecheck # OK
 ```
 
-**Confirmaciones:** sin descargas HF; sin inferencia real; sin cambios pipeline/caché/QC/CI; sin commit/push/merge; CLI Python no modificado; reservas I-R*/M-R* de fase 1 siguen abiertas; I-R1 respetada (WAV sin meta ≠ éxito).
+**Confirmaciones (entrega):** sin descargas HF; sin inferencia real; sin cambios pipeline/caché/QC/CI; sin commit/push/merge en el acto de implementación; CLI Python no modificado; reservas I-R*/M-R* de fase 1 siguen abiertas; I-R1 respetada (WAV sin meta ≠ éxito).
 
-**Fuera de 2A (no iniciado):** 2B caché/hashes; 2C; pipeline; loudnorm/render/post/QC; elegibilidad; daemon.
+##### Aceptación humana — fase 2A únicamente (2026-10-21)
 
-**Siguiente (proposed tras aceptación humana de 2A):** fase 2B — clave de caché SHA-256 ref + runtime pin (requiere nuevo `approved`).
+**Decisión humana:** `accepted_with_reservation` (intención).  
+**Estado de gobernanza registrado:** **`accepted` (con reserva técnica)** — el esquema no admite `accepted_with_reservation`.  
+**Aceptado por:** humano (chat Cursor: aceptación explícita de fase 2A con reserva técnica documentada).  
+**Alcance aceptado:** fase 2A exclusivamente — provider Node.js, factoría, configuración y corrección anti-reuso asociada.  
+**Fases 2B y 2C:** **no autorizadas**.
+
+**Base de la aceptación (revisión final comunicada por el humano):**
+
+- 21 pruebas específicas superadas.
+- `npm run typecheck` correcto.
+- Diff correctivo limitado a `src/shorts/voice/chatterbox.ts` y `tests/unit/voice-chatterbox.test.ts`.
+- Sin cambios declarados en la caché, el pipeline, QC, CI, CLI Python ni otros providers.
+- Sin inferencia real ni descargas de modelos durante las pruebas.
+- Sin commits ni otras operaciones de integración en el acto de aceptación.
+- La suite completa **no** se ejecutó durante la revisión final y **no** se registra como verificada en esta última comprobación.
+
+**Reserva técnica obligatoria (abierta — vinculante):**
+
+La comprobación basada en `exists`, `size` y `mtimeMs` proporciona una detección práctica de artefactos que no parecen haberse actualizado, pero **no demuestra criptográficamente** que el contenido del WAV o de los metadatos pertenezca a la ejecución actual.
+
+Limitaciones reconocidas:
+
+- Una reescritura puede conservar el mismo tamaño y una marca de modificación equivalente.
+- Otro proceso podría modificar los atributos del archivo sin garantizar que su contenido corresponda a la síntesis actual.
+- La solución **no** equivale a una vinculación por nonce, identificador de ejecución o hash de contenido.
+
+Esta limitación se acepta como reserva explícita de la fase 2A. **No** debe describirse el resultado como una garantía criptográfica de identidad de audio.
+
+**Reservas de fase 1:** permanecen abiertas todas las I-R* y M-R* previamente documentadas (incl. `conds.pt`, Perth, atomicidad conjunta WAV+meta, límites de cobertura de pruebas). La aceptación de 2A **no** las cierra ni modifica, y **no** constituye declaración de procedencia verificada.
+
+**Restricciones que permanecen vigentes tras esta aceptación:**
+
+- No iniciar la fase 2B ni la fase 2C.
+- No modificar la caché ni incorporar hashes de referencia o runtime en esta aceptación.
+- No modificar el pipeline de narración, QC, render, post, CI ni publicación.
+- No descargar modelos ni ejecutar inferencia real.
+- No borrar, restablecer ni descartar cambios locales.
+- No hacer commits, push, merge ni rebase (este registro de aceptación **no** autoriza operaciones Git de integración).
+
+**Fuera de 2A (no autorizado / no iniciado):** 2B caché/hashes; 2C; pipeline; loudnorm/render/post/QC; elegibilidad; daemon.
+
+**Siguiente (proposed — sin autorización):** fase 2B — clave de caché SHA-256 ref + runtime pin (**requiere nuevo `approved` humano**; **no** autorizado por esta aceptación).
 
 #### Evidencia — smoke test real CLI (2026-10-21, macOS Apple Silicon)
 
@@ -231,10 +275,10 @@ Superseded por la aceptación acotada de fase 1 (sección anterior).
 - [ ] Sin paths personales en tree; gitignore; sin muestras/pesos en Git.
 - [ ] `npm test` + `typecheck`; providers actuales sin regresión.
 
-#### Recomendación (tras 2A en `review_required`)
+#### Recomendación (tras 2A `accepted` con reserva técnica)
 
 1. Fase 1 permanece **`accepted` con reservas** (I-R1–I-R4, M-R1–M-R5 abiertas). Smoke MPS exit 0 documentado; **no** cierra reservas.
-2. Humano revisa **fase 2A** → `accepted` (acotada) o correcciones; **no** iniciar 2B/2C sin nuevo `approved`.
+2. Fase 2A **`accepted` con reserva técnica** (`exists`/`size`/`mtimeMs` ≠ garantía criptográfica). **No** iniciar 2B/2C sin nuevo `approved`.
 3. Conservar OpenAI / file / ElevenLabs / macos-say / mock; Chatterbox solo con config explícita válida.
 4. Pendientes manuales aún abiertos: **`conds.pt`**, auditoría **Perth**. No afirmarlos como superados.
 

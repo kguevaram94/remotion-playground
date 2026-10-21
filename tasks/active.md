@@ -13,11 +13,13 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 ## Estado de aprobación
 
-`review_required` (**fase 2A** implementada) · fases 2B/2C **no iniciadas** · fase 1 permanece `accepted` (con reservas)
+`accepted` (**fase 2A**, con reserva técnica) · fases 2B/2C **no autorizadas** · fase 1 permanece `accepted` (con reservas I-R*/M-R*)
 
-> Autorización humana 2026-10-21 (chat Cursor): **solo fase 2A** — provider Node.js + factoría + configuración + tests deterministas (sin pesos, sin inferencia real, sin red).  
-> **No** autorizado: 2B (caché/hashes), 2C, pipeline, QC, elegibilidad, commit/push/merge, P8.  
-> Fase 1: `accepted` con reservas I-R1–I-R4 / M-R1–M-R5 (intactas). Smoke MPS documentado.  
+> Aceptación humana 2026-10-21 (chat Cursor): **fase 2A** — provider Node.js + factoría + configuración + corrección anti-reuso.  
+> Estado registrado: **`accepted` (con reserva técnica)** — el esquema no admite `accepted_with_reservation`.  
+> Reserva 2A: detección `exists`/`size`/`mtimeMs` es práctica, **no** garantía criptográfica de identidad de audio.  
+> **No** autorizado: 2B (caché/hashes), 2C, pipeline, QC, elegibilidad, commit/push/merge/rebase, P8.  
+> Fase 1: `accepted` con reservas I-R1–I-R4 / M-R1–M-R5 (**intactas / abiertas**). Smoke MPS documentado.  
 > P0–P7 `accepted`. `T-AV-QC-001` `accepted`. P8 `blocked`.  
 > `T-CHATTERBOX-001` intacto (`proposed`).
 
@@ -25,7 +27,7 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 Integrar Chatterbox como `VoiceProvider` a nivel de arquitectura (fase 2A): invocación segura del CLI Python existente vía proceso hijo one-shot, registro en la factoría y configuración validada — sin alterar el comportamiento de los demás providers ni el pipeline.
 
-## Alcance (sí — fase 2A)
+## Alcance (sí — fase 2A; aceptado)
 
 1. Provider Node (`src/shorts/voice/chatterbox.ts`) que spawnea `tools/chatterbox/synthesize.py` con argv separados (sin shell).
 2. Registro en `createVoiceProvider` como `chatterbox`; default y demás providers intactos; config inválida → error (no mock silencioso).
@@ -33,21 +35,22 @@ Integrar Chatterbox como `VoiceProvider` a nivel de arquitectura (fase 2A): invo
 4. Timeout dedicado `CHATTERBOX_TIMEOUT_MS` (default 300000).
 5. Éxito solo con exit 0 + WAV PCM16 mono 24 kHz válido + metadatos válidos de esta ejecución (I-R1: WAV huérfano ≠ éxito).
 6. Tests unitarios deterministas con spawn simulado (sin red, pesos ni inferencia).
+7. Corrección anti-reuso asociada (detección práctica de artefactos no actualizados).
 
-## Fuera de alcance (no)
+## Fuera de alcance (no — sigue vigente)
 
-- Fase 2B: clave de caché, hashes de ref/pesos, manifiestos.
-- Fase 2C / pipeline / loudnorm / render / post / QC / `verified_provenance` / elegibilidad.
+- Fase 2B: clave de caché, hashes de ref/pesos, manifiestos (**no autorizada**).
+- Fase 2C / pipeline / loudnorm / render / post / QC / `verified_provenance` / elegibilidad (**no autorizada**).
 - Inferencia real desde Node; descargas de modelos; install de deps.
-- Commit / push / merge / publicar / P8 / YouTube.
-- Modificar CLI Python, HelloRemotion/ScriptVideo, CI.
-- Marcar la tarea o la fase 2 como `accepted`.
+- Commit / push / merge / rebase / publicar / P8 / YouTube.
+- Modificar CLI Python, HelloRemotion/ScriptVideo, CI (salvo lo ya entregado en 2A).
+- Cerrar reservas I-R*/M-R* de fase 1 ni afirmar procedencia verificada.
 
-## Archivos afectados previstos
+## Archivos afectados (fase 2A entregada)
 
 | Path | Rol |
 | --- | --- |
-| `src/shorts/voice/chatterbox.ts` | Provider Node + validación WAV/meta + spawn |
+| `src/shorts/voice/chatterbox.ts` | Provider Node + validación WAV/meta + spawn + anti-reuso |
 | `src/shorts/voice/provider.ts` | `case 'chatterbox'` en factoría |
 | `src/shorts/config/env.ts` | `VoiceProviderName` + `CHATTERBOX_*` |
 | `.env.example`, `docs/voice.md` | Placeholders / docs seguros |
@@ -57,7 +60,7 @@ Integrar Chatterbox como `VoiceProvider` a nivel de arquitectura (fase 2A): invo
 ## Dependencias
 
 - Fase 1 `accepted` con reservas (2026-10-21).
-- Autorización humana 2026-10-21: **solo fase 2A**.
+- Aceptación humana 2026-10-21: **fase 2A** con reserva técnica.
 - CLI real: `tools/chatterbox/synthesize.py` (contrato `--text/--output/--ref/--ckpt-dir/--device/--meta-out/...`).
 - P8 `blocked`.
 
@@ -69,8 +72,8 @@ Integrar Chatterbox como `VoiceProvider` a nivel de arquitectura (fase 2A): invo
 - [x] Spawn argv-safe; timeout dedicado 300000; errores spawn/timeout/exit/artefactos gestionados.
 - [x] Éxito = exit 0 + WAV válido + meta válida de esta ejecución.
 - [x] Tests deterministas sin inferencia/red/pesos.
-- [ ] Revisión humana de fase 2A (pendiente) — **no** `accepted` automático.
-- [ ] Fases 2B/2C: **no iniciadas**.
+- [x] Revisión humana de fase 2A — **`accepted` con reserva técnica** (2026-10-21).
+- [ ] Fases 2B/2C: **no autorizadas / no iniciadas**.
 
 ## Pruebas a ejecutar
 
@@ -80,14 +83,17 @@ npm test
 npm run typecheck
 ```
 
+> Nota de aceptación 2A: la revisión final humana verificó 21 pruebas específicas + typecheck; la suite completa **no** se registró como verificada en esa última comprobación.
+
 ## Riesgos y pendientes
 
+- **Reserva técnica 2A (abierta):** `exists`/`size`/`mtimeMs` ≠ prueba criptográfica de identidad de contenido; no equivale a nonce / run-id / hash.
 - Reservas fase 1 abiertas (I-R1–I-R4, M-R1–M-R5); 2A respeta I-R1 (no aceptar WAV sin meta).
-- Inferencia real Node / pipeline / caché = fases posteriores.
+- Inferencia real Node / pipeline / caché = fases posteriores (**no autorizadas**).
 - `conds.pt` / auditoría Perth siguen pendientes (fase 1).
 - Cold start × N segmentos; sin daemon (política conservada).
 
 ## Notas
 
-- Estado tras implementación agente: `review_required` (fase 2A). Esperando humano.
-- Siguiente propuesta: fase 2B (caché SHA-256 ref + runtime pin) en `proposed` tras aceptación 2A.
+- Estado tras aceptación humana: fase 2A **`accepted` (con reserva técnica)**.
+- Siguiente propuesta: fase 2B (caché SHA-256 ref + runtime pin) en **`proposed`** — **espera nuevo `approved` humano**; **no** iniciar.
