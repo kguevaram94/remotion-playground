@@ -13,23 +13,25 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 ## Estado de aprobación
 
-`review_required` (**fase 2C** · alcance mínimo H1–H4) · fase 2B permanece `accepted` (con limitaciones) · fase 2A permanece `accepted` (con reserva técnica) · fase 1 permanece `accepted` (con reservas I-R*/M-R*)
+`accepted` (**fase 2C** · alcance mínimo H1–H4) · fase 2B permanece `accepted` (con limitaciones) · fase 2A permanece `accepted` (con reserva técnica) · fase 1 permanece `accepted` (con reservas I-R*/M-R*)
 
-> Aprobación humana 2026-10-21 (chat Cursor): **fase 2C** — alcance H1–H4 únicamente.  
-> Implementación 2026-10-21: `approved` → `in_progress` → **`review_required`** (entrega H1–H4).  
-> **Entregado:** H1 preflight; H2 integración offline (stub/fixtures); H3 documentación; H4 `npm test` + `typecheck`.  
-> **No** autorizado / **no** hecho: inferencia real; descargas de modelos; cerrar reservas 1/2A/2B; declarar procedencia modelo/ref/checkpoints como verificada; cambiar umbrales QC / `publishEligibility` / P8 / YouTube; commit/push/merge/rebase.  
+> Aceptación humana 2026-10-21 (chat Cursor): **fase 2C** H1–H4 — `review_required` → **`accepted`**. Auditoría favorable H1–H4.  
+> Ciclo 2C: `approved` → `in_progress` → `review_required` → **`accepted`**.  
+> HEAD auditado de la entrega: `0774e0211bc03f25b98b57bc7d12800e1b5e03bd` (padre `49321b93bfb811b4c7887c0e0eb10a27f2576779`).  
+> **Entregado y aceptado:** H1 preflight; H2 integración offline (stub/fixtures); H3 documentación; H4 `npm test` + `typecheck`.  
+> **No** autorizado / **no** hecho: inferencia real; descargas de modelos; cerrar reservas 1/2A/2B; declarar procedencia modelo/ref/checkpoints como verificada; cambiar umbrales QC / `publishEligibility` / P8 / YouTube.  
 > Fase 2B: `accepted` con limitaciones — **abiertas / intactas**.  
 > Fase 2A: `accepted` con reserva técnica (`exists`/`size`/`mtimeMs`) — **abierta / intacta**.  
 > Fase 1: `accepted` con reservas I-R1–I-R4 / M-R1–M-R5 (**abiertas**).  
 > P0–P7 `accepted`. `T-AV-QC-001` `accepted`. P8 `blocked`.  
-> `T-CHATTERBOX-001` intacto (`proposed`).
+> `T-CHATTERBOX-001` intacto (`proposed`).  
+> Inferencia real / job con pesos: **`proposed`** (requiere nuevo `approved` humano). Sin alcance de implementación autorizado tras este acto.
 
 ## Objetivo
 
 Integrar Chatterbox en el pipeline de producción **sin inferencia real**: preflight de configuración, pruebas offline con proveedor simulado + fixtures de loudnorm/QC, documentación de flujo/coste/límites de trazabilidad, y verificación `npm test` / `typecheck` — preservando la semántica P5 de loudnorm y `publishEligibility`, y **sin** afirmar procedencia verificada de modelo/ref/checkpoints.
 
-## Alcance (sí — fase 2C · H1–H4)
+## Alcance (sí — fase 2C · H1–H4) — aceptado
 
 ### H1 — Preflight
 
@@ -51,7 +53,7 @@ Integrar Chatterbox en el pipeline de producción **sin inferencia real**: prefl
 ### H4 — Verificación
 
 1. Ejecutar `npm test` y `npm run typecheck`.
-2. Entregar diffs y evidencias para revisión humana antes de aceptar la fase (`review_required`).
+2. Entregar diffs y evidencias para revisión humana antes de aceptar la fase (`review_required` → `accepted` humano).
 
 ## Fuera de alcance (no)
 
@@ -61,7 +63,7 @@ Integrar Chatterbox en el pipeline de producción **sin inferencia real**: prefl
 - Hash de checkpoints; verificación live `pip freeze`.
 - Modificar umbrales QC, semántica de `publishEligibility`, orden voice→loudnorm→render→post.
 - P8 / YouTube / publicación; APIs de pago; providers ajenos al alcance (salvo no-regresión).
-- Commit / push / merge / rebase.
+- Commit / push / merge / rebase (salvo petición humana aparte).
 - Autorización de job real con pesos (requiere **nuevo** `approved` humano independiente).
 
 ## Archivos afectados previstos
@@ -81,6 +83,7 @@ Integrar Chatterbox en el pipeline de producción **sin inferencia real**: prefl
 - Fase 2A `accepted` con reserva técnica (abierta).
 - Fase 1 `accepted` con reservas I-R*/M-R* (abiertas).
 - Autorización humana 2026-10-21 (chat Cursor): **fase 2C alcance H1–H4**.
+- Aceptación humana 2026-10-21 (chat Cursor): **fase 2C H1–H4** tras auditoría favorable.
 - P8 `blocked`.
 
 ## Criterios de aceptación
@@ -92,7 +95,7 @@ Integrar Chatterbox en el pipeline de producción **sin inferencia real**: prefl
 - [x] Reservas 1 / 2A / 2B **siguen abiertas**; sin claims de procedencia modelo/ref/checkpoints.
 - [x] Sin inferencia real ni descargas en esta fase.
 - [x] Sin commit/push/merge/rebase salvo petición humana aparte.
-- [ ] Revisión humana de fase 2C — pendiente (`accepted` solo humano).
+- [x] Revisión humana de fase 2C — **`accepted`** (2026-10-21; auditoría favorable H1–H4).
 
 ## Pruebas a ejecutar
 
@@ -112,11 +115,11 @@ npm run typecheck
 - Multisegmento: coste N×cold-start documentado; sin daemon.
 - Reserva 2A (`exists`/`size`/`mtimeMs`) y limitaciones 2B siguen: no elevar claims de identidad/procedencia.
 - Reservas fase 1 (incl. `conds.pt`, Perth) abiertas; 2C **no** las cierra.
-- Inferencia real = **fuera**; requiere autorización independiente.
+- Inferencia real = **fuera**; requiere autorización independiente (`proposed` hasta nuevo `approved`).
 - H2: render MP4 **simulado** en tests de QC (placeholder bytes + provenance); sin FFmpeg loudnorm real (stub `loudnormAudio`).
 
 ## Notas
 
-- Estado tras entrega H1–H4 (2026-10-21): fase 2C **`review_required`**. Esperar `accepted` humano.
+- Estado tras aceptación humana (2026-10-21): fase 2C **`accepted`** (H1–H4; auditoría favorable). HEAD entrega: `0774e02` (padre `49321b9`).
 - Fases 1/2A/2B aceptadas acotadas; reservas/limitaciones **intactas**.
-- Inferencia real sigue `proposed` hasta nuevo `approved`.
+- Inferencia real sigue `proposed` hasta nuevo `approved`. P8 `blocked`. Sin alcance de implementación autorizado tras este acto.
