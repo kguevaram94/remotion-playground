@@ -13,11 +13,13 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 ## Estado de aprobación
 
-`accepted` (**fase 2B** con limitaciones explícitas; hallazgos #4/#9 cerrados) · fase 2C **no autorizada / no iniciada** · fase 2A permanece `accepted` (con reserva técnica) · fase 1 permanece `accepted` (con reservas I-R*/M-R*)
+`approved` (**fase 2C** · alcance mínimo H1–H4) · **no iniciada** (`in_progress` solo tras confirmar este registro) · fase 2B permanece `accepted` (con limitaciones) · fase 2A permanece `accepted` (con reserva técnica) · fase 1 permanece `accepted` (con reservas I-R*/M-R*)
 
-> Aceptación humana 2026-10-21 (chat Cursor): **fase 2B** — identidad de caché Chatterbox (`accepted` + limitaciones; esquema sin `accepted_with_reservation`).  
-> Base: auditoría final (hallazgos **#4** / **#9** PASS; `npm test` 141; `npm run typecheck` OK; entrega `c119717`).  
-> **No** autorizado: 2C, QC, `verified_provenance`, pipeline render/post, inferencia real, descargas, commit/push/merge/rebase, P8.  
+> Aprobación humana 2026-10-21 (chat Cursor): **fase 2C** — alcance H1–H4 únicamente (`approved`).  
+> Base: auditoría de preparación (solo lectura) + solicitud explícita de aprobación de alcance.  
+> **Autorizado:** H1 preflight; H2 integración offline (stub/fixtures); H3 documentación; H4 `npm test` + `typecheck` + diffs para revisión.  
+> **No** autorizado: inferencia real; descargas de modelos; cerrar reservas 1/2A/2B; declarar procedencia modelo/ref/checkpoints como verificada; cambiar umbrales QC / `publishEligibility` / P8 / YouTube; commit/push/merge/rebase; proveedores ajenos al alcance.  
+> Fase 2B: `accepted` con limitaciones — **abiertas / intactas**.  
 > Fase 2A: `accepted` con reserva técnica (`exists`/`size`/`mtimeMs`) — **abierta / intacta**.  
 > Fase 1: `accepted` con reservas I-R1–I-R4 / M-R1–M-R5 (**abiertas**).  
 > P0–P7 `accepted`. `T-AV-QC-001` `accepted`. P8 `blocked`.  
@@ -25,75 +27,92 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 ## Objetivo
 
-Ampliar la clave de caché de narración **solo para Chatterbox** con identidad de contenido de la referencia vocal (SHA-256), huella reproducible de los pins **declarados** en `requirements-pin.txt`, y parámetros de síntesis del contrato del provider — sin cambiar claves de otros providers ni afirmar procedencia verificada.
+Integrar Chatterbox en el pipeline de producción **sin inferencia real**: preflight de configuración, pruebas offline con proveedor simulado + fixtures de loudnorm/QC, documentación de flujo/coste/límites de trazabilidad, y verificación `npm test` / `typecheck` — preservando la semántica P5 de loudnorm y `publishEligibility`, y **sin** afirmar procedencia verificada de modelo/ref/checkpoints.
 
-## Alcance (sí — fase 2B)
+## Alcance (sí — fase 2C · H1–H4)
 
-1. SHA-256 del contenido de `CHATTERBOX_REF_WAV` (streaming por bloques; no ruta/mtime).
-2. Huella de pins declarados (`requirements-pin.txt` junto al CLI): normalización canónica + SHA-256.
-3. Inclusión de params relevantes (modelId, device, languageId, exaggeration, cfgWeight, temperature).
-4. Fallo explícito si no se puede leer la ref o los pins (sin reuso silencioso de caché).
-5. Cableado en `generate-voice.ts` solo cuando `voiceProvider === 'chatterbox'`.
-6. Tests deterministas offline con fixtures sintéticas.
-7. Docs mínimas (`docs/voice.md`) + gobernanza.
+### H1 — Preflight
+
+1. Corregir la validación temprana de configuración de voz en `src/shorts/pipeline/run.ts` (para que Chatterbox/otros providers reales no queden fuera del assert).
+2. Añadir tests para Chatterbox con configuración válida e incompleta.
+3. Garantizar que una configuración inválida falla explícitamente y **nunca** degrada a mock.
+
+### H2 — Integración offline
+
+1. Probar el flujo de voz con proveedor Chatterbox **simulado**, normalización controlada y QC mediante fixtures.
+2. Cubrir síntesis multisegmento, fallo en un segmento y ausencia de artefactos de éxito incorrectos.
+3. Mantener la semántica existente de loudnorm y `publishEligibility` (sin cambiar umbrales ni criterios).
+
+### H3 — Documentación
+
+1. Documentar el flujo de voz, el coste de carga por segmento y las limitaciones de trazabilidad.
+2. Distinguir expresamente `verified_provenance` de QC de loudnorm de la procedencia del modelo, los checkpoints y la referencia vocal.
+
+### H4 — Verificación
+
+1. Ejecutar `npm test` y `npm run typecheck`.
+2. Entregar diffs y evidencias para revisión humana antes de aceptar la fase (`review_required`).
 
 ## Fuera de alcance (no)
 
-- Fase 2C / loudnorm / render / post / QC / elegibilidad / `verified_provenance`.
-- Inferencia real; descargas; install; daemon.
-- Comprobar paquetes instalados en el venv (pins = declarados, no runtime live).
-- Hash de checkpoints / manifiesto de pesos en disco.
-- Modificar fase 2A anti-reuso ni cerrar su reserva técnica.
-- Cerrar reservas I-R*/M-R* de fase 1.
-- Commit / push / merge / rebase / P8 / YouTube.
+- Inferencia real; descargas de modelos; install; daemon.
+- Cerrar reservas fase 1 (I-R*/M-R*), reserva técnica 2A, o limitaciones 2B.
+- Declarar procedencia de modelo / ref / checkpoints / venv como verificada.
+- Hash de checkpoints; verificación live `pip freeze`.
+- Modificar umbrales QC, semántica de `publishEligibility`, orden voice→loudnorm→render→post.
+- P8 / YouTube / publicación; APIs de pago; providers ajenos al alcance (salvo no-regresión).
+- Commit / push / merge / rebase.
+- Autorización de job real con pesos (requiere **nuevo** `approved` humano independiente).
 
 ## Archivos afectados previstos
 
 | Path | Rol |
 | --- | --- |
-| `src/shorts/voice/chatterbox-cache.ts` | Helpers identidad caché (nuevo) |
-| `src/shorts/pipeline/generate-voice.ts` | Clave Chatterbox-only |
-| `tests/unit/voice-chatterbox-cache.test.ts` | Suite 2B |
-| `docs/voice.md` | Nota caché 2B |
+| `src/shorts/pipeline/run.ts` | Preflight `assertConfigForMode` (H1) |
+| `src/shorts/config/env.ts` | Ajuste de assert si hace falta (H1) |
+| `src/shorts/pipeline/generate-voice.ts` | Solo si H2 exige cableado/observabilidad mínima sin cambiar contrato |
+| `tests/unit/*` / `tests/integration/*` | Preflight + flujo stub/fixtures (H1–H2) |
+| `docs/voice.md` (+ docs mínimos relacionados) | Flujo, coste N×cold-start, glosario provenance (H3) |
 | `tasks/active.md`, `tasks/approvals.md`, `ROADMAP.md` | Gobernanza |
 
 ## Dependencias
 
-- Fase 2A `accepted` con reserva técnica (2026-10-21).
-- Autorización humana 2026-10-21: **fase 2B**.
-- `tools/chatterbox/requirements-pin.txt` (pins declarados en repo).
+- Fase 2B `accepted` con limitaciones (2026-10-21).
+- Fase 2A `accepted` con reserva técnica (abierta).
+- Fase 1 `accepted` con reservas I-R*/M-R* (abiertas).
+- Autorización humana 2026-10-21 (chat Cursor): **fase 2C alcance H1–H4**.
 - P8 `blocked`.
 
 ## Criterios de aceptación
 
-- [x] Misma ref (bytes) → mismo hash; paths distintos con mismos bytes → misma identidad.
-- [x] Cambio de bytes de ref o de pins declarados invalida la clave Chatterbox.
-- [x] Cambio de params de síntesis relevantes invalida la clave.
-- [x] Error al leer ref/pins → fallo explícito (no reuso silencioso).
-- [x] Otros providers conservan comportamiento de clave.
-- [x] Serialización determinista; sin red/pesos/inferencia en tests.
-- [x] Limitación documentada: pins declarados ≠ prueba de paquetes instalados.
-- [x] Revisión humana de fase 2B — `accepted` (con limitaciones; 2026-10-21).
-- [ ] Fase 2C: **no autorizada / no iniciada**.
+- [ ] H1: config Chatterbox incompleta → fallo explícito temprano; válida → no mock; tests cubren ambos casos.
+- [ ] H2: flujo offline stub + fixtures loudnorm/QC; multisegmento; fallo de segmento sin artefactos de éxito incorrectos; semántica loudnorm/`publishEligibility` intacta.
+- [ ] H3: docs con flujo, coste por segmento, y distinción `verified_provenance` (QC loudnorm P5) ≠ procedencia modelo/ref/checkpoints.
+- [ ] H4: `npm test` y `npm run typecheck` ejecutados de verdad; diffs/evidencias en informe `review_required`.
+- [ ] Reservas 1 / 2A / 2B **siguen abiertas**; sin claims de procedencia modelo/ref/checkpoints.
+- [ ] Sin inferencia real ni descargas en esta fase.
+- [ ] Sin commit/push/merge/rebase salvo petición humana aparte.
+- [ ] Revisión humana de fase 2C — pendiente (`accepted` solo humano).
 
 ## Pruebas a ejecutar
 
 ```bash
-npm test -- tests/unit/voice-chatterbox-cache.test.ts tests/unit/generate-voice-chatterbox-cache.test.ts tests/unit/voice-chatterbox.test.ts tests/unit/voice.test.ts
 npm test
 npm run typecheck
 ```
 
+(Pruebas unitarias/integración nuevas del alcance H1–H2 se listarán en el informe de revisión.)
+
 ## Riesgos y pendientes
 
-- **Pins declarados ≠ runtime instalado:** la huella no consulta el intérprete ni `pip freeze`.
-- **Sin hash de checkpoints:** cambiar pesos en `CHATTERBOX_CKPT_DIR` sin tocar pins/ref/params no invalida la clave.
-- Reserva técnica 2A (`size`/`mtimeMs`) sigue abierta.
-- Reservas fase 1 I-R*/M-R* abiertas; 2B **no** afirma `verified_provenance`.
-- Hash de ref identifica contenido de referencia para distinguir caché; **no** prueba procedencia del audio final.
+- Preflight mal cableado puede dejar fallos tardíos en voz (hallazgo de preparación en `run.ts`).
+- Multisegmento: coste N×cold-start solo documentado aquí; sin daemon.
+- Reserva 2A (`exists`/`size`/`mtimeMs`) y limitaciones 2B siguen: no elevar claims de identidad/procedencia.
+- Reservas fase 1 (incl. `conds.pt`, Perth) abiertas; 2C **no** las cierra.
+- Inferencia real = **fuera**; requiere autorización independiente.
 
 ## Notas
 
-- Estado tras aceptación humana: fase 2B **`accepted` (con limitaciones)**. Hallazgos #4/#9 cerrados. **No** `verified_provenance`.
-- Reservas fase 1 I-R*/M-R* y reserva técnica 2A **siguen abiertas**.
-- Siguiente propuesta: fase 2C (pipeline/QC) en `proposed` — **requiere nuevo `approved`**; **no** iniciar.
+- Estado tras aprobación humana: fase 2C **`approved`** (alcance H1–H4). **No** implementar hasta confirmar este registro; luego `in_progress`.
+- Fases 1/2A/2B aceptadas acotadas; reservas/limitaciones **intactas**.
+- Tras H4: dejar `review_required` y esperar `accepted` humano. Inferencia real sigue `proposed` hasta nuevo `approved`.
