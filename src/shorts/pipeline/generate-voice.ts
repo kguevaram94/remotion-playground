@@ -12,10 +12,48 @@ import {
   narrationCacheKey,
 } from '../voice/provider';
 import {
+  buildChatterboxCacheModelIdentity,
+  resolveChatterboxPinFilePath,
+} from '../voice/chatterbox-cache';
+import {
   buildNarrationSegments,
   joinNarrationPlain,
 } from '../voice/narration-segments';
 import type {JobRecord, JobStore} from '../storage/job-store';
+
+const buildNarrationModelIdentity = async (
+  config: AppConfig,
+): Promise<string> => {
+  // Chatterbox (phase 2B): content hash of ref + declared pin fingerprint + synth params.
+  // Other providers keep the pre-2B identity — no global cache invalidation.
+  if (config.voiceProvider === 'chatterbox') {
+    if (!config.chatterboxRefWav) {
+      throw new Error(
+        'Chatterbox cache identity: falta CHATTERBOX_REF_WAV (no se reutiliza caché sin referencia)',
+      );
+    }
+    return buildChatterboxCacheModelIdentity({
+      refWavPath: config.chatterboxRefWav,
+      pinFilePath: resolveChatterboxPinFilePath(config.chatterboxScript),
+      device: config.chatterboxDevice,
+      languageId: config.chatterboxLanguageId,
+      exaggeration: config.chatterboxExaggeration,
+      cfgWeight: config.chatterboxCfgWeight,
+      temperature: config.chatterboxTemperature,
+    });
+  }
+  return [
+    config.voiceModel,
+    config.voiceName,
+    config.voiceTtsModel,
+    `speed:${config.voiceSpeed}`,
+    config.voiceInstructions?.slice(0, 200),
+    config.elevenLabsVoiceId,
+    config.voiceFile,
+  ]
+    .filter(Boolean)
+    .join('|');
+};
 
 export const runGenerateVoice = async (
   store: JobStore,
@@ -35,20 +73,11 @@ export const runGenerateVoice = async (
 
     const segments = buildNarrationSegments(script.scenes);
     const text = joinNarrationPlain(script.scenes);
+    const modelIdentity = await buildNarrationModelIdentity(config);
     const cacheKey = narrationCacheKey(
       `${text}|pauses:${segments.map((s) => s.pauseAfterSec).join(',')}`,
       config.voiceProvider,
-      [
-        config.voiceModel,
-        config.voiceName,
-        config.voiceTtsModel,
-        `speed:${config.voiceSpeed}`,
-        config.voiceInstructions?.slice(0, 200),
-        config.elevenLabsVoiceId,
-        config.voiceFile,
-      ]
-        .filter(Boolean)
-        .join('|'),
+      modelIdentity,
     );
     const audioPath = path.join(store.jobDir(job.id), 'narration.wav');
 

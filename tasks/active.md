@@ -13,87 +13,85 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 ## Estado de aprobación
 
-`accepted` (**fase 2A**, con reserva técnica) · fases 2B/2C **no autorizadas** · fase 1 permanece `accepted` (con reservas I-R*/M-R*)
+`review_required` (**fase 2B** implementada) · fase 2C **no autorizada** · fase 2A permanece `accepted` (con reserva técnica) · fase 1 permanece `accepted` (con reservas I-R*/M-R*)
 
-> Aceptación humana 2026-10-21 (chat Cursor): **fase 2A** — provider Node.js + factoría + configuración + corrección anti-reuso.  
-> Estado registrado: **`accepted` (con reserva técnica)** — el esquema no admite `accepted_with_reservation`.  
-> Reserva 2A: detección `exists`/`size`/`mtimeMs` es práctica, **no** garantía criptográfica de identidad de audio.  
-> **No** autorizado: 2B (caché/hashes), 2C, pipeline, QC, elegibilidad, commit/push/merge/rebase, P8.  
-> Fase 1: `accepted` con reservas I-R1–I-R4 / M-R1–M-R5 (**intactas / abiertas**). Smoke MPS documentado.  
+> Autorización humana 2026-10-21 (chat Cursor): **fase 2B** — identidad de caché (SHA-256 contenido ref) + huella de pins declarados + params de síntesis.  
+> **No** autorizado: 2C, QC, `verified_provenance`, pipeline render/post, inferencia real, descargas, commit/push/merge/rebase, P8.  
+> Fase 2A: `accepted` con reserva técnica (`exists`/`size`/`mtimeMs`) — **intacta**.  
+> Fase 1: `accepted` con reservas I-R1–I-R4 / M-R1–M-R5 (**abiertas**).  
 > P0–P7 `accepted`. `T-AV-QC-001` `accepted`. P8 `blocked`.  
 > `T-CHATTERBOX-001` intacto (`proposed`).
 
 ## Objetivo
 
-Integrar Chatterbox como `VoiceProvider` a nivel de arquitectura (fase 2A): invocación segura del CLI Python existente vía proceso hijo one-shot, registro en la factoría y configuración validada — sin alterar el comportamiento de los demás providers ni el pipeline.
+Ampliar la clave de caché de narración **solo para Chatterbox** con identidad de contenido de la referencia vocal (SHA-256), huella reproducible de los pins **declarados** en `requirements-pin.txt`, y parámetros de síntesis del contrato del provider — sin cambiar claves de otros providers ni afirmar procedencia verificada.
 
-## Alcance (sí — fase 2A; aceptado)
+## Alcance (sí — fase 2B)
 
-1. Provider Node (`src/shorts/voice/chatterbox.ts`) que spawnea `tools/chatterbox/synthesize.py` con argv separados (sin shell).
-2. Registro en `createVoiceProvider` como `chatterbox`; default y demás providers intactos; config inválida → error (no mock silencioso).
-3. Variables `CHATTERBOX_*` en `env.ts` + placeholders en `.env.example` / nota en `docs/voice.md`.
-4. Timeout dedicado `CHATTERBOX_TIMEOUT_MS` (default 300000).
-5. Éxito solo con exit 0 + WAV PCM16 mono 24 kHz válido + metadatos válidos de esta ejecución (I-R1: WAV huérfano ≠ éxito).
-6. Tests unitarios deterministas con spawn simulado (sin red, pesos ni inferencia).
-7. Corrección anti-reuso asociada (detección práctica de artefactos no actualizados).
+1. SHA-256 del contenido de `CHATTERBOX_REF_WAV` (streaming por bloques; no ruta/mtime).
+2. Huella de pins declarados (`requirements-pin.txt` junto al CLI): normalización canónica + SHA-256.
+3. Inclusión de params relevantes (modelId, device, languageId, exaggeration, cfgWeight, temperature).
+4. Fallo explícito si no se puede leer la ref o los pins (sin reuso silencioso de caché).
+5. Cableado en `generate-voice.ts` solo cuando `voiceProvider === 'chatterbox'`.
+6. Tests deterministas offline con fixtures sintéticas.
+7. Docs mínimas (`docs/voice.md`) + gobernanza.
 
-## Fuera de alcance (no — sigue vigente)
+## Fuera de alcance (no)
 
-- Fase 2B: clave de caché, hashes de ref/pesos, manifiestos (**no autorizada**).
-- Fase 2C / pipeline / loudnorm / render / post / QC / `verified_provenance` / elegibilidad (**no autorizada**).
-- Inferencia real desde Node; descargas de modelos; install de deps.
-- Commit / push / merge / rebase / publicar / P8 / YouTube.
-- Modificar CLI Python, HelloRemotion/ScriptVideo, CI (salvo lo ya entregado en 2A).
-- Cerrar reservas I-R*/M-R* de fase 1 ni afirmar procedencia verificada.
+- Fase 2C / loudnorm / render / post / QC / elegibilidad / `verified_provenance`.
+- Inferencia real; descargas; install; daemon.
+- Comprobar paquetes instalados en el venv (pins = declarados, no runtime live).
+- Hash de checkpoints / manifiesto de pesos en disco.
+- Modificar fase 2A anti-reuso ni cerrar su reserva técnica.
+- Cerrar reservas I-R*/M-R* de fase 1.
+- Commit / push / merge / rebase / P8 / YouTube.
 
-## Archivos afectados (fase 2A entregada)
+## Archivos afectados previstos
 
 | Path | Rol |
 | --- | --- |
-| `src/shorts/voice/chatterbox.ts` | Provider Node + validación WAV/meta + spawn + anti-reuso |
-| `src/shorts/voice/provider.ts` | `case 'chatterbox'` en factoría |
-| `src/shorts/config/env.ts` | `VoiceProviderName` + `CHATTERBOX_*` |
-| `.env.example`, `docs/voice.md` | Placeholders / docs seguros |
-| `tests/unit/voice-chatterbox.test.ts` | Suite determinista |
-| `tasks/active.md`, `tasks/approvals.md`, `ROADMAP.md` | Gobernanza 2A |
+| `src/shorts/voice/chatterbox-cache.ts` | Helpers identidad caché (nuevo) |
+| `src/shorts/pipeline/generate-voice.ts` | Clave Chatterbox-only |
+| `tests/unit/voice-chatterbox-cache.test.ts` | Suite 2B |
+| `docs/voice.md` | Nota caché 2B |
+| `tasks/active.md`, `tasks/approvals.md`, `ROADMAP.md` | Gobernanza |
 
 ## Dependencias
 
-- Fase 1 `accepted` con reservas (2026-10-21).
-- Aceptación humana 2026-10-21: **fase 2A** con reserva técnica.
-- CLI real: `tools/chatterbox/synthesize.py` (contrato `--text/--output/--ref/--ckpt-dir/--device/--meta-out/...`).
+- Fase 2A `accepted` con reserva técnica (2026-10-21).
+- Autorización humana 2026-10-21: **fase 2B**.
+- `tools/chatterbox/requirements-pin.txt` (pins declarados en repo).
 - P8 `blocked`.
 
 ## Criterios de aceptación
 
-- [x] Provider cumple contrato `VoiceProvider` / `VoiceResult`.
-- [x] Factoría registra `chatterbox`; default y providers existentes sin cambio de comportamiento.
-- [x] Config obligatoria validada solo al seleccionar Chatterbox; sin fallback silencioso a mock.
-- [x] Spawn argv-safe; timeout dedicado 300000; errores spawn/timeout/exit/artefactos gestionados.
-- [x] Éxito = exit 0 + WAV válido + meta válida de esta ejecución.
-- [x] Tests deterministas sin inferencia/red/pesos.
-- [x] Revisión humana de fase 2A — **`accepted` con reserva técnica** (2026-10-21).
-- [ ] Fases 2B/2C: **no autorizadas / no iniciadas**.
+- [x] Misma ref (bytes) → mismo hash; paths distintos con mismos bytes → misma identidad.
+- [x] Cambio de bytes de ref o de pins declarados invalida la clave Chatterbox.
+- [x] Cambio de params de síntesis relevantes invalida la clave.
+- [x] Error al leer ref/pins → fallo explícito (no reuso silencioso).
+- [x] Otros providers conservan comportamiento de clave.
+- [x] Serialización determinista; sin red/pesos/inferencia en tests.
+- [x] Limitación documentada: pins declarados ≠ prueba de paquetes instalados.
+- [ ] Revisión humana de fase 2B — **no** `accepted` automático.
+- [ ] Fase 2C: **no autorizada / no iniciada**.
 
 ## Pruebas a ejecutar
 
 ```bash
-npm test -- tests/unit/voice-chatterbox.test.ts tests/unit/voice.test.ts
+npm test -- tests/unit/voice-chatterbox-cache.test.ts tests/unit/voice-chatterbox.test.ts tests/unit/voice.test.ts
 npm test
 npm run typecheck
 ```
 
-> Nota de aceptación 2A: la revisión final humana verificó 21 pruebas específicas + typecheck; la suite completa **no** se registró como verificada en esa última comprobación.
-
 ## Riesgos y pendientes
 
-- **Reserva técnica 2A (abierta):** `exists`/`size`/`mtimeMs` ≠ prueba criptográfica de identidad de contenido; no equivale a nonce / run-id / hash.
-- Reservas fase 1 abiertas (I-R1–I-R4, M-R1–M-R5); 2A respeta I-R1 (no aceptar WAV sin meta).
-- Inferencia real Node / pipeline / caché = fases posteriores (**no autorizadas**).
-- `conds.pt` / auditoría Perth siguen pendientes (fase 1).
-- Cold start × N segmentos; sin daemon (política conservada).
+- **Pins declarados ≠ runtime instalado:** la huella no consulta el intérprete ni `pip freeze`.
+- **Sin hash de checkpoints:** cambiar pesos en `CHATTERBOX_CKPT_DIR` sin tocar pins/ref/params no invalida la clave.
+- Reserva técnica 2A (`size`/`mtimeMs`) sigue abierta.
+- Reservas fase 1 I-R*/M-R* abiertas; 2B **no** afirma `verified_provenance`.
+- Hash de ref identifica contenido de referencia para distinguir caché; **no** prueba procedencia del audio final.
 
 ## Notas
 
-- Estado tras aceptación humana: fase 2A **`accepted` (con reserva técnica)**.
-- Siguiente propuesta: fase 2B (caché SHA-256 ref + runtime pin) en **`proposed`** — **espera nuevo `approved` humano**; **no** iniciar.
+- Estado tras implementación agente: `review_required` (fase 2B). Esperando humano.
+- Siguiente propuesta: fase 2C (pipeline/QC) en `proposed` — **requiere nuevo `approved`**; **no** iniciar.
