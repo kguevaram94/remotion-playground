@@ -45,7 +45,7 @@ Código terminado ≠ `accepted`.
 | `T-STUDIO-001` | P7 | Studio / preview workflow estable | `accepted` | Aceptado 2026-10-19; audio Studio = `public/shorts/<id>/`; AV → `T-AV-QC-001` `accepted`; P8 `blocked` |
 | `T-AV-QC-001` | post-P7 / pre-P8 | Validación audiovisual real (4 familias) | `accepted` | Aceptado 2026-10-19 (chat Cursor); 4× MP4 Cedar; P8 `blocked` |
 | `T-CHATTERBOX-001` | transversal post-P7 / pre-P8 | Estudio + piloto Chatterbox (fuera del pipeline) | `proposed` | Historial intacto. Nota 2026-10-21: piloto técnico MPS OK; humano aceptó la muestra. **No** `accepted`. Integración → `T-CHATTERBOX-002`. P8 `blocked` |
-| `T-CHATTERBOX-002` | transversal post-P7 / pre-P8 | Integración Chatterbox (`VoiceProvider`) | fase 1: `accepted` (con reservas) · fase 2: **no autorizada** | Aceptación acotada 2026-10-21. Smoke real MPS 2026-10-21 (exit 0; artefactos fuera de Git). Reservas I-R1–I-R4, M-R1–M-R5 abiertas. `conds.pt`/Perth pendientes. P8 `blocked` |
+| `T-CHATTERBOX-002` | transversal post-P7 / pre-P8 | Integración Chatterbox (`VoiceProvider`) | fase 1: `accepted` (con reservas) · **fase 2A: `review_required`** · 2B/2C no iniciadas | 2A autorizada e implementada 2026-10-21 (chat Cursor). Provider Node + factory + env + tests mock spawn. Sin inferencia/red/pesos. Sin pipeline/caché. Reservas fase 1 abiertas. P8 `blocked` |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -63,21 +63,23 @@ Código terminado ≠ `accepted`.
 
 ## Tarea activa / alcance aprobado
 
-> Tarea activa: `T-CHATTERBOX-002` · **fase 1 `accepted` (con reservas)** · **fase 2 no autorizada** (2026-10-21).  
+> Tarea activa: `T-CHATTERBOX-002` · **fase 1 `accepted` (con reservas)** · **fase 2A `review_required`** (2026-10-21) · **2B/2C no iniciadas**.  
 > Precedente: `T-CHATTERBOX-001` permanece **`proposed`** (historial intacto; **no** marcado `accepted`).  
 > Nota piloto (001, 2026-10-21): generación técnica OK en Apple Silicon (MPS); el humano aceptó la muestra de audio.  
 > Smoke CLI fase 1 (2026-10-21, chat Cursor): inferencia real MPS exit 0; evidencia abajo; artefactos **fuera** del repo.  
+> Entrega pendiente de revisión: **fase 2A** (provider Node + factory + config + tests deterministas).  
 > Última entrega cerrada (acotada): fase 1 de `T-CHATTERBOX-002` · `accepted` con reservas I-R1–I-R4 / M-R1–M-R5.  
 > Prevía cerrada completa: `T-AV-QC-001` · `accepted` (2026-10-19).  
-> P0–P7 = `accepted`. P8 = `blocked`. Sin YouTube. **Fase 2 / Node / pipeline no autorizados.**
+> P0–P7 = `accepted`. P8 = `blocked`. Sin YouTube. **Sin pipeline/caché/QC en 2A.**
 
 ---
 
-### `T-CHATTERBOX-002` · transversal post-P7 / pre-P8 · fase 1 `accepted` (con reservas) · fase 2 no autorizada
+### `T-CHATTERBOX-002` · transversal post-P7 / pre-P8 · fase 1 `accepted` (con reservas) · fase 2A `review_required`
 
 #### Resumen
 
-Fase 1 (CLI Python + docs + pins + tests aislados) implementada, remediada (B1–B2, I1–I6, M1–M8) y **aceptada con reservas** por humano (2026-10-21). Smoke test real del CLI (mismo día, autorización separada) registrado abajo. Diseño de integración Node permanece documentado; **fase 2 no iniciada ni autorizada**.
+Fase 1 (CLI Python + docs + pins + tests aislados) implementada, remediada (B1–B2, I1–I6, M1–M8) y **aceptada con reservas** por humano (2026-10-21). Smoke test real del CLI (mismo día) registrado abajo.  
+**Fase 2A** (provider Node + factory + env + tests mock spawn) autorizada e implementada 2026-10-21 → estado **`review_required`** (pendiente humano). **2B/2C no iniciadas.**
 
 #### Aceptación humana — fase 1 únicamente (2026-10-21)
 
@@ -112,7 +114,35 @@ Estado de la tarea en tablero: compuesto (fase 1 aceptada acotada · fase 2 no a
 - [ ] Compatibilidad real de `conds.pt` — **archivo ausente** en el smoke; `Conditionals.load` **no** ejercitado / **no** validado
 - [ ] Watermark Perth — política documentada `left_intact`; **sin** auditoría del watermark
 
-**No autorizado en el acto de aceptación ni en el registro de smoke:** fase 2; provider Node / factory / env / caché / pipeline / QC / elegibilidad de publicación; modificar código CLI; commit/push/merge; P8; YouTube; APIs de pago; daemon; copiar ref/WAV al repo.
+**No autorizado en el acto de aceptación ni en el registro de smoke (histórico):** fase 2 completa; caché / pipeline / QC / elegibilidad; modificar código CLI; commit/push/merge; P8; YouTube; APIs de pago; daemon; copiar ref/WAV al repo.  
+**Autorización posterior (2026-10-21):** solo **fase 2A** (provider Node + factory + config + tests deterministas). Ver sección fase 2A abajo.
+
+#### Fase 2A — provider Node / factory / config (`review_required`, 2026-10-21)
+
+**Autorizado por:** humano (chat Cursor: alcance explícito solo 2A).  
+**Estado:** `approved` (autorización en chat) → `in_progress` → **`review_required`**. **No** `accepted`.  
+**Implementado (agente):**
+
+| Pieza | Path / nota |
+| --- | --- |
+| Provider | `src/shorts/voice/chatterbox.ts` — spawn argv-safe, timeout 300000, WAV PCM16 mono 24 kHz + meta de esta ejecución |
+| Factory | `src/shorts/voice/provider.ts` — `case 'chatterbox'`; default y demás providers intactos; config inválida → throw (no mock) |
+| Config | `src/shorts/config/env.ts` — `CHATTERBOX_*`; placeholders `.env.example`; nota `docs/voice.md` |
+| Tests | `tests/unit/voice-chatterbox.test.ts` — spawn simulado; sin red/pesos/inferencia |
+
+**Comandos ejecutados (agente):**
+
+```bash
+npm test -- tests/unit/voice-chatterbox.test.ts tests/unit/voice.test.ts  # 18 passed
+npm test          # 22 files / 119 passed
+npm run typecheck # OK
+```
+
+**Confirmaciones:** sin descargas HF; sin inferencia real; sin cambios pipeline/caché/QC/CI; sin commit/push/merge; CLI Python no modificado; reservas I-R*/M-R* de fase 1 siguen abiertas; I-R1 respetada (WAV sin meta ≠ éxito).
+
+**Fuera de 2A (no iniciado):** 2B caché/hashes; 2C; pipeline; loudnorm/render/post/QC; elegibilidad; daemon.
+
+**Siguiente (proposed tras aceptación humana de 2A):** fase 2B — clave de caché SHA-256 ref + runtime pin (requiere nuevo `approved`).
 
 #### Evidencia — smoke test real CLI (2026-10-21, macOS Apple Silicon)
 
@@ -201,11 +231,11 @@ Superseded por la aceptación acotada de fase 1 (sección anterior).
 - [ ] Sin paths personales en tree; gitignore; sin muestras/pesos en Git.
 - [ ] `npm test` + `typecheck`; providers actuales sin regresión.
 
-#### Recomendación (tras aceptación acotada + smoke documentado)
+#### Recomendación (tras 2A en `review_required`)
 
-1. Fase 1 queda **`accepted` con reservas** (I-R1–I-R4, M-R1–M-R5 abiertas). Smoke MPS exit 0 documentado; **no** cierra reservas ni fase 2.
-2. **No** iniciar fase 2 ni § archivos de integración Node hasta `approved` / autorización humana explícita.
-3. Conservar OpenAI / file / ElevenLabs / macos-say / mock.
+1. Fase 1 permanece **`accepted` con reservas** (I-R1–I-R4, M-R1–M-R5 abiertas). Smoke MPS exit 0 documentado; **no** cierra reservas.
+2. Humano revisa **fase 2A** → `accepted` (acotada) o correcciones; **no** iniciar 2B/2C sin nuevo `approved`.
+3. Conservar OpenAI / file / ElevenLabs / macos-say / mock; Chatterbox solo con config explícita válida.
 4. Pendientes manuales aún abiertos: **`conds.pt`**, auditoría **Perth**. No afirmarlos como superados.
 
 ---

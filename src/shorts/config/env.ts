@@ -22,7 +22,10 @@ export type VoiceProviderName =
   | 'macos-say'
   | 'openai-tts'
   | 'elevenlabs'
-  | 'file';
+  | 'file'
+  | 'chatterbox';
+
+export type ChatterboxDeviceName = 'auto' | 'mps' | 'cpu' | 'cuda';
 
 export type AppConfig = {
   language: string;
@@ -57,6 +60,22 @@ export type AppConfig = {
   elevenLabsVoiceId?: string;
   elevenLabsModel?: string;
   openAiApiKey?: string;
+  /** Local Python interpreter for Chatterbox CLI (required when provider=chatterbox). */
+  chatterboxPython?: string;
+  /** Path to tools/chatterbox/synthesize.py (default relative to cwd). */
+  chatterboxScript: string;
+  /** Local es-es checkpoint directory (required when provider=chatterbox). */
+  chatterboxCkptDir?: string;
+  /** Local reference WAV path (required when provider=chatterbox; never a personal default). */
+  chatterboxRefWav?: string;
+  /** Device passed to CLI; mps/cuda fail if unavailable (no silent CPU fallback). */
+  chatterboxDevice: ChatterboxDeviceName;
+  /** Dedicated timeout (default 300000). Not SHORTS_REQUEST_TIMEOUT_MS. */
+  chatterboxTimeoutMs: number;
+  chatterboxLanguageId: string;
+  chatterboxExaggeration: number;
+  chatterboxCfgWeight: number;
+  chatterboxTemperature: number;
 };
 
 const parseNumber = (value: string | undefined, fallback: number) => {
@@ -82,12 +101,36 @@ const parseVoiceProvider = (value: string | undefined): VoiceProviderName => {
     value === 'macos-say' ||
     value === 'openai-tts' ||
     value === 'elevenlabs' ||
-    value === 'file'
+    value === 'file' ||
+    value === 'chatterbox'
   ) {
     return value;
   }
   return DEFAULTS.voiceProvider as VoiceProviderName;
 };
+
+const parseChatterboxDevice = (
+  value: string | undefined,
+): ChatterboxDeviceName => {
+  if (
+    value === 'auto' ||
+    value === 'mps' ||
+    value === 'cpu' ||
+    value === 'cuda'
+  ) {
+    return value;
+  }
+  return 'auto';
+};
+
+/** Default CLI path relative to cwd — not a personal absolute path. */
+export const DEFAULT_CHATTERBOX_SCRIPT = path.join(
+  'tools',
+  'chatterbox',
+  'synthesize.py',
+);
+
+export const DEFAULT_CHATTERBOX_TIMEOUT_MS = 300_000;
 
 export const loadConfig = (cwd = process.cwd()): AppConfig => {
   const openAiApiKey = process.env.OPENAI_API_KEY || undefined;
@@ -96,6 +139,13 @@ export const loadConfig = (cwd = process.cwd()): AppConfig => {
     (openAiApiKey ? 'openai' : DEFAULTS.aiProvider);
 
   const voiceProvider = parseVoiceProvider(process.env.VOICE_PROVIDER);
+
+  const scriptEnv = process.env.CHATTERBOX_SCRIPT?.trim();
+  const chatterboxScript = scriptEnv
+    ? path.isAbsolute(scriptEnv)
+      ? scriptEnv
+      : path.resolve(cwd, scriptEnv)
+    : path.resolve(cwd, DEFAULT_CHATTERBOX_SCRIPT);
 
   const config: AppConfig = {
     language: process.env.SHORTS_LANGUAGE || DEFAULTS.language,
@@ -147,6 +197,22 @@ export const loadConfig = (cwd = process.cwd()): AppConfig => {
     elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_ID,
     elevenLabsModel: process.env.ELEVENLABS_MODEL || 'eleven_multilingual_v2',
     openAiApiKey,
+    chatterboxPython: process.env.CHATTERBOX_PYTHON?.trim() || undefined,
+    chatterboxScript,
+    chatterboxCkptDir: process.env.CHATTERBOX_CKPT_DIR?.trim() || undefined,
+    chatterboxRefWav: process.env.CHATTERBOX_REF_WAV?.trim() || undefined,
+    chatterboxDevice: parseChatterboxDevice(process.env.CHATTERBOX_DEVICE),
+    chatterboxTimeoutMs: parseNumber(
+      process.env.CHATTERBOX_TIMEOUT_MS,
+      DEFAULT_CHATTERBOX_TIMEOUT_MS,
+    ),
+    chatterboxLanguageId: process.env.CHATTERBOX_LANGUAGE_ID?.trim() || 'es',
+    chatterboxExaggeration: parseNumber(
+      process.env.CHATTERBOX_EXAGGERATION,
+      0.5,
+    ),
+    chatterboxCfgWeight: parseNumber(process.env.CHATTERBOX_CFG_WEIGHT, 0.5),
+    chatterboxTemperature: parseNumber(process.env.CHATTERBOX_TEMPERATURE, 0.8),
   };
 
   return config;
@@ -180,5 +246,18 @@ export const assertConfigForMode = (
     !config.elevenLabsApiKey
   ) {
     throw new Error('Falta ELEVENLABS_API_KEY.');
+  }
+
+  if (needsVoice && config.voiceProvider === 'chatterbox') {
+    const missing: string[] = [];
+    if (!config.chatterboxPython) missing.push('CHATTERBOX_PYTHON');
+    if (!config.chatterboxCkptDir) missing.push('CHATTERBOX_CKPT_DIR');
+    if (!config.chatterboxRefWav) missing.push('CHATTERBOX_REF_WAV');
+    if (missing.length) {
+      throw new Error(
+        `VOICE_PROVIDER=chatterbox requiere: ${missing.join(', ')}. ` +
+          'Rutas locales en .env (ver .env.example). No se degrada a mock.',
+      );
+    }
   }
 };

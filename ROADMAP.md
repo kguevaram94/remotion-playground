@@ -6,7 +6,7 @@ Protocolo: `AGENTS.md` (ChatGPT planifica/revisa · Cursor implementa · GitHub 
 
 ## Prioridad actual
 
-1. **`T-CHATTERBOX-002`:** fase 1 CLI — `accepted` con reservas I-R1–I-R4 / M-R1–M-R5 (2026-10-21). Smoke real MPS documentado (exit 0; artefactos fuera de Git). `conds.pt`/Perth pendientes. Fase 2 / Node / pipeline **no** autorizados. Piloto 001 OK (MPS). P8 `blocked`.
+1. **`T-CHATTERBOX-002`:** fase 1 CLI — `accepted` con reservas I-R1–I-R4 / M-R1–M-R5 (2026-10-21). Smoke real MPS documentado. **Fase 2A** (provider Node + factory + config) — `review_required` (2026-10-21). 2B/2C / pipeline **no** iniciados. `conds.pt`/Perth pendientes. Piloto 001 OK (MPS). P8 `blocked`.
 2. **`T-AV-QC-001`:** validación audiovisual real de las 4 familias — `accepted` (2026-10-19, OpenAI Cedar). P8 permanece `blocked`.
 3. **P5 pulido logic-lateral** — `accepted` (2026-10-19). `T-POLISH-001` + `T-QC-LOUDNORM-001` `accepted`.
 4. **P6 / `T-MULTIFORMAT-001`:** `accepted` (2026-10-19). A+B+C+D `accepted`.
@@ -55,9 +55,9 @@ P0 ──► P1 ──► P5 ──► P8 (futuro / blocked)
 
 | Campo | Valor |
 | --- | --- |
-| ID | `T-CHATTERBOX-002` (fase 1 `accepted` con reservas; fase 2 **no** autorizada) |
+| ID | `T-CHATTERBOX-002` (fase 1 `accepted` con reservas; fase 2A `review_required`; 2B/2C no iniciadas) |
 | Fase | P0–P7 `accepted` · `T-AV-QC-001` `accepted` · P8 `blocked` |
-| Estado | Fase 1 cerrada con reservas (I-R*/M-R* abiertas). Smoke MPS 2026-10-21 documentado. Manual aún abierto: `conds.pt`, auditoría Perth. Esperando instrucción humana; **no** iniciar fase 2. P8 no iniciado |
+| Estado | Fase 1 cerrada con reservas. Fase 2A implementada → `review_required` (esperando humano). 2B/2C no iniciadas. Manual aún abierto: `conds.pt`, auditoría Perth. P8 no iniciado |
 | Última cerrada (acotada) | `T-CHATTERBOX-002` fase 1 `accepted` con reservas (2026-10-21) + evidencia smoke MPS registrada |
 | Última cerrada (completa previa) | `T-AV-QC-001` `accepted` (2026-10-19) |
 | Nota AV | 4 familias renderizadas (Cedar) + inspección humana aceptada |

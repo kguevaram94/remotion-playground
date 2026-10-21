@@ -61,6 +61,23 @@ npm run short:clone-voice -- --sample data/voices/me.wav --name "Kevin" --save-e
 VOICE_PROVIDER=elevenlabs npm run short:voice -- --id puntos
 ```
 
+## 4. Chatterbox local (fase 2A · provider Node)
+
+Provider `chatterbox` invoca el CLI one-shot `tools/chatterbox/synthesize.py` (proceso efímero; sin daemon). **No** descarga pesos ni incluye la muestra vocal en el repo.
+
+```bash
+# .env (rutas locales — placeholders; sin /Users/... por defecto)
+VOICE_PROVIDER=chatterbox
+CHATTERBOX_PYTHON=/path/to/chatterbox-venv/bin/python
+CHATTERBOX_SCRIPT=tools/chatterbox/synthesize.py
+CHATTERBOX_CKPT_DIR=/path/to/local/es-es-checkpoints
+CHATTERBOX_REF_WAV=/path/to/local/ref.wav
+CHATTERBOX_DEVICE=auto          # auto | mps | cpu | cuda (mps/cuda sin fallback silencioso a CPU)
+CHATTERBOX_TIMEOUT_MS=300000    # dedicado; no reutiliza SHORTS_REQUEST_TIMEOUT_MS
+```
+
+Requisitos locales: Python 3.11 + pins de `tools/chatterbox/requirements-pin.txt` + pack es-es fuera de Git. Ver `tools/chatterbox/README.md`. Config inválida con `VOICE_PROVIDER=chatterbox` **falla** (no cae a mock). Caché/pipeline/QC: fuera de fase 2A.
+
 ## Comparativa
 
 | Opción | Calidad | Tu voz | Coste |
@@ -69,6 +86,7 @@ VOICE_PROVIDER=elevenlabs npm run short:voice -- --id puntos
 | OpenAI TTS | Alta, con entonación | No | API |
 | Archivo grabado | Máxima (eres tú) | Sí | Gratis |
 | ElevenLabs clone | Alta + tu timbre | Sí | API |
+| Chatterbox local | Clonación local (piloto) | Sí (ref local) | Gratis (compute local) |
 
 ## macOS “Personal Voice”
 

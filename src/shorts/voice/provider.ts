@@ -10,6 +10,7 @@ import {
 import path from 'node:path';
 import type {AppConfig} from '../config/env';
 import {estimateNarrationSeconds} from '../utils/timing';
+import {ChatterboxVoiceProvider} from './chatterbox';
 import {DEFAULT_VOICE_ES_ES, resolveVoiceAlias} from './voices-es';
 
 export type VoiceResult = {
@@ -358,6 +359,20 @@ export const createVoiceProvider = (config: AppConfig): VoiceProvider => {
       );
     case 'file':
       return new FileVoiceProvider(config.voiceFile);
+    case 'chatterbox':
+      // Missing CHATTERBOX_* → throw inside constructor. Never silent mock fallback.
+      return new ChatterboxVoiceProvider({
+        pythonPath: config.chatterboxPython ?? '',
+        scriptPath: config.chatterboxScript ?? '',
+        ckptDir: config.chatterboxCkptDir ?? '',
+        refWav: config.chatterboxRefWav ?? '',
+        device: config.chatterboxDevice,
+        timeoutMs: config.chatterboxTimeoutMs,
+        languageId: config.chatterboxLanguageId,
+        exaggeration: config.chatterboxExaggeration,
+        cfgWeight: config.chatterboxCfgWeight,
+        temperature: config.chatterboxTemperature,
+      });
     case 'mock':
       return new MockVoiceProvider();
     default:

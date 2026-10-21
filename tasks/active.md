@@ -13,81 +13,81 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 ## Estado de aprobación
 
-`accepted` (**solo fase 1**, con reservas) · fase 2 **no autorizada**
+`review_required` (**fase 2A** implementada) · fases 2B/2C **no iniciadas** · fase 1 permanece `accepted` (con reservas)
 
-> Aceptación humana acotada 2026-10-21 (chat Cursor): fase 1 CLI Python aislado + docs + pins + tests sintéticos → **`accepted` con reservas** (equivalente de proyecto; no existe `accepted_with_reservations` en el esquema oficial).  
-> Reservas vigentes (no son verificaciones superadas): **I-R1–I-R4**, **M-R1–M-R5**.  
-> Smoke test real autorizado y ejecutado 2026-10-21 (macOS Apple Silicon, CLI aislado): exit 0; MPS real sin fallback CPU; artefactos **fuera** del repo. Detalle en `tasks/approvals.md`.  
-> Pendiente manual aún abierto: `conds.pt` (ausente; conditionals no ejercitado), auditoría watermark Perth (sigue `left_intact` ≠ verificación).  
-> **Fase 2 / Node / pipeline / QC / caché / elegibilidad: no autorizados.**  
+> Autorización humana 2026-10-21 (chat Cursor): **solo fase 2A** — provider Node.js + factoría + configuración + tests deterministas (sin pesos, sin inferencia real, sin red).  
+> **No** autorizado: 2B (caché/hashes), 2C, pipeline, QC, elegibilidad, commit/push/merge, P8.  
+> Fase 1: `accepted` con reservas I-R1–I-R4 / M-R1–M-R5 (intactas). Smoke MPS documentado.  
 > P0–P7 `accepted`. `T-AV-QC-001` `accepted`. P8 `blocked`.  
 > `T-CHATTERBOX-001` intacto (`proposed`).
 
 ## Objetivo
 
-Registrar evidencia documental del smoke test real de fase 1 (CLI aislado) en macOS Apple Silicon — **sin** iniciar fase 2 ni tocar código.
+Integrar Chatterbox como `VoiceProvider` a nivel de arquitectura (fase 2A): invocación segura del CLI Python existente vía proceso hijo one-shot, registro en la factoría y configuración validada — sin alterar el comportamiento de los demás providers ni el pipeline.
 
-## Alcance (sí — registro de evidencia smoke fase 1)
+## Alcance (sí — fase 2A)
 
-1. Gobernanza: `tasks/active.md`, `tasks/approvals.md`, `ROADMAP.md` — hechos observados del smoke + trazabilidad de reservas aún abiertas.
-2. Conservar historial de aceptación acotada, remediación B1–B2 / I1–I6 / M1–M8 y evidencias previas.
-3. Mantener explícito: fase 2 no autorizada; `conds.pt` / Perth no validados como cerrados; sin integración Node/pipeline.
+1. Provider Node (`src/shorts/voice/chatterbox.ts`) que spawnea `tools/chatterbox/synthesize.py` con argv separados (sin shell).
+2. Registro en `createVoiceProvider` como `chatterbox`; default y demás providers intactos; config inválida → error (no mock silencioso).
+3. Variables `CHATTERBOX_*` en `env.ts` + placeholders en `.env.example` / nota en `docs/voice.md`.
+4. Timeout dedicado `CHATTERBOX_TIMEOUT_MS` (default 300000).
+5. Éxito solo con exit 0 + WAV PCM16 mono 24 kHz válido + metadatos válidos de esta ejecución (I-R1: WAV huérfano ≠ éxito).
+6. Tests unitarios deterministas con spawn simulado (sin red, pesos ni inferencia).
 
 ## Fuera de alcance (no)
 
-- Modificar `tools/chatterbox/synthesize.py`, tests u otro código.
-- Fase 2: provider Node, factory, env, caché, QC, elegibilidad, orden pipeline.
-- Instalar deps, descargar pesos, nueva inferencia.
-- Commit / push / merge / publicar.
-- Copiar referencia vocal ni WAV generados al repositorio.
-- Presentar reservas I-R*/M-R* ni Perth/`conds.pt` como verificaciones superadas.
-- Afirmar integración Node/pipeline.
+- Fase 2B: clave de caché, hashes de ref/pesos, manifiestos.
+- Fase 2C / pipeline / loudnorm / render / post / QC / `verified_provenance` / elegibilidad.
+- Inferencia real desde Node; descargas de modelos; install de deps.
+- Commit / push / merge / publicar / P8 / YouTube.
+- Modificar CLI Python, HelloRemotion/ScriptVideo, CI.
+- Marcar la tarea o la fase 2 como `accepted`.
 
 ## Archivos afectados previstos
 
 | Path | Rol |
 | --- | --- |
-| `tasks/active.md`, `tasks/approvals.md`, `ROADMAP.md` | Solo registro documental del smoke |
+| `src/shorts/voice/chatterbox.ts` | Provider Node + validación WAV/meta + spawn |
+| `src/shorts/voice/provider.ts` | `case 'chatterbox'` en factoría |
+| `src/shorts/config/env.ts` | `VoiceProviderName` + `CHATTERBOX_*` |
+| `.env.example`, `docs/voice.md` | Placeholders / docs seguros |
+| `tests/unit/voice-chatterbox.test.ts` | Suite determinista |
+| `tasks/active.md`, `tasks/approvals.md`, `ROADMAP.md` | Gobernanza 2A |
 
 ## Dependencias
 
 - Fase 1 `accepted` con reservas (2026-10-21).
-- Autorización humana 2026-10-21: smoke test real controlado del CLI (sin fase 2, sin cambios de código).
+- Autorización humana 2026-10-21: **solo fase 2A**.
+- CLI real: `tools/chatterbox/synthesize.py` (contrato `--text/--output/--ref/--ckpt-dir/--device/--meta-out/...`).
 - P8 `blocked`.
 
 ## Criterios de aceptación
 
-- [x] B1: no overwrite silencioso; protección `--ref`; atomic write; tests de integridad.
-- [x] B2: rechazo NaN/+Inf/-Inf con error claro + tests.
-- [x] I1–I6 remedados o documentados según alcance.
-- [x] M1–M8 abordados sin complejidad innecesaria.
-- [x] Tests locales sin PyTorch/pesos/inferencia ejecutados.
-- [x] Humano acepta **fase 1** con reservas (2026-10-21) — ver `tasks/approvals.md`.
-- [x] Smoke real 2026-10-21: inferencia CLI exit 0 en MPS; pins observados; WAV PCM16 mono 24 kHz (detalle en approvals) — **sin** copiar artefactos al repo.
-- [ ] Reservas I-R1–I-R4 / M-R1–M-R5: **abiertas** (no verificadas como resueltas).
-- [ ] Manual pendiente: `conds.pt` (no presente; conditionals sin verificar), watermark Perth (política `left_intact` ≠ auditoría).
-- [ ] Fase 2: **no autorizada** (espera instrucción humana).
+- [x] Provider cumple contrato `VoiceProvider` / `VoiceResult`.
+- [x] Factoría registra `chatterbox`; default y providers existentes sin cambio de comportamiento.
+- [x] Config obligatoria validada solo al seleccionar Chatterbox; sin fallback silencioso a mock.
+- [x] Spawn argv-safe; timeout dedicado 300000; errores spawn/timeout/exit/artefactos gestionados.
+- [x] Éxito = exit 0 + WAV válido + meta válida de esta ejecución.
+- [x] Tests deterministas sin inferencia/red/pesos.
+- [ ] Revisión humana de fase 2A (pendiente) — **no** `accepted` automático.
+- [ ] Fases 2B/2C: **no iniciadas**.
 
 ## Pruebas a ejecutar
 
 ```bash
-cd tools/chatterbox && python3.11 -m unittest test_synthesize -v
+npm test -- tests/unit/voice-chatterbox.test.ts tests/unit/voice.test.ts
+npm test
+npm run typecheck
 ```
-
-*(Suite sintética ya corrida en remediación/revisión.)*
-
-Smoke real (autorizado 2026-10-21; una sola frase; `--device mps`; sin `--force`; sin instalar/descargar): ejecutado — ver `tasks/approvals.md` § evidencia smoke. Artefactos fuera de Git.
 
 ## Riesgos y pendientes
 
-- Reservas abiertas: I-R1 (WAV huérfano si falla meta), I-R2 (parche MPS amplio), I-R3 (meta mezcla piloto/runtime), I-R4 (cleanup temp poco testeado); M-R1–M-R5 (gaps tests/docs/tipado).
-- `conds.pt` ausente en el smoke → `Conditionals.load` **no** ejercitado / **no** validado.
-- Perth: solo política documentada `left_intact`; **sin** auditoría del watermark.
-- Fase 2 no iniciada / no autorizada.
-- Cold start × N segmentos documentado en diseño; sin daemon.
+- Reservas fase 1 abiertas (I-R1–I-R4, M-R1–M-R5); 2A respeta I-R1 (no aceptar WAV sin meta).
+- Inferencia real Node / pipeline / caché = fases posteriores.
+- `conds.pt` / auditoría Perth siguen pendientes (fase 1).
+- Cold start × N segmentos; sin daemon (política conservada).
 
 ## Notas
 
-- Estado oficial usado: `accepted` + reservas explícitas (patrón P5/P7 con limitaciones). No se inventó un estado nuevo en el esquema.
-- Detalle y tablas I-R*/M-R* + evidencia smoke: `tasks/approvals.md` § `T-CHATTERBOX-002`.
-- Esperando nuevas instrucciones humanas; **no** iniciar fase 2.
+- Estado tras implementación agente: `review_required` (fase 2A). Esperando humano.
+- Siguiente propuesta: fase 2B (caché SHA-256 ref + runtime pin) en `proposed` tras aceptación 2A.
