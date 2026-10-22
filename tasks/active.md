@@ -111,7 +111,7 @@ npm run typecheck
 | --- | --- | --- |
 | **007C-R1** | Sin test unitario del borde exacto `Δ = 0,05 s` (código: `delta <= 0,05`) | Opcional: micro-test; no cerrado por esta aceptación |
 | **007C-R2** | Duración / sync tras loudnorm **real** no auditada (mock en tests) | Requiere piloto file + FFmpeg real (`approved` aparte) |
-| **007C-R3** | QC real y duración vídeo/audio no ejercitados | Requiere piloto + Remotion/QC (`approved` aparte) |
+| **007C-R3** | QC real y duración vídeo/audio no ejercitados | Piloto falló en Remotion (`SceneFade` 1 frame). Hotfix SceneFade en `review_required` — **R3 no cerrada**; hace falta re-piloto autorizado |
 | **007C-R4** | Resume de job real con `voice-meta` antiguo no probado (compat offline parcial) | Prueba de resume real o doc operativa (`approved` aparte) |
 | **007C-R5** | Caché `file:single-take-v1` = cambio de clave; **no** purge de artefactos | Operativo; purge manual solo si hace falta |
 | — | Cues `uniform` ≠ alineación fonética | Opción B (`proposed`) |
@@ -121,4 +121,5 @@ npm run typecheck
 
 - **Histórico (antes de `93054b9`):** borradores afirmaban «topic untracked» / «sin commit/push» de la entrega. Eso era el estado anterior a `93054b9`, no el de la entrega técnica `30cf3d3`.
 - Reservas **007C-R1…R5** permanecen **abiertas**; la aceptación **no** las declara resueltas.
-- Siguiente: autorización de piloto file **o** opción B — cada una `proposed` hasta nuevo `approved` humano. P8 permanece `blocked`. `T-CHATTERBOX-001` permanece `proposed`.
+- Hotfix `T-CHATTERBOX-007B` SceneFade (`planSceneFade` + tests) en **`review_required`** — sin commit; sin re-piloto. Ver `tasks/approvals.md`.
+- Siguiente tras revisión humana del hotfix: re-piloto file **o** opción B — cada uno requiere `approved` aparte. P8 permanece `blocked`. `T-CHATTERBOX-001` permanece `proposed`.

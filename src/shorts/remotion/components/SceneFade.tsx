@@ -1,8 +1,12 @@
 import {AbsoluteFill, interpolate, useCurrentFrame} from 'remotion';
+import {planSceneFade} from './scene-fade-plan';
 
 /**
  * Remotion-native enter/exit fade (prefer over GSAP/Anime.js).
  * Driven purely by useCurrentFrame — deterministic for SSR render.
+ *
+ * Short / single-frame scenes use a safe plan (constant opacity or
+ * shrunk fades) so interpolate inputRange stays strictly increasing.
  */
 export const SceneFade: React.FC<{
   children: React.ReactNode;
@@ -16,12 +20,14 @@ export const SceneFade: React.FC<{
   durationInFrames,
 }) => {
   const frame = useCurrentFrame();
-  const opacity = interpolate(
-    frame,
-    [0, fadeInFrames, Math.max(fadeInFrames + 1, durationInFrames - fadeOutFrames), durationInFrames],
-    [0, 1, 1, 0],
-    {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'},
-  );
+  const plan = planSceneFade(durationInFrames, fadeInFrames, fadeOutFrames);
+  const opacity =
+    plan.mode === 'constant'
+      ? plan.opacity
+      : interpolate(frame, plan.inputRange, plan.outputRange, {
+          extrapolateLeft: 'clamp',
+          extrapolateRight: 'clamp',
+        });
 
   return <AbsoluteFill style={{opacity}}>{children}</AbsoluteFill>;
 };

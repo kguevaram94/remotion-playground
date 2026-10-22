@@ -64,7 +64,23 @@ Código terminado ≠ `accepted`.
 
 ## Tarea activa / alcance aprobado
 
-> Última tarea cerrada en tablero: `T-CHATTERBOX-007C-SYNC` opción A · **`accepted` (con reservas)** 2026-10-22. Detalle: sección canónica abajo. Precedente `T-CHATTERBOX-002` 2C `accepted`; `T-CHATTERBOX-001` `proposed`; P8 `blocked`; P0–P7 `accepted`. Piloto file / opción B → `proposed`.
+> Última tarea cerrada en tablero: `T-CHATTERBOX-007C-SYNC` opción A · **`accepted` (con reservas)** 2026-10-22. Hotfix SceneFade (T-007B) · **`review_required`** (abajo). Precedente `T-CHATTERBOX-002` 2C `accepted`; `T-CHATTERBOX-001` `proposed`; P8 `blocked`; P0–P7 `accepted`. Re-piloto file / opción B → requieren `approved` aparte. **R1–R5 siguen abiertas** (R3 no resuelta).
+
+---
+
+### `T-CHATTERBOX-007B` · hotfix SceneFade · `review_required`
+
+#### Resumen
+
+Corrección mínima del fallo de render Remotion del piloto file (`inputRange [0,8,9,1]` con outro de 1 frame). Autorizado en chat Cursor 2026-10-22. **No** reejecuta piloto; **no** cierra 007C-R1…R5.
+
+| Campo | Valor |
+| --- | --- |
+| Estado | `review_required` |
+| Archivos | `src/shorts/remotion/components/scene-fade-plan.ts` (nuevo), `SceneFade.tsx`, `tests/unit/scene-fade-plan.test.ts` |
+| Fuera de alcance | topic piloto, artefactos `output/`/`public/shorts/`, `ffmpeg.ts`/loudnorm, `.env`, commit/push, re-piloto |
+| Pruebas | `npx vitest run tests/unit/scene-fade-plan.test.ts` + `npm run typecheck` |
+| R3 | Sigue **abierta** hasta re-piloto Remotion/QC autorizado |
 
 ---
 
