@@ -161,19 +161,43 @@ export const makePreviewMp4 = (
   return result.ok && existsSync(outputPath);
 };
 
+/**
+ * Contract for `narration-loudnorm.wav` (T-CHATTERBOX-007C-R2, human-approved):
+ * preserve the pilot / Chatterbox narration sample rate explicitly (24 kHz).
+ * Do not rely on FFmpeg's implicit post-loudnorm rate (observed 192 kHz without `-ar`).
+ */
+export const NARRATION_LOUDNORM_SAMPLE_RATE = 24_000;
+
+/** EBU R128-ish loudnorm filter — volume contract unchanged from P5. */
+export const NARRATION_LOUDNORM_FILTER = 'loudnorm=I=-16:TP=-1.5:LRA=11';
+
+/** Build ffmpeg argv for narration loudnorm (exported for unit tests). */
+export const buildLoudnormFfmpegArgs = (
+  inputWav: string,
+  outputWav: string,
+): string[] => [
+  '-y',
+  '-i',
+  inputWav,
+  '-af',
+  NARRATION_LOUDNORM_FILTER,
+  // Explicit rate — never leave output sr to FFmpeg defaults.
+  '-ar',
+  String(NARRATION_LOUDNORM_SAMPLE_RATE),
+  // PCM16 mono: matches Chatterbox / file / concat consumers.
+  '-ac',
+  '1',
+  '-c:a',
+  'pcm_s16le',
+  outputWav,
+];
+
 /** Soft loudness normalize for narration (EBU R128 approx). */
 export const loudnormAudio = (
   inputWav: string,
   outputWav: string,
 ): boolean => {
-  const result = runFfmpeg([
-    '-y',
-    '-i',
-    inputWav,
-    '-af',
-    'loudnorm=I=-16:TP=-1.5:LRA=11',
-    outputWav,
-  ]);
+  const result = runFfmpeg(buildLoudnormFfmpegArgs(inputWav, outputWav));
   return result.ok && existsSync(outputWav);
 };
 

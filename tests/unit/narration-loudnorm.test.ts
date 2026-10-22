@@ -297,6 +297,9 @@ describe('ensureNarrationLoudnorm', () => {
   });
 
   it('applies loudnorm when ffmpeg is available', () => {
+    // REAL FFmpeg path (skipped if unavailable). Not executed in T-CHATTERBOX-007C-R2
+    // delivery (no test run authorized). Arg/contract unit coverage:
+    // tests/unit/loudnorm-sample-rate-contract.test.ts
     if (!ffmpegAvailable()) return;
     // Minimal valid-ish WAV header + silence so ffmpeg can read it
     const raw = path.join(dir, 'narration.wav');
