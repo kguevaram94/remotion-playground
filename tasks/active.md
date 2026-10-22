@@ -111,7 +111,7 @@ npm run typecheck
 | --- | --- | --- |
 | **007C-R1** | Sin test unitario del borde exacto `Δ = 0,05 s` (código: `delta <= 0,05`) | Opcional: micro-test; no cerrado por esta aceptación |
 | **007C-R2** | Duración / sync tras loudnorm **real** no auditada (mock en tests) | Requiere piloto file + FFmpeg real (`approved` aparte) |
-| **007C-R3** | QC real y duración vídeo/audio no ejercitados | Piloto falló en Remotion (`SceneFade` 1 frame). Hotfix SceneFade en `review_required` — **R3 no cerrada**; hace falta re-piloto autorizado |
+| **007C-R3** | QC real y duración vídeo/audio no ejercitados | Piloto falló en Remotion (`SceneFade` 1 frame). Hotfix SceneFade `T-CHATTERBOX-007B` **`accepted`** (`1f03b70`) — **R3 no cerrada**; hace falta re-piloto Remotion/QC real autorizado |
 | **007C-R4** | Resume de job real con `voice-meta` antiguo no probado (compat offline parcial) | Prueba de resume real o doc operativa (`approved` aparte) |
 | **007C-R5** | Caché `file:single-take-v1` = cambio de clave; **no** purge de artefactos | Operativo; purge manual solo si hace falta |
 | — | Cues `uniform` ≠ alineación fonética | Opción B (`proposed`) |
@@ -120,6 +120,6 @@ npm run typecheck
 ## Notas
 
 - **Histórico:** las afirmaciones «sin commit/push» del hotfix SceneFade correspondían al estado anterior a `1f03b70`.
-- **Estado vigente:** hotfix SceneFade (`T-CHATTERBOX-007B` / `planSceneFade`) commitado en `1f03b70`, sincronizado (`main` = `origin/main`), en `review_required`. Detalle canónico en `tasks/approvals.md`.
-- **Reservas:** **007C-R1…R5** siguen **abiertas**; **R3** requiere re-piloto Remotion/QC real autorizado.
-- **Próximos pasos:** revisión/aceptación humana del hotfix; re-piloto file u opción B solo con `approved` independiente. Re-piloto **no** autorizado; P8 `blocked`; `T-CHATTERBOX-001` `proposed`.
+- **Estado vigente:** hotfix SceneFade (`T-CHATTERBOX-007B` / `planSceneFade`) en `1f03b70` · **`accepted`** 2026-10-22 (humano; base = auditoría estática **APTO PARA ACEPTACIÓN HUMANA**; sin re-ejecución de tests/render en la auditoría ni en el registro). Detalle canónico en `tasks/approvals.md`.
+- **Reservas:** **007C-R1…R5** siguen **abiertas**; **R3** requiere re-piloto Remotion/QC real autorizado. Aceptación de 007B **≠** piloto E2E OK.
+- **Próximos pasos:** re-piloto file u opción B solo con `approved` independiente. Re-piloto **no** autorizado; P8 `blocked`; `T-CHATTERBOX-001` `proposed`.

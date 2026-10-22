@@ -47,6 +47,7 @@ Código terminado ≠ `accepted`.
 | `T-CHATTERBOX-001` | transversal post-P7 / pre-P8 | Estudio + piloto Chatterbox (fuera del pipeline) | `proposed` | Historial intacto. Nota 2026-10-21: piloto técnico MPS OK; humano aceptó la muestra. **No** `accepted`. Integración → `T-CHATTERBOX-002`. P8 `blocked` |
 | `T-CHATTERBOX-002` | transversal post-P7 / pre-P8 | Integración Chatterbox (`VoiceProvider`) | fase 1: `accepted` (con reservas) · fase 2A: `accepted` (con reserva técnica) · fase 2B: `accepted` (con limitaciones) · **fase 2C: `accepted` (H1–H4)** | 2C H1–H4 `accepted` 2026-10-21 (auditoría favorable; HEAD `0774e02`). Sin inferencia real. Reservas I-R*/M-R* y reserva 2A **abiertas**; limitaciones 2B **intactas**. P8 `blocked` |
 | `T-CHATTERBOX-007C-SYNC` | transversal post-P7 / pre-P8 | Sync single-take `VOICE_PROVIDER=file` (opción A) | `accepted` (con reservas) | Aceptado 2026-10-22; R1–R5 **abiertas**. Entrega `30cf3d3`; HEAD doc. `93054b9`. Piloto / opción B **no** autorizados. |
+| `T-CHATTERBOX-007B` | transversal post-P7 / pre-P8 | Hotfix SceneFade (`planSceneFade`) | `accepted` | Aceptado 2026-10-22 (chat Cursor); commit `1f03b70`; base = auditoría estática **APTO PARA ACEPTACIÓN HUMANA**. **≠** re-piloto; R3 sigue abierta. |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -64,25 +65,49 @@ Código terminado ≠ `accepted`.
 
 ## Tarea activa / alcance aprobado
 
-> Última tarea cerrada en tablero: `T-CHATTERBOX-007C-SYNC` opción A · **`accepted` (con reservas)** 2026-10-22. Hotfix SceneFade (T-007B) · **`review_required`** (abajo). Precedente `T-CHATTERBOX-002` 2C `accepted`; `T-CHATTERBOX-001` `proposed`; P8 `blocked`; P0–P7 `accepted`. Re-piloto file / opción B → requieren `approved` aparte. **R1–R5 siguen abiertas** (R3 no resuelta).
+> Última entrega aceptada en tablero: hotfix `T-CHATTERBOX-007B` SceneFade · **`accepted`** 2026-10-22 (commit `1f03b70`). Precedente `T-CHATTERBOX-007C-SYNC` opción A · **`accepted` (con reservas)**; `T-CHATTERBOX-002` 2C `accepted`; `T-CHATTERBOX-001` `proposed`; P8 `blocked`; P0–P7 `accepted`. Re-piloto file / opción B → requieren `approved` aparte. **R1–R5 siguen abiertas** (R3 no resuelta).
 
 ---
 
-### `T-CHATTERBOX-007B` · hotfix SceneFade · `review_required`
+### `T-CHATTERBOX-007B` · hotfix SceneFade · `accepted`
 
 #### Resumen
 
-Corrección mínima del fallo de render Remotion del piloto file (`inputRange [0,8,9,1]` con outro de 1 frame). Implementación autorizada en chat Cursor 2026-10-22. Auditoría solo lectura 2026-10-22: veredicto técnico **APTO PARA SOLICITAR AUTORIZACIÓN DE RE-PILOTO** — ese veredicto **no** equivale a `accepted` del hotfix ni autoriza el re-piloto.
+Corrección mínima del fallo de render Remotion del piloto file (`inputRange [0,8,9,1]` con outro de 1 frame). Implementación en commit `1f03b70fd671aada9fc2116d2cb3795507d28904`. **Aceptado** por humano 2026-10-22 tras auditoría estática (**APTO PARA ACEPTACIÓN HUMANA**). Esta `accepted` **≠** autorización de re-piloto / QC real y **≠** cierre de 007C-R1…R5.
 
 | Campo | Valor |
 | --- | --- |
-| Estado | `review_required` |
+| Estado | `accepted` |
+| Commit hotfix | `1f03b70fd671aada9fc2116d2cb3795507d28904` |
 | Fuera de alcance | topic piloto, artefactos `output/`/`public/shorts/`, `ffmpeg.ts`/loudnorm, `.env`, re-piloto / QC real |
 | R3 | **Abierta** — pendiente de re-piloto Remotion + QC reales (`approved` independiente) |
 
-**Histórico (Git):** el hotfix SceneFade está en `1f03b70` y sincronizado (`main` = `origin/main`). Las afirmaciones «sin commit/push» eran anteriores a ese commit. Commit presente ≠ `accepted` del hotfix ≠ autorización del re-piloto.
+#### Aceptación humana (2026-10-22)
 
-**Pruebas (existentes; no re-ejecutadas en esta limpieza):** `npx vitest run tests/unit/scene-fade-plan.test.ts` + `npm run typecheck`.
+**Decisión humana:** aceptar el hotfix SceneFade (`T-CHATTERBOX-007B`).
+
+**Estado de gobernanza registrado:** **`accepted`** (vocabulario oficial; sin estados inventados).
+
+**Aceptado por:** humano (chat Cursor: formalización explícita 2026-10-22).
+
+**Alcance aceptado:** código + tests del hotfix en `1f03b70` (`SceneFade.tsx`, `scene-fade-plan.ts`, `tests/unit/scene-fade-plan.test.ts`).
+
+**Base de la aceptación:** auditoría técnica de solo lectura 2026-10-22 · veredicto **`APTO PARA ACEPTACIÓN HUMANA`**. La aceptación se basa en **revisión estática**; **no** se re-ejecutaron pruebas, typecheck ni render Remotion durante esa auditoría ni en este acto de registro.
+
+**HEAD documental al registrar:** `78360c272fa0cd0ff638ce5a37c240e89a7b4e32` (incluye consolidación documental previa); working tree dirty solo en `tasks/*` **sin staging** (este registro). **No** commit/push en este acto.
+
+**Explícitamente no autorizado / no afirmado en este acto:**
+
+- Re-piloto file (`generar-short` / Remotion / loudnorm / QC).
+- Opción B / forced alignment.
+- Cerrar o declarar resueltas **007C-R1…R5** (R3 sigue pendiente de re-piloto real).
+- Afirmar que el piloto funciona de extremo a extremo.
+- Inferencia, publicación, YouTube / P8.
+- Staging / commit / push / merge.
+
+**Histórico (Git):** el hotfix está en `1f03b70` y sincronizado (`main` = `origin/main` al momento de la aceptación del código). Las afirmaciones «sin commit/push» eran anteriores a ese commit. `accepted` del hotfix ≠ autorización del re-piloto.
+
+**Pruebas (existentes en el commit; no re-ejecutadas en auditoría ni en este registro):** `npx vitest run tests/unit/scene-fade-plan.test.ts` + `npm run typecheck`.
 
 ---
 
