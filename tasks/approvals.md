@@ -46,6 +46,7 @@ Código terminado ≠ `accepted`.
 | `T-AV-QC-001` | post-P7 / pre-P8 | Validación audiovisual real (4 familias) | `accepted` | Aceptado 2026-10-19 (chat Cursor); 4× MP4 Cedar; P8 `blocked` |
 | `T-CHATTERBOX-001` | transversal post-P7 / pre-P8 | Estudio + piloto Chatterbox (fuera del pipeline) | `proposed` | Historial intacto. Nota 2026-10-21: piloto técnico MPS OK; humano aceptó la muestra. **No** `accepted`. Integración → `T-CHATTERBOX-002`. P8 `blocked` |
 | `T-CHATTERBOX-002` | transversal post-P7 / pre-P8 | Integración Chatterbox (`VoiceProvider`) | fase 1: `accepted` (con reservas) · fase 2A: `accepted` (con reserva técnica) · fase 2B: `accepted` (con limitaciones) · **fase 2C: `accepted` (H1–H4)** | 2C H1–H4 `accepted` 2026-10-21 (auditoría favorable; HEAD `0774e02`). Sin inferencia real. Reservas I-R*/M-R* y reserva 2A **abiertas**; limitaciones 2B **intactas**. P8 `blocked` |
+| `T-CHATTERBOX-007C-SYNC` | transversal post-P7 / pre-P8 | Sync single-take `VOICE_PROVIDER=file` (opción A) | `review_required` | Autorizado chat Cursor 2026-10-22. Base HEAD `dbd86d2`. Sin Remotion/pipeline real. Opción B **no** implementada. |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -63,17 +64,12 @@ Código terminado ≠ `accepted`.
 
 ## Tarea activa / alcance aprobado
 
-> Tarea activa: `T-CHATTERBOX-002` · **fase 1 `accepted` (con reservas)** · **fase 2A `accepted` (con reserva técnica)** · **fase 2B `accepted` (con limitaciones)** · **fase 2C `accepted` (H1–H4; 2026-10-21)**.  
-> Precedente: `T-CHATTERBOX-001` permanece **`proposed`** (historial intacto; **no** marcado `accepted`).  
-> Nota piloto (001, 2026-10-21): generación técnica OK en Apple Silicon (MPS); el humano aceptó la muestra de audio.  
-> Smoke CLI fase 1 (2026-10-21, chat Cursor): inferencia real MPS exit 0; evidencia abajo; artefactos **fuera** del repo.  
-> Alcance activo: **sin** alcance de implementación autorizado tras aceptación 2C. Inferencia real / job con pesos en **`proposed`**.  
-> Última entrega cerrada (acotada): **fase 2C** · `accepted` H1–H4 (2026-10-21; auditoría favorable; HEAD `0774e02`, padre `49321b9`).  
-> Cerrada previa (acotada): **fase 2B** · `accepted` con limitaciones (identidad de caché; #4/#9 cerrados) — limitaciones **intactas**.  
-> Cerrada previa (acotada): **fase 2A** · `accepted` con reserva técnica (`exists`/`size`/`mtimeMs`) — **sigue abierta**.  
-> Cerrada previa (acotada): fase 1 · `accepted` con reservas I-R1–I-R4 / M-R1–M-R5 (**siguen abiertas**).  
-> Prevía cerrada completa: `T-AV-QC-001` · `accepted` (2026-10-19).  
-> P0–P7 = `accepted`. P8 = `blocked`. Sin YouTube. Inferencia real **no** autorizada (requiere `approved` aparte).
+> Tarea activa: `T-CHATTERBOX-007C-SYNC` · **`review_required`** (opción A single-take file; 2026-10-22).  
+> Autorización: chat Cursor 2026-10-22 (código + tests offline + typecheck; **sin** pipeline/Remotion).  
+> Base: HEAD `dbd86d27084a1692267b25cbfcd60b16ea73dda4`. Topic piloto untracked intacto.  
+> Precedente cerrado: `T-CHATTERBOX-002` fase 2C `accepted` (2026-10-21).  
+> `T-CHATTERBOX-001` permanece `proposed`. P8 `blocked`. Opción B / piloto real → `proposed` (nuevo `approved`).  
+> P0–P7 = `accepted`. Sin YouTube.
 
 ---
 

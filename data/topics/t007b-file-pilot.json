@@ -1,0 +1,76 @@
+{
+  "id": "t007b-file-pilot",
+  "title": "Piloto VOICE_PROVIDER=file (T-007B) — saludo + explicación",
+  "language": "es",
+  "niche": "logic",
+  "format": "logic-puzzle",
+  "family": "logic-puzzle",
+  "targetDurationSeconds": 9.6,
+  "aspectRatio": "9:16",
+  "fps": 30,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "hook": "Buenos días. ¿Qué tal estás? Espero que hayas empezado bien la mañana.",
+  "narration": "Buenos días. ¿Qué tal estás? Espero que hayas empezado bien la mañana. Vamos a revisar el resultado con calma. Tenemos todo preparado y podemos avanzar paso a paso.",
+  "scenes": [
+    {
+      "id": "saludo",
+      "type": "hook",
+      "durationSeconds": 4,
+      "narration": "Buenos días. ¿Qué tal estás? Espero que hayas empezado bien la mañana.",
+      "onScreenText": "BUENOS DÍAS\nPiloto de narración (file)",
+      "subtitleText": "Buenos días",
+      "transition": "fade",
+      "visual": {
+        "template": "text",
+        "headline": "Buenos días",
+        "body": "Piloto T-007B · VOICE_PROVIDER=file",
+        "accent": "Solo audio autorizado (saludo)"
+      }
+    },
+    {
+      "id": "explicacion",
+      "type": "reveal",
+      "durationSeconds": 5.566666666666666,
+      "narration": "Vamos a revisar el resultado con calma. Tenemos todo preparado y podemos avanzar paso a paso.",
+      "onScreenText": "REVISAR CON CALMA\nPaso a paso",
+      "subtitleText": "Revisar con calma",
+      "transition": "fade",
+      "visual": {
+        "template": "text",
+        "headline": "Revisar con calma",
+        "body": "Todo preparado · avanzar paso a paso",
+        "accent": "Solo audio autorizado (explicación)"
+      }
+    },
+    {
+      "id": "cierre-schema",
+      "type": "outro",
+      "durationSeconds": 0.03333333333333333,
+      "narration": "",
+      "onScreenText": "T-007B",
+      "subtitleText": "",
+      "transition": "none",
+      "visual": {
+        "template": "text",
+        "headline": "T-007B",
+        "body": "Escena estructural (sin narración en el WAV)",
+        "accent": "Beat común: outro requerido por schema"
+      }
+    }
+  ],
+  "solution": {
+    "summary": "No es un acertijo: piloto de voz con WAV concatenado T-006 (saludo + explicación).",
+    "explanation": "El audio autorizado dura 9,6 s (4,0 s saludo + 5,6 s explicación). La escena outro existe solo porque el beat común del schema exige hook + reveal + outro; su narración está vacía y no forma parte del WAV.",
+    "validationStatus": "partial"
+  },
+  "callToAction": "Piloto técnico — no publicar. (Campo schema; no está en el audio.)",
+  "sources": [
+    "T-CHATTERBOX-007B · WAV /tmp/t007a-narration-concat.wav · SHA-256 13f80d920828554b506e543003adf98fa3a0d6b47162ee5fc369915d60a7a4c2",
+    "Textos T-006: saludo + explicación (únicos fragmentos hablados)"
+  ],
+  "createdAt": "2026-10-22T10:05:00.000Z",
+  "schemaVersion": 1
+}

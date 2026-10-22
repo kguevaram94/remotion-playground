@@ -19,6 +19,12 @@ import {
   buildNarrationSegments,
   joinNarrationPlain,
 } from '../voice/narration-segments';
+import {
+  assertSingleTakeDurationMatch,
+  buildSingleTakeVoiceMeta,
+  FILE_SINGLE_TAKE_CACHE_TOKEN,
+  sumSceneDurations,
+} from '../voice/single-take';
 import type {JobRecord, JobStore} from '../storage/job-store';
 
 const buildNarrationModelIdentity = async (
@@ -41,6 +47,12 @@ const buildNarrationModelIdentity = async (
       cfgWeight: config.chatterboxCfgWeight,
       temperature: config.chatterboxTemperature,
     });
+  }
+  // file single-take-v1: invalidate caches that still hold equal-split voice-meta.
+  if (config.voiceProvider === 'file') {
+    return [FILE_SINGLE_TAKE_CACHE_TOKEN, config.voiceFile]
+      .filter(Boolean)
+      .join('|');
   }
   return [
     config.voiceModel,
@@ -238,21 +250,41 @@ export const runGenerateVoice = async (
 
     // Multi-segment path already wrote voice-meta with per-scene timings
     if (!usePauses) {
-      store.writeJson(job.id, 'voice-meta.json', {
-        durationSeconds,
-        provider: providerName,
-        model,
-        isTestAudio,
-        cues: wordCues,
-        format: 'wav',
-        segments: segments.map((s) => ({
-          text: s.text,
-          pauseAfterSec: s.pauseAfterSec,
-          sceneId: s.sceneId,
-          // Single-file take: split evenly (no per-scene WAV parts)
-          durationSeconds: durationSeconds / Math.max(1, segments.length),
-        })),
-      });
+      if (config.voiceProvider === 'file') {
+        // Single take: duration from WAV probe; scene cuts from script authorship.
+        // Never invent equal-split segments (legacy behaviour removed in 007C-SYNC).
+        assertSingleTakeDurationMatch(
+          sumSceneDurations(script.scenes),
+          durationSeconds,
+        );
+        store.writeJson(
+          job.id,
+          'voice-meta.json',
+          buildSingleTakeVoiceMeta({
+            durationSeconds,
+            provider: providerName,
+            model,
+            isTestAudio,
+            cues: wordCues,
+          }),
+        );
+      } else {
+        store.writeJson(job.id, 'voice-meta.json', {
+          durationSeconds,
+          provider: providerName,
+          model,
+          isTestAudio,
+          cues: wordCues,
+          format: 'wav',
+          segments: segments.map((s) => ({
+            text: s.text,
+            pauseAfterSec: s.pauseAfterSec,
+            sceneId: s.sceneId,
+            // Single speech part (non-file): one measured duration for that part
+            durationSeconds: durationSeconds / Math.max(1, segments.length),
+          })),
+        });
+      }
     }
 
     if (isTestAudio) {

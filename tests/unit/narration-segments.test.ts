@@ -23,4 +23,14 @@ describe('narration-segments', () => {
     expect(segs[1]!.pauseAfterSec).toBe(0);
     expect(segs.every((s) => s.sceneId === 'x')).toBe(true);
   });
+
+  it('skips mute scenes (empty narration) without inventing a speech segment', () => {
+    const segs = buildNarrationSegments([
+      {id: 'saludo', narration: 'Buenos días.'},
+      {id: 'explicacion', narration: 'Vamos a revisar.'},
+      {id: 'cierre-schema', narration: ''},
+    ]);
+    expect(segs).toHaveLength(2);
+    expect(segs.map((s) => s.sceneId)).toEqual(['saludo', 'explicacion']);
+  });
 });

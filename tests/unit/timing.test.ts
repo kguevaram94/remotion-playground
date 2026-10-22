@@ -44,4 +44,15 @@ describe('timing', () => {
     );
     expect(next).toEqual([4.7, 5.7, 3]);
   });
+
+  it('returns null when a scene has no voice segment (mute outro coverage gap)', () => {
+    const next = durationsFromVoiceSegments(
+      ['saludo', 'explicacion', 'cierre-schema'],
+      [
+        {sceneId: 'saludo', durationSeconds: 4.8, pauseAfterSec: 0},
+        {sceneId: 'explicacion', durationSeconds: 4.8, pauseAfterSec: 0},
+      ],
+    );
+    expect(next).toBeNull();
+  });
 });

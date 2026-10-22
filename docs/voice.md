@@ -25,6 +25,15 @@ Voces OpenAI útiles: `coral`, `nova`, `sage`, `ash`, `ballad`, `shimmer`.
 
 `VOICE_PROVIDER=file` acepta **solo WAV PCM** (RIFF/WAVE, `audioFormat=1`). MP3/AIFF u otros códecs no se aceptan: conviértelos antes a PCM WAV. La duración y el sample rate se leen del archivo (no se estiman desde el texto).
 
+### Contrato single-take (T-CHATTERBOX-007C-SYNC · opción A)
+
+- El WAV es **un único take**. `voice-meta.json` usa `timingMode: "single-take"` y **no** inventa `segments` con duraciones equitativas.
+- Las duraciones por escena vienen del guion. Si `|Σ durationSeconds − duración WAV| ≤ 0,05 s`, se conservan en `planning_scenes` y `generating_subtitles` (sin estirar a `SHORTS_TARGET_DURATION`).
+- Si la suma no cuadra con el WAV por encima de esa tolerancia → **error explícito** (no se comprime/estira el guion).
+- Escenas sin narración (p. ej. outro estructural) son válidas: conservan su `durationSeconds` y no exigen segmento de voz.
+- Los cues de palabra son `cuesKind: "uniform"` (reparto equitativo sobre el take): **aproximados**, no alineación fonética ni fronteras acústicas verificadas.
+- La clave de caché de narración para `file` incluye el token `file:single-take-v1` para no reutilizar jobs antiguos con segmentos inventados.
+
 1. Genera el guion del short.
 2. Graba leyendo el texto:
 

@@ -7,6 +7,7 @@ import {
   cuesToSrt,
 } from '../subtitles/srt';
 import {planScenes} from '../ai/scene-planner';
+import {isSingleTakeVoiceMeta} from '../voice/single-take';
 import type {JobRecord, JobStore} from '../storage/job-store';
 
 export const runGenerateSubtitles = (
@@ -36,9 +37,14 @@ export const runGenerateSubtitles = (
         }>
       | undefined;
 
+    let singleTake = config.voiceProvider === 'file';
+
     if (existsSync(voiceMetaPath)) {
       const meta = JSON.parse(readFileSync(voiceMetaPath, 'utf8')) as {
         durationSeconds: number;
+        provider?: string;
+        timingMode?: string;
+        cuesKind?: string;
         cues?: Array<{text: string; startMs: number; endMs: number}>;
         segments?: Array<{
           sceneId?: string;
@@ -48,7 +54,10 @@ export const runGenerateSubtitles = (
       };
       narrationDuration = meta.durationSeconds;
       wordCues = meta.cues ?? [];
+      singleTake = isSingleTakeVoiceMeta(meta, config.voiceProvider);
+      // Legacy file equal-split segments must not drive scene durations.
       if (
+        !singleTake &&
         meta.segments?.length &&
         meta.segments.every(
           (s) =>
@@ -64,12 +73,13 @@ export const runGenerateSubtitles = (
       }
     }
 
-    // Sync scene durations to per-scene voice timings (exact A/V lock)
+    // measured-segments: lock to TTS parts; single-take: keep script + match WAV
     const planned = planScenes(script, {
       targetDurationSeconds: config.targetDurationSeconds,
       maxDurationSeconds: config.maxDurationSeconds,
       narrationDurationSeconds: narrationDuration,
-      voiceSegments,
+      voiceSegments: singleTake ? undefined : voiceSegments,
+      voiceTimingMode: singleTake ? 'single-take' : undefined,
     });
 
     const cues =

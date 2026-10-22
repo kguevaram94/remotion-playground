@@ -19,10 +19,14 @@ export const runGenerateScenes = (
     const raw = store.readScript(job.id);
     if (!raw) throw new Error('No hay script.json');
     const script = parseVideoScript(raw);
+    // file = single-take: keep authorship durations; do not stretch to SHORTS_TARGET_DURATION.
+    const voiceTimingMode =
+      config.voiceProvider === 'file' ? ('single-take' as const) : undefined;
     const planned = planScenes(script, {
       targetDurationSeconds: config.targetDurationSeconds,
       maxDurationSeconds: config.maxDurationSeconds,
       narrationDurationSeconds,
+      voiceTimingMode,
     });
 
     const scenesPath = store.writeJson(job.id, 'scenes.json', {

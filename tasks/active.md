@@ -8,118 +8,93 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 ## Identificador y fase
 
-- **ID:** `T-CHATTERBOX-002`
+- **ID:** `T-CHATTERBOX-007C-SYNC`
 - **Fase ROADMAP:** transversal post-P7 / pre-P8 (**no** es P8; no inicia YouTube; no altera P0–P7 `accepted`)
 
 ## Estado de aprobación
 
-`accepted` (**fase 2C** · alcance mínimo H1–H4) · fase 2B permanece `accepted` (con limitaciones) · fase 2A permanece `accepted` (con reserva técnica) · fase 1 permanece `accepted` (con reservas I-R*/M-R*)
+`review_required` (opción A · single-take `VOICE_PROVIDER=file`)
 
-> Aceptación humana 2026-10-21 (chat Cursor): **fase 2C** H1–H4 — `review_required` → **`accepted`**. Auditoría favorable H1–H4.  
-> Ciclo 2C: `approved` → `in_progress` → `review_required` → **`accepted`**.  
-> HEAD auditado de la entrega: `0774e0211bc03f25b98b57bc7d12800e1b5e03bd` (padre `49321b93bfb811b4c7887c0e0eb10a27f2576779`).  
-> **Entregado y aceptado:** H1 preflight; H2 integración offline (stub/fixtures); H3 documentación; H4 `npm test` + `typecheck`.  
-> **No** autorizado / **no** hecho: inferencia real; descargas de modelos; cerrar reservas 1/2A/2B; declarar procedencia modelo/ref/checkpoints como verificada; cambiar umbrales QC / `publishEligibility` / P8 / YouTube.  
-> Fase 2B: `accepted` con limitaciones — **abiertas / intactas**.  
-> Fase 2A: `accepted` con reserva técnica (`exists`/`size`/`mtimeMs`) — **abierta / intacta**.  
-> Fase 1: `accepted` con reservas I-R1–I-R4 / M-R1–M-R5 (**abiertas**).  
-> P0–P7 `accepted`. `T-AV-QC-001` `accepted`. P8 `blocked`.  
-> `T-CHATTERBOX-001` intacto (`proposed`).  
-> Inferencia real / job con pesos: **`proposed`** (requiere nuevo `approved` humano). Sin alcance de implementación autorizado tras este acto.
+> Autorización humana 2026-10-22 (chat Cursor): implementar **opción A** del diseño aprobado (sin pipeline de producción ni Remotion).  
+> Ciclo: `approved` (chat) → `in_progress` → **`review_required`**.  
+> HEAD de partida: `dbd86d27084a1692267b25cbfcd60b16ea73dda4`.  
+> **No** autorizado / **no** hecho: opción B (fronteras verificadas); `npm run short` / `generar-short`; Remotion; FFmpeg real; loudnorm; QC; inferencia; publicación; commit/push.
 
 ## Objetivo
 
-Integrar Chatterbox en el pipeline de producción **sin inferencia real**: preflight de configuración, pruebas offline con proveedor simulado + fixtures de loudnorm/QC, documentación de flujo/coste/límites de trazabilidad, y verificación `npm test` / `typecheck` — preservando la semántica P5 de loudnorm y `publishEligibility`, y **sin** afirmar procedencia verificada de modelo/ref/checkpoints.
+Tratar `VOICE_PROVIDER=file` como un único take: duración total del probe WAV; conservar duraciones de escena del guion cuando coinciden con el WAV (tolerancia 0,05 s); permitir escenas mudas; eliminar `voice-meta.segments` con duraciones inventadas; no redistribuir a `SHORTS_TARGET_DURATION=25` en el caso coherente.
 
-## Alcance (sí — fase 2C · H1–H4) — aceptado
+## Alcance (sí)
 
-### H1 — Preflight
-
-1. Corregir la validación temprana de configuración de voz en `src/shorts/pipeline/run.ts` (para que Chatterbox/otros providers reales no queden fuera del assert).
-2. Añadir tests para Chatterbox con configuración válida e incompleta.
-3. Garantizar que una configuración inválida falla explícitamente y **nunca** degrada a mock.
-
-### H2 — Integración offline
-
-1. Probar el flujo de voz con proveedor Chatterbox **simulado**, normalización controlada y QC mediante fixtures.
-2. Cubrir síntesis multisegmento, fallo en un segmento y ausencia de artefactos de éxito incorrectos.
-3. Mantener la semántica existente de loudnorm y `publishEligibility` (sin cambiar umbrales ni criterios).
-
-### H3 — Documentación
-
-1. Documentar el flujo de voz, el coste de carga por segmento y las limitaciones de trazabilidad.
-2. Distinguir expresamente `verified_provenance` de QC de loudnorm de la procedencia del modelo, los checkpoints y la referencia vocal.
-
-### H4 — Verificación
-
-1. Ejecutar `npm test` y `npm run typecheck`.
-2. Entregar diffs y evidencias para revisión humana antes de aceptar la fase (`review_required` → `accepted` humano).
+1. Meta single-take (`timingMode`, `cuesKind: uniform`) sin equal-split.
+2. `planScenes` / `planning_scenes` / `generating_subtitles` con `voiceTimingMode: 'single-take'`.
+3. Error explícito si `|Σ escenas − WAV| > 0,05 s`.
+4. Invalidación mínima de caché `file` (`file:single-take-v1`).
+5. Tests unitarios/offline + `typecheck`.
+6. Docs mínimas en `docs/voice.md`.
 
 ## Fuera de alcance (no)
 
-- Inferencia real; descargas de modelos; install; daemon.
-- Cerrar reservas fase 1 (I-R*/M-R*), reserva técnica 2A, o limitaciones 2B.
-- Declarar procedencia de modelo / ref / checkpoints / venv como verificada.
-- Hash de checkpoints; verificación live `pip freeze`.
-- Modificar umbrales QC, semántica de `publishEligibility`, orden voice→loudnorm→render→post.
-- P8 / YouTube / publicación; APIs de pago; providers ajenos al alcance (salvo no-regresión).
-- Commit / push / merge / rebase (salvo petición humana aparte).
-- Autorización de job real con pesos (requiere **nuevo** `approved` humano independiente).
+- Opción B / forced alignment / fronteras en el topic.
+- Ejecutar pipeline real, Remotion, FFmpeg, loudnorm, QC, inferencia, red.
+- Modificar `.env`, topic piloto, WAV T-006.
+- Commit / push / merge / staging del topic.
+- Cambiar comportamiento medido de OpenAI TTS / Chatterbox multi-segmento (salvo no-regresión).
 
-## Archivos afectados previstos
+## Archivos afectados
 
 | Path | Rol |
 | --- | --- |
-| `src/shorts/pipeline/run.ts` | Preflight `assertConfigForMode` (H1) |
-| `src/shorts/config/env.ts` | Ajuste de assert si hace falta (H1) |
-| `src/shorts/pipeline/generate-voice.ts` | Solo si H2 exige cableado/observabilidad mínima sin cambiar contrato |
-| `tests/unit/*` / `tests/integration/*` | Preflight + flujo stub/fixtures (H1–H2) |
-| `docs/voice.md` (+ docs mínimos relacionados) | Flujo, coste N×cold-start, glosario provenance (H3) |
-| `tasks/active.md`, `tasks/approvals.md`, `ROADMAP.md` | Gobernanza |
+| `src/shorts/voice/single-take.ts` | Contrato, tolerancia, meta, detección |
+| `src/shorts/ai/scene-planner.ts` | Modo `single-take` |
+| `src/shorts/pipeline/generate-voice.ts` | Meta file + caché token |
+| `src/shorts/pipeline/generate-scenes.ts` | `voiceTimingMode` si provider=file |
+| `src/shorts/pipeline/generate-subtitles.ts` | Ignora segmentos legacy file |
+| `docs/voice.md` | Documentación del contrato |
+| `tests/unit/*single-take*` / openai-multisegment / extensiones | Cobertura offline |
 
 ## Dependencias
 
-- Fase 2B `accepted` con limitaciones (2026-10-21).
-- Fase 2A `accepted` con reserva técnica (abierta).
-- Fase 1 `accepted` con reservas I-R*/M-R* (abiertas).
-- Autorización humana 2026-10-21 (chat Cursor): **fase 2C alcance H1–H4**.
-- Aceptación humana 2026-10-21 (chat Cursor): **fase 2C H1–H4** tras auditoría favorable.
-- P8 `blocked`.
+- Diseño 007C-SYNC opción A (chat Cursor).
+- Topic piloto untracked `data/topics/t007b-file-pilot.json` (intact).
+- WAV autorizado `/tmp/t007a-narration-concat.wav` (referencia; no usado en tests).
 
 ## Criterios de aceptación
 
-- [x] H1: config Chatterbox incompleta → fallo explícito temprano; válida → no mock; tests cubren ambos casos.
-- [x] H2: flujo offline stub + fixtures loudnorm/QC; multisegmento; fallo de segmento sin artefactos de éxito incorrectos; semántica loudnorm/`publishEligibility` intacta.
-- [x] H3: docs con flujo, coste por segmento, y distinción `verified_provenance` (QC loudnorm P5) ≠ procedencia modelo/ref/checkpoints.
-- [x] H4: `npm test` y `npm run typecheck` ejecutados de verdad; diffs/evidencias en informe `review_required`.
-- [x] Reservas 1 / 2A / 2B **siguen abiertas**; sin claims de procedencia modelo/ref/checkpoints.
-- [x] Sin inferencia real ni descargas en esta fase.
-- [x] Sin commit/push/merge/rebase salvo petición humana aparte.
-- [x] Revisión humana de fase 2C — **`accepted`** (2026-10-21; auditoría favorable H1–H4).
+- [x] WAV/guion coherente → suma 9,6 s / 288 frames @ 30 fps; outro mudo válido.
+- [x] Sin segmentos file 4,8+4,8; sin redistribute a 25 en caso coherente.
+- [x] Error si desajuste > tolerancia.
+- [x] Meta antigua file / cues uniformes compatibles; OpenAI + Chatterbox sin regresión offline.
+- [x] `typecheck` OK; sin Remotion/FFmpeg/inferencia/publicación en esta entrega.
 
 ## Pruebas a ejecutar
 
 ```bash
-npm test -- tests/unit/pipeline-voice-preflight.test.ts tests/integration/chatterbox-voice-qc-offline.test.ts tests/unit/voice-chatterbox.test.ts tests/unit/voice-chatterbox-cache.test.ts tests/unit/generate-voice-chatterbox-cache.test.ts tests/unit/narration-loudnorm.test.ts tests/unit/quality-check.test.ts
-# → 7 files / 83 passed
-
-npm test
-# → 26 files / 158 passed
+npx vitest run \
+  tests/unit/single-take.test.ts \
+  tests/unit/scene-planner-single-take.test.ts \
+  tests/unit/narration-segments.test.ts \
+  tests/unit/timing.test.ts \
+  tests/unit/generate-voice-file-single-take.test.ts \
+  tests/unit/generate-voice-openai-multisegment.test.ts \
+  tests/unit/generate-subtitles-file-single-take.test.ts \
+  tests/unit/generate-voice-chatterbox-cache.test.ts \
+  tests/unit/file-provider.test.ts \
+  tests/integration/chatterbox-voice-qc-offline.test.ts
+# → passed (ver informe)
 
 npm run typecheck
-# → OK (tsc --noEmit)
+# → OK
 ```
 
 ## Riesgos y pendientes
 
-- Multisegmento: coste N×cold-start documentado; sin daemon.
-- Reserva 2A (`exists`/`size`/`mtimeMs`) y limitaciones 2B siguen: no elevar claims de identidad/procedencia.
-- Reservas fase 1 (incl. `conds.pt`, Perth) abiertas; 2C **no** las cierra.
-- Inferencia real = **fuera**; requiere autorización independiente (`proposed` hasta nuevo `approved`).
-- H2: render MP4 **simulado** en tests de QC (placeholder bytes + provenance); sin FFmpeg loudnorm real (stub `loudnormAudio`).
+- Cues `uniform` ≠ alineación fonética (opción B pendiente).
+- Jobs antiguos con equal-split: se ignoran en subtítulos si `provider=file`; caché file invalidada con token v1 (no se borran jobs).
+- Loudnorm real / duración post-loudnorm no auditados en esta tarea.
+- Piloto real (`generar-short`) requiere autorización independiente.
 
 ## Notas
 
-- Estado tras aceptación humana (2026-10-21): fase 2C **`accepted`** (H1–H4; auditoría favorable). HEAD entrega: `0774e02` (padre `49321b9`).
-- Fases 1/2A/2B aceptadas acotadas; reservas/limitaciones **intactas**.
-- Inferencia real sigue `proposed` hasta nuevo `approved`. P8 `blocked`. Sin alcance de implementación autorizado tras este acto.
+- Topic `data/topics/t007b-file-pilot.json` permanece untracked e intacto.
+- Siguiente fase sugerida: ejecución piloto file **o** opción B — ambas en `proposed` hasta nuevo `approved`.
