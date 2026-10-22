@@ -119,7 +119,7 @@ npm run typecheck
 
 ## Notas
 
-- **Histórico (antes de `93054b9`):** borradores afirmaban «topic untracked» / «sin commit/push» de la entrega. Eso era el estado anterior a `93054b9`, no el de la entrega técnica `30cf3d3`.
-- Reservas **007C-R1…R5** permanecen **abiertas**; la aceptación **no** las declara resueltas.
-- Hotfix `T-CHATTERBOX-007B` SceneFade (`planSceneFade` + tests) en **`review_required`** — sin commit; sin re-piloto. Ver `tasks/approvals.md`.
-- Siguiente tras revisión humana del hotfix: re-piloto file **o** opción B — cada uno requiere `approved` aparte. P8 permanece `blocked`. `T-CHATTERBOX-001` permanece `proposed`.
+- **Histórico:** las afirmaciones «sin commit/push» del hotfix SceneFade correspondían al estado anterior a `1f03b70`.
+- **Estado vigente:** hotfix SceneFade (`T-CHATTERBOX-007B` / `planSceneFade`) commitado en `1f03b70`, sincronizado (`main` = `origin/main`), en `review_required`. Detalle canónico en `tasks/approvals.md`.
+- **Reservas:** **007C-R1…R5** siguen **abiertas**; **R3** requiere re-piloto Remotion/QC real autorizado.
+- **Próximos pasos:** revisión/aceptación humana del hotfix; re-piloto file u opción B solo con `approved` independiente. Re-piloto **no** autorizado; P8 `blocked`; `T-CHATTERBOX-001` `proposed`.

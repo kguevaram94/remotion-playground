@@ -72,15 +72,17 @@ Código terminado ≠ `accepted`.
 
 #### Resumen
 
-Corrección mínima del fallo de render Remotion del piloto file (`inputRange [0,8,9,1]` con outro de 1 frame). Autorizado en chat Cursor 2026-10-22. **No** reejecuta piloto; **no** cierra 007C-R1…R5.
+Corrección mínima del fallo de render Remotion del piloto file (`inputRange [0,8,9,1]` con outro de 1 frame). Implementación autorizada en chat Cursor 2026-10-22. Auditoría solo lectura 2026-10-22: veredicto técnico **APTO PARA SOLICITAR AUTORIZACIÓN DE RE-PILOTO** — ese veredicto **no** equivale a `accepted` del hotfix ni autoriza el re-piloto.
 
 | Campo | Valor |
 | --- | --- |
 | Estado | `review_required` |
-| Archivos | `src/shorts/remotion/components/scene-fade-plan.ts` (nuevo), `SceneFade.tsx`, `tests/unit/scene-fade-plan.test.ts` |
-| Fuera de alcance | topic piloto, artefactos `output/`/`public/shorts/`, `ffmpeg.ts`/loudnorm, `.env`, commit/push, re-piloto |
-| Pruebas | `npx vitest run tests/unit/scene-fade-plan.test.ts` + `npm run typecheck` |
-| R3 | Sigue **abierta** hasta re-piloto Remotion/QC autorizado |
+| Fuera de alcance | topic piloto, artefactos `output/`/`public/shorts/`, `ffmpeg.ts`/loudnorm, `.env`, re-piloto / QC real |
+| R3 | **Abierta** — pendiente de re-piloto Remotion + QC reales (`approved` independiente) |
+
+**Histórico (Git):** el hotfix SceneFade está en `1f03b70` y sincronizado (`main` = `origin/main`). Las afirmaciones «sin commit/push» eran anteriores a ese commit. Commit presente ≠ `accepted` del hotfix ≠ autorización del re-piloto.
+
+**Pruebas (existentes; no re-ejecutadas en esta limpieza):** `npx vitest run tests/unit/scene-fade-plan.test.ts` + `npm run typecheck`.
 
 ---
 
