@@ -1,14 +1,9 @@
 import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
-import {
-  existsSync,
-  writeFileSync,
-  readFileSync,
-  mkdirSync,
-  unlinkSync,
-} from 'node:fs';
+import {existsSync, writeFileSync, mkdirSync, unlinkSync} from 'node:fs';
 import path from 'node:path';
 import type {AppConfig} from '../config/env';
+import {readWavDurationSeconds} from '../media/wav-probe';
 import {estimateNarrationSeconds} from '../utils/timing';
 import {ChatterboxVoiceProvider} from './chatterbox';
 import {DEFAULT_VOICE_ES_ES, resolveVoiceAlias} from './voices-es';
@@ -82,31 +77,6 @@ const bufferWriteWav = (
   }
   mkdirSync(path.dirname(outputPath), {recursive: true});
   writeFileSync(outputPath, buffer);
-};
-
-const readWavDurationSeconds = (filePath: string): number | null => {
-  try {
-    const buf = readFileSync(filePath);
-    if (buf.toString('ascii', 0, 4) !== 'RIFF') return null;
-    const sampleRate = buf.readUInt32LE(24);
-    const bitsPerSample = buf.readUInt16LE(34);
-    const channels = buf.readUInt16LE(22);
-    // Find data chunk
-    let offset = 12;
-    while (offset < buf.length - 8) {
-      const id = buf.toString('ascii', offset, offset + 4);
-      const size = buf.readUInt32LE(offset + 4);
-      if (id === 'data') {
-        const bytesPerSample = (bitsPerSample / 8) * channels;
-        if (bytesPerSample <= 0 || sampleRate <= 0) return null;
-        return size / bytesPerSample / sampleRate;
-      }
-      offset += 8 + size;
-    }
-    return null;
-  } catch {
-    return null;
-  }
 };
 
 const buildWordCues = (text: string, durationSeconds: number) => {
@@ -312,8 +282,8 @@ export class FileVoiceProvider implements VoiceProvider {
     );
     if (!source) {
       throw new Error(
-        'VOICE_PROVIDER=file: coloca tu narración en output/<id>/narration.custom.wav ' +
-          'o define VOICE_FILE=ruta/a/tu-voz.wav',
+        'VOICE_PROVIDER=file: coloca un WAV PCM en output/<id>/narration.custom.wav ' +
+          'o define VOICE_FILE=ruta/a/narracion.wav (ver docs/voice.md)',
       );
     }
     return synthesizeFromFile(text, outputPath, source);

@@ -23,6 +23,8 @@ Voces OpenAI útiles: `coral`, `nova`, `sage`, `ash`, `ballad`, `shimmer`.
 
 ## 2. Tu propia voz grabada (100 % nativa, gratis)
 
+`VOICE_PROVIDER=file` acepta **solo WAV PCM** (RIFF/WAVE, `audioFormat=1`). MP3/AIFF u otros códecs no se aceptan: conviértelos antes a PCM WAV. La duración y el sample rate se leen del archivo (no se estiman desde el texto).
+
 1. Genera el guion del short.
 2. Graba leyendo el texto:
 
@@ -32,12 +34,13 @@ npm run short:record -- --id puntos
 # Ctrl+C al terminar
 ```
 
-O deja el archivo a mano: `output/puntos/narration.custom.wav`
+O deja el archivo a mano: `output/puntos/narration.custom.wav` (PCM WAV).
 
 3. Renderiza con ese audio:
 
 ```bash
 VOICE_PROVIDER=file npm run short:voice -- --id puntos
+# o: VOICE_PROVIDER=file VOICE_FILE=/ruta/a/narracion.wav …
 ```
 
 ## 3. Clonar tu voz (ElevenLabs)
