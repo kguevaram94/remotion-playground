@@ -46,7 +46,7 @@ Código terminado ≠ `accepted`.
 | `T-AV-QC-001` | post-P7 / pre-P8 | Validación audiovisual real (4 familias) | `accepted` | Aceptado 2026-10-19 (chat Cursor); 4× MP4 Cedar; P8 `blocked` |
 | `T-CHATTERBOX-001` | transversal post-P7 / pre-P8 | Estudio + piloto Chatterbox (fuera del pipeline) | `proposed` | Historial intacto. Nota 2026-10-21: piloto técnico MPS OK; humano aceptó la muestra. **No** `accepted`. Integración → `T-CHATTERBOX-002`. P8 `blocked` |
 | `T-CHATTERBOX-002` | transversal post-P7 / pre-P8 | Integración Chatterbox (`VoiceProvider`) | fase 1: `accepted` (con reservas) · fase 2A: `accepted` (con reserva técnica) · fase 2B: `accepted` (con limitaciones) · **fase 2C: `accepted` (H1–H4)** | 2C H1–H4 `accepted` 2026-10-21 (auditoría favorable; HEAD `0774e02`). Sin inferencia real. Reservas I-R*/M-R* y reserva 2A **abiertas**; limitaciones 2B **intactas**. P8 `blocked` |
-| `T-CHATTERBOX-007C-SYNC` | transversal post-P7 / pre-P8 | Sync single-take `VOICE_PROVIDER=file` (opción A) | `review_required` | Autorizado chat 2026-10-22. Entrega versionada HEAD `30cf3d3` (padre `dbd86d2`); `main`=`origin/main`. Topic piloto versionado. Auditoría: APTO CON RESERVAS. Piloto real / opción B → `proposed`. Sin `accepted`. |
+| `T-CHATTERBOX-007C-SYNC` | transversal post-P7 / pre-P8 | Sync single-take `VOICE_PROVIDER=file` (opción A) | `accepted` (con reservas) | Aceptado 2026-10-22; R1–R5 **abiertas**. Entrega `30cf3d3`; HEAD doc. `93054b9`. Piloto / opción B **no** autorizados. |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -64,56 +64,74 @@ Código terminado ≠ `accepted`.
 
 ## Tarea activa / alcance aprobado
 
-> Tarea activa: `T-CHATTERBOX-007C-SYNC` · **`review_required`** (opción A single-take file; 2026-10-22).
-> Autorización: chat Cursor 2026-10-22 (opción A: código + tests offline + typecheck; **sin** pipeline/Remotion/piloto real).
-> Base de implementación: `dbd86d27084a1692267b25cbfcd60b16ea73dda4`.
-> Entrega versionada observada: HEAD `30cf3d3414366ab2a79d55a5714c1da6ca50d952` (padre `dbd86d2`); `main` sincronizada con `origin/main`.
-> Topic piloto `data/topics/t007b-file-pilot.json`: **versionado** en la entrega (no untracked).
-> Auditoría solo lectura 2026-10-22: veredicto técnico **APTO CON RESERVAS**. Corrección documental de gobernanza pendiente de revisión humana (sin `accepted`).
-> Precedente cerrado: `T-CHATTERBOX-002` fase 2C `accepted` (2026-10-21).
-> `T-CHATTERBOX-001` permanece `proposed`. P8 `blocked`. Opción B / piloto real → `proposed` (requieren nuevo `approved`).
-> P0–P7 = `accepted`. Sin YouTube. Commit/push de la entrega **≠** aceptación humana ni autorización de piloto.
+> Última tarea cerrada en tablero: `T-CHATTERBOX-007C-SYNC` opción A · **`accepted` (con reservas)** 2026-10-22. Detalle: sección canónica abajo. Precedente `T-CHATTERBOX-002` 2C `accepted`; `T-CHATTERBOX-001` `proposed`; P8 `blocked`; P0–P7 `accepted`. Piloto file / opción B → `proposed`.
 
 ---
 
-### `T-CHATTERBOX-007C-SYNC` · transversal post-P7 / pre-P8 · opción A · `review_required`
+### `T-CHATTERBOX-007C-SYNC` · transversal post-P7 / pre-P8 · opción A · `accepted` (con reservas)
 
 #### Resumen
 
-Opción A (single-take `VOICE_PROVIDER=file`) implementada y versionada. Estado de gobernanza: **`review_required`** (falta `accepted` humano). Piloto real y opción B **no** autorizados (`proposed`).
+Opción A (single-take `VOICE_PROVIDER=file`) implementada y **aceptada con reservas** 2026-10-22. Ciclo: `approved` → `in_progress` → `review_required` → **`accepted` (con reservas 007C-R1…R5 abiertas)**. Piloto real y opción B permanecen `proposed` (sin autorización).
 
-#### Estado Git observado (reconciliado 2026-10-22)
+#### Aceptación humana — opción A únicamente (2026-10-22)
+
+**Decisión humana:** aceptar opción A con reservas (intención `accepted_with_reservations`).
+
+**Estado de gobernanza registrado:** **`accepted` (con reservas)** — el esquema oficial **no** define `accepted_with_reservations`; mismo patrón que `T-CHATTERBOX-002` fase 1 / 2A.
+
+**Aceptado por:** humano (chat Cursor: formalización explícita 2026-10-22).
+
+**Alcance aceptado:** contrato single-take `VOICE_PROVIDER=file` (código + tests offline + typecheck) de la entrega técnica `30cf3d3414366ab2a79d55a5714c1da6ca50d952`.
+
+**Base de la aceptación:** evidencia de esa entrega + auditoría solo lectura 2026-10-22 (**APTO CON RESERVAS**). **No** se re-ejecutaron suites / typecheck / pipeline en el acto de aceptación.
+
+**HEAD de la entrega técnica aceptada:** `30cf3d3` (padre `dbd86d2`).
+
+**HEAD documental vigente al registrar:** `93054b9` (padre `30cf3d3`); dirty WT solo en `tasks/*` **sin staging**.
+
+**Reservas abiertas (vinculantes — no resueltas):**
+
+| ID | Riesgo residual | Seguimiento |
+| --- | --- | --- |
+| **007C-R1** | Sin test del borde exacto `Δ = 0,05 s` | Micro-test opcional |
+| **007C-R2** | Loudnorm real / sync post-norm no auditado | Piloto file + FFmpeg (`approved` aparte) |
+| **007C-R3** | QC real / duración vídeo-audio no ejercitados | Piloto + Remotion/QC (`approved` aparte) |
+| **007C-R4** | Resume job real con meta antigua no probado | Resume real o doc operativa (`approved` aparte) |
+| **007C-R5** | Caché = cambio de clave; sin purge de artefactos | Operativo; purge manual si hace falta |
+
+**Explícitamente no autorizado en este acto:**
+
+- Piloto real (`generar-short` / Remotion / loudnorm / QC).
+- Opción B / forced alignment.
+- Inferencia, publicación, YouTube / P8.
+- Cerrar o declarar resueltas las reservas R1–R5.
+- Commit / push / merge / rebase (salvo petición humana aparte).
+- Alterar `T-CHATTERBOX-001` (`proposed`) u otras tareas.
+
+#### Estado actual (Git / gobernanza)
 
 | Campo | Valor |
 | --- | --- |
 | Rama | `main` |
-| HEAD entrega | `30cf3d3414366ab2a79d55a5714c1da6ca50d952` |
-| Padre | `dbd86d27084a1692267b25cbfcd60b16ea73dda4` |
-| Remoto | `main` = `origin/main` (0 ahead / 0 behind al momento de la auditoría / corrección) |
-| Topic piloto | `data/topics/t007b-file-pilot.json` **tracked** en la entrega |
-| WAV ref. | `/tmp/t007a-narration-concat.wav` intacto (9,6 s; SHA-256 `13f80d920828554b506e543003adf98fa3a0d6b47162ee5fc369915d60a7a4c2`) |
+| Base | `dbd86d27084a1692267b25cbfcd60b16ea73dda4` |
+| Entrega técnica (opción A) | `30cf3d3414366ab2a79d55a5714c1da6ca50d952` (padre `dbd86d2`) |
+| HEAD documental vigente | `93054b9ab6eeb7440007386f1cbcd65bef682072` (padre `30cf3d3`) |
+| Sincronización remota | `main` = `origin/main` (0 ahead / 0 behind); dirty local solo en `tasks/*` **sin staging** |
+| Working tree | registro de aceptación documental **sin staging** |
+| Topic piloto | `data/topics/t007b-file-pilot.json` versionado en la entrega técnica |
+| WAV ref. | `/tmp/t007a-narration-concat.wav` (SHA-256 `13f80d920828554b506e543003adf98fa3a0d6b47162ee5fc369915d60a7a4c2`) |
+| Gobernanza | `accepted` opción A **≠** autorización de piloto / opción B / Remotion / loudnorm-QC reales / inferencia / publicación |
 
-**Corrección documental:** no afirmar «sin commit/push» ni «topic untracked» respecto de la entrega opción A; el repositorio ya contiene ambos. Esta sección no autoriza piloto ni marca `accepted`.
+**Histórico (antes de `93054b9`):** se afirmó «topic untracked» / «sin commit/push» respecto de la entrega. Eso describía el estado anterior a `93054b9` / a la entrega `30cf3d3`, no el estado versionado de opción A.
 
 #### Auditoría solo lectura (2026-10-22)
 
-- Veredicto técnico: **APTO CON RESERVAS**.
-- Sin re-ejecución de tests en la auditoría ni en la fase correctiva documental.
-- Reservas abiertas: **007C-R1** (test `Δ = 0,05 s` exacto), **007C-R2** (loudnorm real / sync), **007C-R3** (QC real vídeo/audio), **007C-R4** (resume con meta antigua), **007C-R5** (token de caché = cambio de clave, no purge). Detalle en `tasks/active.md`.
+Veredicto **APTO CON RESERVAS** (sin re-ejecución de tests en auditoría ni en el acto de aceptación). Reservas: **007C-R1**…**R5** (abiertas; detalle en `tasks/active.md` y tabla de aceptación arriba).
 
-#### Fase correctiva de gobernanza (2026-10-22)
+#### Fase correctiva de gobernanza (histórico pre-aceptación)
 
-- Alcance: reconciliar `tasks/active.md` + este archivo con el estado real del repo.
-- **Sin** cambios de código funcional, tests, `.env`, topic ni WAV.
-- **Sin** pipeline / Remotion / FFmpeg / loudnorm / QC / inferencia.
-- Cambios documentales dejados **sin staging ni commit** a la espera de revisión humana.
-
-#### Explícitamente no autorizado aquí
-
-- `accepted` de la entrega técnica opción A.
-- Piloto real (`generar-short` / Remotion / loudnorm / QC).
-- Opción B / forced alignment.
-- Inferencia, publicación, YouTube / P8.
+Reconciliación documental `tasks/active.md` + este archivo con el repo real. Sin código/tests/`.env`/topic/WAV; sin pipeline/Remotion/FFmpeg/loudnorm/QC/inferencia. Superseded por la aceptación humana arriba.
 
 ---
 
