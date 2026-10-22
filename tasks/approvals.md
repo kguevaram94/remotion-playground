@@ -46,8 +46,8 @@ Código terminado ≠ `accepted`.
 | `T-AV-QC-001` | post-P7 / pre-P8 | Validación audiovisual real (4 familias) | `accepted` | Aceptado 2026-10-19 (chat Cursor); 4× MP4 Cedar; P8 `blocked` |
 | `T-CHATTERBOX-001` | transversal post-P7 / pre-P8 | Estudio + piloto Chatterbox (fuera del pipeline) | `proposed` | Historial intacto. Nota 2026-10-21: piloto técnico MPS OK; humano aceptó la muestra. **No** `accepted`. Integración → `T-CHATTERBOX-002`. P8 `blocked` |
 | `T-CHATTERBOX-002` | transversal post-P7 / pre-P8 | Integración Chatterbox (`VoiceProvider`) | fase 1: `accepted` (con reservas) · fase 2A: `accepted` (con reserva técnica) · fase 2B: `accepted` (con limitaciones) · **fase 2C: `accepted` (H1–H4)** | 2C H1–H4 `accepted` 2026-10-21 (auditoría favorable; HEAD `0774e02`). Sin inferencia real. Reservas I-R*/M-R* y reserva 2A **abiertas**; limitaciones 2B **intactas**. P8 `blocked` |
-| `T-CHATTERBOX-007C-SYNC` | transversal post-P7 / pre-P8 | Sync single-take `VOICE_PROVIDER=file` (opción A) | `accepted` (con reservas) | Aceptado 2026-10-22; R1–R5 **abiertas**. Entrega `30cf3d3`; HEAD doc. `93054b9`. Piloto / opción B **no** autorizados. |
-| `T-CHATTERBOX-007B` | transversal post-P7 / pre-P8 | Hotfix SceneFade (`planSceneFade`) | `accepted` | Aceptado 2026-10-22 (chat Cursor); commit `1f03b70`; base = auditoría estática **APTO PARA ACEPTACIÓN HUMANA**. **≠** re-piloto; R3 sigue abierta. |
+| `T-CHATTERBOX-007C-SYNC` | transversal post-P7 / pre-P8 | Sync single-take `VOICE_PROVIDER=file` (opción A) | `accepted` (con reservas) | Aceptado 2026-10-22; R1/R2/R4/R5 **abiertas**; **R3 cerrada** (decisión humana 2026-10-22; re-piloto Remotion+QC OK). Entrega `30cf3d3`. Opción B fuera de alcance. |
+| `T-CHATTERBOX-007B` | transversal post-P7 / pre-P8 | Hotfix SceneFade (`planSceneFade`) | `accepted` | Aceptado 2026-10-22; commit `1f03b70`. Re-piloto file `t007b-file-pilot` completado; **aprobación editorial humana del vídeo** (audiovisual) 2026-10-22. **≠** validación acertijo; **≠** publicación. **007C-R3 cerrada** (misma fecha; ver 007C). |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
 
@@ -65,7 +65,7 @@ Código terminado ≠ `accepted`.
 
 ## Tarea activa / alcance aprobado
 
-> Última entrega aceptada en tablero: hotfix `T-CHATTERBOX-007B` SceneFade · **`accepted`** 2026-10-22 (commit `1f03b70`). Precedente `T-CHATTERBOX-007C-SYNC` opción A · **`accepted` (con reservas)**; `T-CHATTERBOX-002` 2C `accepted`; `T-CHATTERBOX-001` `proposed`; P8 `blocked`; P0–P7 `accepted`. Re-piloto file / opción B → requieren `approved` aparte. **R1–R5 siguen abiertas** (R3 no resuelta).
+> Última entrega de código aceptada en tablero: hotfix `T-CHATTERBOX-007B` SceneFade · **`accepted`** 2026-10-22 (commit `1f03b70`). Precedente `T-CHATTERBOX-007C-SYNC` opción A · **`accepted` (con reservas)**; `T-CHATTERBOX-002` 2C `accepted`; `T-CHATTERBOX-001` `proposed`; P8 `blocked`; P0–P7 `accepted`. Re-piloto file `t007b-file-pilot` ejecutado 2026-10-22; **aprobación editorial humana del vídeo** registrada (audiovisual; no es estado oficial). Opción B fuera de alcance. **R1/R2/R4/R5 abiertas**; **R3 cerrada** (decisión humana 2026-10-22).
 
 ---
 
@@ -73,16 +73,16 @@ Código terminado ≠ `accepted`.
 
 #### Resumen
 
-Corrección mínima del fallo de render Remotion del piloto file (`inputRange [0,8,9,1]` con outro de 1 frame). Implementación en commit `1f03b70fd671aada9fc2116d2cb3795507d28904`. **Aceptado** por humano 2026-10-22 tras auditoría estática (**APTO PARA ACEPTACIÓN HUMANA**). Esta `accepted` **≠** autorización de re-piloto / QC real y **≠** cierre de 007C-R1…R5.
+Corrección mínima del fallo de render Remotion del piloto file (`inputRange [0,8,9,1]` con outro de 1 frame). Implementación en commit `1f03b70fd671aada9fc2116d2cb3795507d28904`. **Aceptado** por humano 2026-10-22 tras auditoría estática (**APTO PARA ACEPTACIÓN HUMANA**). Conserva `accepted`. Posterior: re-piloto file + **aprobación editorial del vídeo** (abajo). **≠** cierre automático de 007C-R1…R5; **≠** publicación.
 
 | Campo | Valor |
 | --- | --- |
-| Estado | `accepted` |
+| Estado | `accepted` (sin cambio) |
 | Commit hotfix | `1f03b70fd671aada9fc2116d2cb3795507d28904` |
-| Fuera de alcance | topic piloto, artefactos `output/`/`public/shorts/`, `ffmpeg.ts`/loudnorm, `.env`, re-piloto / QC real |
-| R3 | **Abierta** — pendiente de re-piloto Remotion + QC reales (`approved` independiente) |
+| Re-piloto | `t007b-file-pilot` — render + QC reales completados 2026-10-22 |
+| R3 | **Cerrada** (decisión humana 2026-10-22; ver `T-CHATTERBOX-007C-SYNC`) — job + Remotion real + QC `ok: true` / `blocking: []` |
 
-#### Aceptación humana (2026-10-22)
+#### Aceptación humana del hotfix (2026-10-22)
 
 **Decisión humana:** aceptar el hotfix SceneFade (`T-CHATTERBOX-007B`).
 
@@ -92,22 +92,49 @@ Corrección mínima del fallo de render Remotion del piloto file (`inputRange [0
 
 **Alcance aceptado:** código + tests del hotfix en `1f03b70` (`SceneFade.tsx`, `scene-fade-plan.ts`, `tests/unit/scene-fade-plan.test.ts`).
 
-**Base de la aceptación:** auditoría técnica de solo lectura 2026-10-22 · veredicto **`APTO PARA ACEPTACIÓN HUMANA`**. La aceptación se basa en **revisión estática**; **no** se re-ejecutaron pruebas, typecheck ni render Remotion durante esa auditoría ni en este acto de registro.
+**Base de la aceptación:** auditoría técnica de solo lectura 2026-10-22 · veredicto **`APTO PARA ACEPTACIÓN HUMANA`**. La aceptación se basa en **revisión estática**; **no** se re-ejecutaron pruebas, typecheck ni render Remotion durante esa auditoría ni en ese acto de registro.
 
-**HEAD documental al registrar:** `78360c272fa0cd0ff638ce5a37c240e89a7b4e32` (incluye consolidación documental previa); working tree dirty solo en `tasks/*` **sin staging** (este registro). **No** commit/push en este acto.
+**HEAD documental al registrar la aceptación del hotfix:** `78360c272fa0cd0ff638ce5a37c240e89a7b4e32`; dirty WT solo en `tasks/*` **sin staging**.
 
-**Explícitamente no autorizado / no afirmado en este acto:**
+**Explícitamente no autorizado en el acto de aceptación del hotfix (histórico):**
 
-- Re-piloto file (`generar-short` / Remotion / loudnorm / QC).
+- Re-piloto file / Remotion / loudnorm / QC (luego autorizado y ejecutado por separado; ver abajo).
 - Opción B / forced alignment.
-- Cerrar o declarar resueltas **007C-R1…R5** (R3 sigue pendiente de re-piloto real).
-- Afirmar que el piloto funciona de extremo a extremo.
+- Cerrar o declarar resueltas **007C-R1…R5**.
 - Inferencia, publicación, YouTube / P8.
 - Staging / commit / push / merge.
 
-**Histórico (Git):** el hotfix está en `1f03b70` y sincronizado (`main` = `origin/main` al momento de la aceptación del código). Las afirmaciones «sin commit/push» eran anteriores a ese commit. `accepted` del hotfix ≠ autorización del re-piloto.
+**Histórico (Git):** el hotfix está en `1f03b70`. `accepted` del hotfix ≠ por sí solo autorización del re-piloto.
 
-**Pruebas (existentes en el commit; no re-ejecutadas en auditoría ni en este registro):** `npx vitest run tests/unit/scene-fade-plan.test.ts` + `npm run typecheck`.
+**Pruebas (existentes en el commit; no re-ejecutadas en la auditoría del hotfix):** `npx vitest run tests/unit/scene-fade-plan.test.ts` + `npm run typecheck`.
+
+#### Re-piloto file + decisión humana — aprobación editorial del vídeo (2026-10-22)
+
+**Contexto:** tras backup verificado (`~/chatterbox-pilot/backups/t007b-file-pilot-pre-repilot-20261022/`) y autorización explícita, se ejecutó una vez:
+
+`VOICE_PROVIDER=file VOICE_FILE=/tmp/t007a-narration-concat.wav npm run short -- --input data/topics/t007b-file-pilot.json --id t007b-file-pilot`
+
+| Evidencia | Valor |
+| --- | --- |
+| Job | `t007b-file-pilot` |
+| Render real | completado (`status: completed`; sin error `inputRange` en el log del re-piloto) |
+| Vídeo | `output/t007b-file-pilot/video.mp4` |
+| SHA-256 | `908786352adc643f5acf8372968562c01ed7382a50000e39acf773bc2872b60e` |
+| Duración / resolución / FPS | 9,6 s · 1080×1920 · 30 FPS · 288 frames |
+| QC local | `output/t007b-file-pilot/report.json` · `ok: true` · `blocking: []` |
+| `publishEligibility.eligible` | `true` (**automático** del pipeline; **≠** permiso humano de publicación) |
+| Validación acertijo | permanece `pending_review` |
+
+**Decisión humana (aprobación editorial del vídeo):** el usuario revisó el MP4 generado y comunicó que **le convence** como resultado audiovisual.
+
+**Registro de gobernanza:** se documenta como **decisión humana en texto**. El esquema oficial **no** define un estado `editorial_approved`; **no** se inventa uno. Esta decisión **no** cambia el estado `accepted` de `T-CHATTERBOX-007B`, **no** valida el acertijo/solución, **no** autoriza YouTube/P8, **no** cierra reservas 007C.
+
+**Explícitamente no afirmado / no autorizado en este registro:**
+
+- Aceptación editorial del acertijo o de su solución (sigue `pending_review`).
+- Publicación, upload o distribución.
+- Cierre de **007C-R3** en el acto de aprobación editorial del vídeo (histórico: entonces solo se proponía). **Posterior (mismo día):** R3 **cerrada** por decisión humana explícita tras verificar el criterio original; ver sección 007C.
+- Opción B; inferencia; staging / commit / push.
 
 ---
 
@@ -115,7 +142,7 @@ Corrección mínima del fallo de render Remotion del piloto file (`inputRange [0
 
 #### Resumen
 
-Opción A (single-take `VOICE_PROVIDER=file`) implementada y **aceptada con reservas** 2026-10-22. Ciclo: `approved` → `in_progress` → `review_required` → **`accepted` (con reservas 007C-R1…R5 abiertas)**. Piloto real y opción B permanecen `proposed` (sin autorización).
+Opción A (single-take `VOICE_PROVIDER=file`) implementada y **aceptada con reservas** 2026-10-22. Ciclo: `approved` → `in_progress` → `review_required` → **`accepted` (con reservas 007C-R1…R5)**. Estado vigente: sigue **`accepted` (con reservas)**. Re-piloto file posterior ejercitó Remotion+QC (evidencia en `T-CHATTERBOX-007B`). Opción B permanece fuera de alcance (`proposed` / sin autorización).
 
 #### Aceptación humana — opción A únicamente (2026-10-22)
 
@@ -133,24 +160,38 @@ Opción A (single-take `VOICE_PROVIDER=file`) implementada y **aceptada con rese
 
 **HEAD documental vigente al registrar:** `93054b9` (padre `30cf3d3`); dirty WT solo en `tasks/*` **sin staging**.
 
-**Reservas abiertas (vinculantes — no resueltas):**
+**Reservas (vinculantes — estado 2026-10-22 tras re-piloto + cierre humano de R3):**
 
-| ID | Riesgo residual | Seguimiento |
-| --- | --- | --- |
-| **007C-R1** | Sin test del borde exacto `Δ = 0,05 s` | Micro-test opcional |
-| **007C-R2** | Loudnorm real / sync post-norm no auditado | Piloto file + FFmpeg (`approved` aparte) |
-| **007C-R3** | QC real / duración vídeo-audio no ejercitados | Piloto + Remotion/QC (`approved` aparte) |
-| **007C-R4** | Resume job real con meta antigua no probado | Resume real o doc operativa (`approved` aparte) |
-| **007C-R5** | Caché = cambio de clave; sin purge de artefactos | Operativo; purge manual si hace falta |
+| ID | Riesgo residual | Estado | Seguimiento |
+| --- | --- | --- | --- |
+| **007C-R1** | Sin test del borde exacto `Δ = 0,05 s` | **Abierta** | Micro-test opcional |
+| **007C-R2** | Loudnorm real / sync post-norm | **Abierta** | Re-piloto file sí ejecutó loudnorm/FFmpeg; cierre documental pendiente de decisión humana (revisión audio loudnorm a 192 kHz en curso) |
+| **007C-R3** | QC real / duración vídeo-audio | **Cerrada** | **Decisión humana 2026-10-22:** criterio original satisfecho. Job `t007b-file-pilot`; render Remotion real OK; `output/t007b-file-pilot/video.mp4` SHA-256 `908786352adc643f5acf8372968562c01ed7382a50000e39acf773bc2872b60e` (9,6 s · 1080×1920 · 30 FPS · 288 frames); QC local `report.json` `ok: true` / `blocking: []` |
+| **007C-R4** | Resume job real con meta antigua no probado | **Abierta** | Resume real o doc operativa (`approved` aparte) |
+| **007C-R5** | Caché = cambio de clave; sin purge de artefactos | **Abierta** | Operativo; purge manual si hace falta |
 
-**Explícitamente no autorizado en este acto:**
+#### Cierre humano — 007C-R3 (2026-10-22)
 
-- Piloto real (`generar-short` / Remotion / loudnorm / QC).
-- Opción B / forced alignment.
-- Inferencia, publicación, YouTube / P8.
-- Cerrar o declarar resueltas las reservas R1–R5.
-- Commit / push / merge / rebase (salvo petición humana aparte).
-- Alterar `T-CHATTERBOX-001` (`proposed`) u otras tareas.
+**Decisión humana:** cerrar la reserva **007C-R3** (QC real / duración vídeo-audio).
+
+**Criterio original:** ejercitar QC real y verificar duración vídeo-audio del caso single-take file.
+
+**Evidencia citada:**
+
+| Campo | Valor |
+| --- | --- |
+| Job | `t007b-file-pilot` |
+| Render | Remotion real completado |
+| Vídeo | `output/t007b-file-pilot/video.mp4` |
+| SHA-256 | `908786352adc643f5acf8372968562c01ed7382a50000e39acf773bc2872b60e` |
+| Duración / formato | 9,6 s · 1080×1920 · 30 FPS · 288 frames |
+| QC local | `report.json` · `ok: true` · `blocking: []` |
+
+**Estado registrado:** **Cerrada**. **No** cierra R1, R2, R4 ni R5. **No** altera P8 (`blocked`) ni `T-CHATTERBOX-001` (`proposed`). **≠** publicación.
+
+**Explícitamente no autorizado en el acto de aceptación opción A (histórico):** piloto / Remotion / QC (luego autorizados aparte); opción B; publicación; auto-cierre R1–R5.
+
+**Registro posterior (2026-10-22) — sin cambiar el estado `accepted` de 007C:** aprobación editorial humana del **vídeo** piloto (ver `T-CHATTERBOX-007B`); acertijo sigue `pending_review`; P8 `blocked`; `T-CHATTERBOX-001` `proposed`; opción B fuera de alcance; **no** commit/push en este registro documental.
 
 #### Estado actual (Git / gobernanza)
 
@@ -164,13 +205,13 @@ Opción A (single-take `VOICE_PROVIDER=file`) implementada y **aceptada con rese
 | Working tree | registro de aceptación documental **sin staging** |
 | Topic piloto | `data/topics/t007b-file-pilot.json` versionado en la entrega técnica |
 | WAV ref. | `/tmp/t007a-narration-concat.wav` (SHA-256 `13f80d920828554b506e543003adf98fa3a0d6b47162ee5fc369915d60a7a4c2`) |
-| Gobernanza | `accepted` opción A **≠** autorización de piloto / opción B / Remotion / loudnorm-QC reales / inferencia / publicación |
+| Gobernanza | `accepted` opción A con reservas; re-piloto file posterior documentado bajo `T-CHATTERBOX-007B`; **≠** opción B / publicación / auto-cierre de reservas |
 
 **Histórico (antes de `93054b9`):** se afirmó «topic untracked» / «sin commit/push» respecto de la entrega. Eso describía el estado anterior a `93054b9` / a la entrega `30cf3d3`, no el estado versionado de opción A.
 
 #### Auditoría solo lectura (2026-10-22)
 
-Veredicto **APTO CON RESERVAS** (sin re-ejecución de tests en auditoría ni en el acto de aceptación). Reservas: **007C-R1**…**R5** (abiertas; detalle en `tasks/active.md` y tabla de aceptación arriba).
+Veredicto **APTO CON RESERVAS** (sin re-ejecución de tests en auditoría ni en el acto de aceptación). Reservas R1–R5: ver tabla actualizada arriba (`tasks/active.md` alineado).
 
 #### Fase correctiva de gobernanza (histórico pre-aceptación)
 

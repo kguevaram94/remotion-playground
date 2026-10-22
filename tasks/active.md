@@ -32,9 +32,9 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 > | Topic piloto | `data/topics/t007b-file-pilot.json` versionado en la entrega técnica |
 > | WAV ref. | `/tmp/t007a-narration-concat.wav` (SHA-256 `13f80d920828554b506e543003adf98fa3a0d6b47162ee5fc369915d60a7a4c2`) |
 > | Auditoría (2026-10-22) | **APTO CON RESERVAS** → **007C-R1…R5** abiertas abajo |
-> | Gobernanza | esta `accepted` **≠** autorización de piloto / opción B / Remotion / loudnorm-QC reales / inferencia / publicación |
+> | Gobernanza | esta `accepted` **≠** autorización de opción B / inferencia / publicación YouTube |
 >
-> **No** autorizado en este acto: opción B; piloto real; Remotion; FFmpeg/loudnorm/QC reales; inferencia; publicación; commit/push.
+> **Histórico del acto de aceptación opción A:** no autorizaba piloto / Remotion / QC reales. **Posterior (mismo día):** re-piloto file `t007b-file-pilot` autorizado y ejecutado; ver notas y reservas. **Sigue sin autorizar:** opción B; inferencia; publicación / P8; commit/push en este registro.
 
 ## Objetivo
 
@@ -83,7 +83,8 @@ Tratar `VOICE_PROVIDER=file` como un único take: duración total del probe WAV;
 - [x] Meta antigua file / cues uniformes compatibles; OpenAI + Chatterbox sin regresión offline.
 - [x] `typecheck` OK en la entrega; sin Remotion/FFmpeg/inferencia/publicación en el alcance de opción A.
 - [x] Aceptación humana explícita de la entrega técnica opción A (`accepted` con reservas) — **2026-10-22**.
-- [ ] Piloto real — **no** forma parte de esta aceptación; requiere `approved` independiente.
+- [x] Re-piloto file real `t007b-file-pilot` (Remotion + QC) — ejecutado 2026-10-22 tras `approved` independiente; render OK; QC `report.json` `ok: true`.
+- [x] Aprobación editorial humana del **vídeo** piloto (audiovisual) — 2026-10-22; **≠** validación del acertijo (`pending_review`) **≠** publicación.
 
 ## Pruebas a ejecutar
 
@@ -109,17 +110,18 @@ npm run typecheck
 
 | ID | Reserva / riesgo residual | Seguimiento |
 | --- | --- | --- |
-| **007C-R1** | Sin test unitario del borde exacto `Δ = 0,05 s` (código: `delta <= 0,05`) | Opcional: micro-test; no cerrado por esta aceptación |
-| **007C-R2** | Duración / sync tras loudnorm **real** no auditada (mock en tests) | Requiere piloto file + FFmpeg real (`approved` aparte) |
-| **007C-R3** | QC real y duración vídeo/audio no ejercitados | Piloto falló en Remotion (`SceneFade` 1 frame). Hotfix SceneFade `T-CHATTERBOX-007B` **`accepted`** (`1f03b70`) — **R3 no cerrada**; hace falta re-piloto Remotion/QC real autorizado |
-| **007C-R4** | Resume de job real con `voice-meta` antiguo no probado (compat offline parcial) | Prueba de resume real o doc operativa (`approved` aparte) |
-| **007C-R5** | Caché `file:single-take-v1` = cambio de clave; **no** purge de artefactos | Operativo; purge manual solo si hace falta |
-| — | Cues `uniform` ≠ alineación fonética | Opción B (`proposed`) |
-| — | Piloto real `generar-short` | `proposed` hasta nuevo `approved` humano |
+| **007C-R1** | Sin test unitario del borde exacto `Δ = 0,05 s` (código: `delta <= 0,05`) | **Abierta** — micro-test opcional |
+| **007C-R2** | Duración / sync tras loudnorm **real** (seguimiento residual) | **Abierta** — el re-piloto file sí ejecutó loudnorm/FFmpeg; cierre documental pendiente de decisión humana (revisión audio loudnorm a 192 kHz en curso) |
+| **007C-R3** | QC real / duración vídeo-audio | **Cerrada** (decisión humana 2026-10-22) — criterio original satisfecho: job `t007b-file-pilot`; render Remotion real OK; `output/t007b-file-pilot/video.mp4` SHA-256 `908786352adc643f5acf8372968562c01ed7382a50000e39acf773bc2872b60e` (9,6 s · 1080×1920 · 30 FPS · 288 frames); QC local `report.json` `ok: true` / `blocking: []` |
+| **007C-R4** | Resume de job real con `voice-meta` antiguo no probado (compat offline parcial) | **Abierta** — prueba de resume real o doc operativa (`approved` aparte) |
+| **007C-R5** | Caché `file:single-take-v1` = cambio de clave; **no** purge de artefactos | **Abierta** — operativo; purge manual solo si hace falta |
+| — | Cues `uniform` ≠ alineación fonética | Opción B (`proposed`; fuera de alcance) |
+| — | Validación editorial del **acertijo**/solución | Sigue `pending_review` (distinta de la aprobación editorial del vídeo) |
 
 ## Notas
 
 - **Histórico:** las afirmaciones «sin commit/push» del hotfix SceneFade correspondían al estado anterior a `1f03b70`.
-- **Estado vigente:** hotfix SceneFade (`T-CHATTERBOX-007B` / `planSceneFade`) en `1f03b70` · **`accepted`** 2026-10-22 (humano; base = auditoría estática **APTO PARA ACEPTACIÓN HUMANA**; sin re-ejecución de tests/render en la auditoría ni en el registro). Detalle canónico en `tasks/approvals.md`.
-- **Reservas:** **007C-R1…R5** siguen **abiertas**; **R3** requiere re-piloto Remotion/QC real autorizado. Aceptación de 007B **≠** piloto E2E OK.
-- **Próximos pasos:** re-piloto file u opción B solo con `approved` independiente. Re-piloto **no** autorizado; P8 `blocked`; `T-CHATTERBOX-001` `proposed`.
+- **Estado vigente (código):** hotfix SceneFade (`T-CHATTERBOX-007B` / `planSceneFade`) en `1f03b70` · **`accepted`** 2026-10-22. Detalle canónico en `tasks/approvals.md`.
+- **Re-piloto file (2026-10-22):** job `t007b-file-pilot`; render real completado; `output/t007b-file-pilot/video.mp4` (SHA-256 `908786352adc643f5acf8372968562c01ed7382a50000e39acf773bc2872b60e`; 9,6 s; 1080×1920; 30 FPS; 288 frames); QC local `report.json` `ok: true` / `blocking: []`. Backup pre-repilot: `~/chatterbox-pilot/backups/t007b-file-pilot-pre-repilot-20261022/`.
+- **Aprobación editorial del vídeo (decisión humana, 2026-10-22):** el usuario revisó el MP4 generado y indica que **le convence** como resultado audiovisual. **No** es un estado oficial del esquema; **≠** aceptación del acertijo; **≠** permiso de publicación. `publishEligibility.eligible: true` del pipeline sigue siendo solo automático.
+- **Reservas:** **R1, R2, R4, R5** abiertas; **R3 cerrada** (decisión humana 2026-10-22; ver tabla). 007C permanece `accepted` con reservas. Opción B fuera de alcance. P8 `blocked`; `T-CHATTERBOX-001` `proposed`.
