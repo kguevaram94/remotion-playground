@@ -46,8 +46,9 @@ Código terminado ≠ `accepted`.
 | `T-AV-QC-001` | post-P7 / pre-P8 | Validación audiovisual real (4 familias) | `accepted` | Aceptado 2026-10-19 (chat Cursor); 4× MP4 Cedar; P8 `blocked` |
 | `T-CHATTERBOX-001` | transversal post-P7 / pre-P8 | Estudio + piloto Chatterbox (fuera del pipeline) | `proposed` | Historial intacto. Nota 2026-10-21: piloto técnico MPS OK; humano aceptó la muestra. **No** `accepted`. Integración → `T-CHATTERBOX-002`. P8 `blocked` |
 | `T-CHATTERBOX-002` | transversal post-P7 / pre-P8 | Integración Chatterbox (`VoiceProvider`) | fase 1: `accepted` (con reservas) · fase 2A: `accepted` (con reserva técnica) · fase 2B: `accepted` (con limitaciones) · **fase 2C: `accepted` (H1–H4)** | 2C H1–H4 `accepted` 2026-10-21 (auditoría favorable; HEAD `0774e02`). Sin inferencia real. Reservas I-R*/M-R* y reserva 2A **abiertas**; limitaciones 2B **intactas**. P8 `blocked` |
-| `T-CHATTERBOX-007C-SYNC` | transversal post-P7 / pre-P8 | Sync single-take `VOICE_PROVIDER=file` (opción A) | `accepted` (con reservas) | Aceptado 2026-10-22; R1/R2/R4/R5 **abiertas**; **R3 cerrada**. Entrega `30cf3d3`. Opción B fuera de alcance. |
-| `T-CHATTERBOX-007C-R2` | transversal post-P7 / pre-P8 | Contrato audio loudnorm 24 kHz | `review_required` | Contrato **aprobado** + implementación + **validación aislada FFmpeg/ffprobe satisfactoria** (copia `/tmp/…79582/`); **R2 abierta** (cierre pendiente humano; sin pipeline integrado). P8 `blocked`. |
+| `T-CHATTERBOX-007C-SYNC` | transversal post-P7 / pre-P8 | Sync single-take `VOICE_PROVIDER=file` (opción A) | `accepted` (con reservas) | Aceptado 2026-10-22; **R4/R5 abiertas**; **R1/R2/R3 cerradas**. Entrega `30cf3d3`. Opción B fuera de alcance. |
+| `T-CHATTERBOX-007C-R1` | transversal post-P7 / pre-P8 | Micro-tests límite tolerancia single-take (`Δ = 0,05 s`) | `accepted` | **R1 cerrada** 2026-10-22 (humano): cobertura unitaria límite inclusivo + superior en `tests/unit/single-take.test.ts` (7 passed). Solo contrato unitario; ≠ pipeline completo. P8 `blocked`. |
+| `T-CHATTERBOX-007C-R2` | transversal post-P7 / pre-P8 | Contrato audio loudnorm 24 kHz | `accepted` | **R2 cerrada** 2026-10-22 (humano): contrato WAV 24 kHz cumplido — validación aislada + re-piloto integrado. Sin contrato AAC; sin revisión AV audio; ≠ publicación. P8 `blocked`. |
 | `T-CHATTERBOX-007B` | transversal post-P7 / pre-P8 | Hotfix SceneFade (`planSceneFade`) | `accepted` | Aceptado 2026-10-22; commit `1f03b70`. Re-piloto file `t007b-file-pilot` completado; **aprobación editorial humana del vídeo** (audiovisual) 2026-10-22. **≠** validación acertijo; **≠** publicación. **007C-R3 cerrada** (misma fecha; ver 007C). |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
@@ -66,7 +67,7 @@ Código terminado ≠ `accepted`.
 
 ## Tarea activa / alcance aprobado
 
-> Tarea activa de implementación: `T-CHATTERBOX-007C-R2` · **`review_required`** (contrato 24 kHz **aprobado**; código/tests unitarios; **evidencia aislada FFmpeg/ffprobe registrada** — satisfactoria del contrato; **sin** pipeline integrado / Remotion / QC / re-piloto en este acto). Precedente aceptado: hotfix `T-CHATTERBOX-007B` · `accepted` (`1f03b70`); `T-CHATTERBOX-007C-SYNC` opción A · **`accepted` (con reservas)**; `T-CHATTERBOX-001` `proposed`; P8 `blocked`. **R1/R2/R4/R5 abiertas**; **R3 cerrada**. **R2 no cerrada**; cierre pendiente de aprobación humana.
+> Última reserva cerrada: **007C-R1** · **`accepted`** (2026-10-22; micro-tests límite tolerancia en `tests/unit/single-take.test.ts`). Precedente de implementación: `T-CHATTERBOX-007C-R2` · **`accepted`** / **R2 cerrada**; hotfix `T-CHATTERBOX-007B` · `accepted` (`1f03b70`); `T-CHATTERBOX-007C-SYNC` opción A · **`accepted` (con reservas R4/R5)**; `T-CHATTERBOX-001` `proposed`; P8 `blocked`. **R4/R5 abiertas**; **R1/R2/R3 cerradas**. Sin nueva tarea `approved` pendiente de implementar.
 
 ---
 
@@ -161,13 +162,13 @@ Opción A (single-take `VOICE_PROVIDER=file`) implementada y **aceptada con rese
 
 **HEAD documental vigente al registrar:** `93054b9` (padre `30cf3d3`); dirty WT solo en `tasks/*` **sin staging**.
 
-**Reservas (vinculantes — estado 2026-10-22 tras re-piloto + cierre humano de R3):**
+**Reservas (vinculantes — estado 2026-10-22 tras cierre humano de R1, R2 y R3):**
 
 | ID | Riesgo residual | Estado | Seguimiento |
 | --- | --- | --- | --- |
-| **007C-R1** | Sin test del borde exacto `Δ = 0,05 s` | **Abierta** | Micro-test opcional |
-| **007C-R2** | Loudnorm real / sync post-norm + contrato de frecuencia | **Abierta** | Contrato **aprobado** + implementación + **validación aislada FFmpeg/ffprobe satisfactoria** (abajo). Piloto histórico WAV sigue **pre-fix** (192 kHz). **No** pipeline integrado; AAC MP4 **sin medir**. Cierre **pendiente de humano** |
-| **007C-R3** | QC real / duración vídeo-audio | **Cerrada** | **Decisión humana 2026-10-22:** criterio original satisfecho. Job `t007b-file-pilot`; render Remotion real OK; `output/t007b-file-pilot/video.mp4` SHA-256 `908786352adc643f5acf8372968562c01ed7382a50000e39acf773bc2872b60e` (9,6 s · 1080×1920 · 30 FPS · 288 frames); QC local `report.json` `ok: true` / `blocking: []` |
+| **007C-R1** | Sin test del borde exacto `Δ = 0,05 s` (histórico al abrir) | **Cerrada** | **Decisión humana 2026-10-22:** micro-tests del límite inclusivo y superior en `tests/unit/single-take.test.ts`. Ver sección cierre R1 abajo. **Limitación:** contrato unitario; no afirma pipeline completo |
+| **007C-R2** | Loudnorm real / sync post-norm + contrato de frecuencia WAV | **Cerrada** | **Decisión humana 2026-10-22:** contrato WAV 24 kHz cumplido (validación aislada + re-piloto integrado). Ver secciones R2 abajo. **Fuera del cierre:** contrato AAC; revisión AV humana del audio; publicación |
+| **007C-R3** | QC real / duración vídeo-audio | **Cerrada** | **Decisión humana 2026-10-22:** criterio original satisfecho. Job `t007b-file-pilot`; render Remotion real OK; `output/t007b-file-pilot/video.mp4` SHA-256 `908786352adc643f5acf8372968562c01ed7382a50000e39acf773bc2872b60e` (9,6 s · 1080×1920 · 30 FPS · 288 frames; **artefacto pre-repilot R2**); QC local `report.json` `ok: true` / `blocking: []`. **Nota:** el re-piloto R2 regeneró un MP4 distinto (`887c945e…`); el hash citado aquí es el de la evidencia con la que se cerró R3, sin reescribir esa decisión |
 | **007C-R4** | Resume job real con meta antigua no probado | **Abierta** | Resume real o doc operativa (`approved` aparte) |
 | **007C-R5** | Caché = cambio de clave; sin purge de artefactos | **Abierta** | Operativo; purge manual si hace falta |
 
@@ -189,9 +190,9 @@ Opción A (single-take `VOICE_PROVIDER=file`) implementada y **aceptada con rese
 
 **Explícitamente no autorizado en esa orden:** ejecutar FFmpeg sobre audio real; `npm run short` / Remotion / render / QC; ejecutar tests / typecheck / build; modificar `.env` / topics / artefactos; commit / push / merge; cerrar R2 (ni R1/R4/R5); habilitar P8; avanzar `T-CHATTERBOX-001`.
 
-#### Implementación — `T-CHATTERBOX-007C-R2` · `review_required` (2026-10-22)
+#### Implementación — `T-CHATTERBOX-007C-R2` · histórico `review_required` → **`accepted`** (2026-10-22)
 
-**Estado de gobernanza:** **`review_required`**. **007C-R2 permanece abierta**. Código/tests unitarios entregados; validación FFmpeg/ffprobe aislada registrada debajo.
+**Estado de gobernanza vigente:** **`accepted`**. **007C-R2 cerrada** (cierre humano abajo). Código/tests unitarios entregados; validación FFmpeg/ffprobe aislada + re-piloto integrado registrados debajo.
 
 | Campo | Valor |
 | --- | --- |
@@ -199,8 +200,8 @@ Opción A (single-take `VOICE_PROVIDER=file`) implementada y **aceptada con rese
 | Tests unitarios (args) | `tests/unit/loudnorm-sample-rate-contract.test.ts` |
 | Nota en test existente | `tests/unit/narration-loudnorm.test.ts` (path FFmpeg real vs unitario) |
 | Ejecución de suite vitest / typecheck | **No realizada** en la fase de implementación (prohibida entonces) |
-| FFmpeg / ffprobe aislados | **Evidencia registrada** (sección siguiente) — satisfactoria del **contrato aislado** |
-| Pipeline integrado / Remotion / QC / re-piloto | **No** ejecutados; **no** demostrados |
+| FFmpeg / ffprobe aislados | **Evidencia registrada** — satisfactoria del **contrato aislado** |
+| Pipeline integrado / Remotion / QC / re-piloto | **Ejecutado una vez** (`--mode voice`, exit 0) — ver sección re-piloto |
 
 #### Evidencia real — validación aislada FFmpeg/ffprobe (2026-10-22)
 
@@ -220,25 +221,137 @@ Opción A (single-take `VOICE_PROVIDER=file`) implementada y **aceptada con rese
 
 **Veredicto documental:** validación **satisfactoria del contrato aislado**.
 
-##### Límites explícitos de esta evidencia
+##### Límites explícitos de esta evidencia (histórico al registrarla)
 
-- **No** demuestra el resultado del **pipeline integrado**.
-- La salida WAV del piloto anterior sigue siendo artefacto **pre-fix**.
-- Formato y frecuencia **AAC del MP4** siguen **sin medir**.
-- En el acto de **registro** documental: no se re-ejecutaron pipeline, Remotion, render, QC, re-piloto ni publicación.
+- En el momento del registro aislado: **no** demostraba aún el pipeline integrado (luego ejercitado en re-piloto autorizado).
+- El artefacto loudnorm del job **antes** del re-piloto era **pre-fix** (192 kHz; SHA-256 `fe96c842739f7b61223418894b690d60dda52caf31e57be7b0d0621e6184de65`).
 
-##### Comprobaciones aún pendientes para poder **cerrar** R2
+#### Evidencia real — re-piloto integrado (2026-10-22)
 
-1. Humano revisa esta evidencia + decide aceptación / **cierre** de R2 (o pide pipeline integrado / re-piloto antes).
-2. Opcional / aparte: medir sample rate AAC en el MP4 (sigue **desconocido**).
-3. Si se exige evidencia de job completo: re-piloto autorizado aparte (loudnorm en `output/<job>/`, Remotion, QC).
+**Autorización humana (chat Cursor):** un único re-piloto del job `t007b-file-pilot` con pipeline / FFmpeg / ffprobe / Remotion / QC; **sin** publicación, P8, commit ni push.
 
-##### Qué **no** afirma este registro
+| Campo | Valor |
+| --- | --- |
+| Comando | `VOICE_PROVIDER=file VOICE_FILE=/tmp/t007a-narration-concat.wav npm run short -- --input data/topics/t007b-file-pilot.json --id t007b-file-pilot --mode voice` |
+| Ejecuciones | **1** |
+| Exit code | **0** · `status: completed` |
+| Log | `/tmp/t007c-r2-voice-repilot-20261022.log` |
+| HEAD (antes/después) | `0e16a02d343e4e6f4d4479e8b5c9906c7fec289f` · rama `main` · WT limpio · sin commit/push |
 
-- Que R2 esté **cerrada** (cierre pendiente de **aprobación humana**).
-- Que el pipeline integrado, Remotion, render, QC o re-piloto se hayan ejercitado.
-- Autorización de commit/push, opción B, inferencia o publicación.
-- Cambio de P8 (`blocked`) ni de `T-CHATTERBOX-001` (`proposed`).
+##### Hashes (re-piloto)
+
+| Artefacto | SHA-256 |
+| --- | --- |
+| Entrada `/tmp/t007a-narration-concat.wav` | `13f80d920828554b506e543003adf98fa3a0d6b47162ee5fc369915d60a7a4c2` |
+| Topic `data/topics/t007b-file-pilot.json` | `e075e7d7cabb5f79f86657578ee13ea9bee80278c6ecac30c92fff65d056f11b` |
+| `.env` | `78b1acc037e7eeab32889032dfcfd1fde1103eda0e57b12c7749df4e54ca2fe7` |
+| `output/t007b-file-pilot/narration.wav` | `13f80d920828554b506e543003adf98fa3a0d6b47162ee5fc369915d60a7a4c2` (= entrada) |
+| **`output/t007b-file-pilot/narration-loudnorm.wav` (nuevo)** | `0925227e6ef274b9cd716403689abd6840549e053ec06460bfb1148bf031cbda` (= validación aislada `/tmp/…79582/`) |
+| Pre-fix loudnorm (sustituido; backup) | `fe96c842739f7b61223418894b690d60dda52caf31e57be7b0d0621e6184de65` |
+| **`output/t007b-file-pilot/video.mp4` (nuevo)** | `887c945ee047a039dfa4b6a743cba2c4d64e1f35037ba7d19523860a5e4fef71` |
+| Pre-fix MP4 (sustituido; = hash citado al cerrar R3) | `908786352adc643f5acf8372968562c01ed7382a50000e39acf773bc2872b60e` |
+| **`output/t007b-file-pilot/report.json` (nuevo)** | `9f09293fd72e1dd0997240204dcf94c54c7cdebb340c6fcda4bce696e099be8f` |
+
+##### ffprobe — WAV loudnorm integrado
+
+Ruta: `output/t007b-file-pilot/narration-loudnorm.wav`
+
+| Campo | Valor |
+| --- | --- |
+| `sample_rate` | **24000** |
+| `channels` | **1** |
+| `codec_name` | `pcm_s16le` |
+| `bits_per_sample` | **16** |
+| `duration` | **9,600 s** |
+| Δ vs entrada | **0,000 s** (tolerancia **0,05 s**) |
+
+##### ffprobe — MP4 regenerado
+
+Ruta: `output/t007b-file-pilot/video.mp4`
+
+| Stream | Detalle |
+| --- | --- |
+| Vídeo | H.264 · 1080×1920 · 30 fps · 288 frames · duración **9,600 s** |
+| Audio | **AAC LC** · **48 000 Hz** · **estéreo (2)** · duración **9,600 s** |
+| Contenedor | duración **9,600 s** |
+
+##### QC
+
+| Campo | Valor |
+| --- | --- |
+| `ok` | **true** |
+| `blocking` | **[]** |
+| Informe | `output/t007b-file-pilot/report.json` |
+| `publishEligibility.eligible` | `true` — **≠** autorización de publicación ni aprobación editorial |
+
+##### Integridad
+
+| Elemento | Estado |
+| --- | --- |
+| Backup pre-repilot | **Intacta** — `/Users/kevin/chatterbox-pilot/backups/t007b-file-pilot-pre-repilot-20261022/` |
+| Entrada WAV / topic / `.env` | **Sin cambio** de hash |
+
+##### Límites explícitos del re-piloto (fuera del cierre R2)
+
+- **No** define contrato normativo de frecuencia/canales **AAC** (medido 48 000 Hz estéreo; WAV sigue mono 24 kHz).
+- **No** incluye revisión audiovisual humana del audio regenerado.
+- **No** cierra R1, R4 ni R5; **no** reabre R3; **no** habilita P8; **no** avanza `T-CHATTERBOX-001`. *(Estado al registrar el re-piloto; R1 cerrada después — ver cierre R1.)*
+
+#### Cierre humano — 007C-R2 (2026-10-22)
+
+**Decisión humana:** cerrar la reserva **007C-R2** por cumplimiento del contrato técnico aprobado.
+
+**Contrato cerrado:** `narration-loudnorm.wav` preserva explícitamente **24 000 Hz** de entrada (mono PCM16; loudnorm P5); validado de forma **aislada** e **integrada**.
+
+**Base:** validación aislada FFmpeg/ffprobe + re-piloto integrado documentados arriba (y en informe de chat Cursor).
+
+**Estado registrado:** **Cerrada**. Tarea `T-CHATTERBOX-007C-R2` → **`accepted`**.
+
+**Explícitamente fuera de este cierre:**
+
+- Contrato normativo AAC (sample rate / canales).
+- Revisión audiovisual humana del audio.
+- Reservas **R1**, **R4**, **R5** (**abiertas en el acto de cierre R2**; **R1 cerrada después** el mismo día — ver sección R1).
+- Aprobación editorial humana del audio regenerado.
+- Interpretar `publishEligibility.eligible: true` como autorización de publicación.
+- Habilitar P8; avanzar `T-CHATTERBOX-001`; commit / push / publicación.
+
+**En el acto de este registro documental:** no se ejecutaron FFmpeg, ffprobe, tests, typecheck, pipeline, Remotion, render ni QC; no hubo staging, commit ni push.
+
+#### Cierre humano — 007C-R1 (2026-10-22)
+
+**Decisión humana:** cerrar la reserva **007C-R1** por cobertura unitaria del límite de tolerancia de `assertSingleTakeDurationMatch`, tras verificar que el diff real de `tests/unit/single-take.test.ts` coincide con la evidencia del micro-test y que la suite indicada pasó.
+
+**Contrato cerrado (unitario):** si `|Σ durationSeconds − duración WAV| ≤ 0,05 s` (`SINGLE_TAKE_DURATION_TOLERANCE_SEC`) la función acepta; si la diferencia supera esa tolerancia, lanza el error previsto.
+
+**Casos cubiertos en `tests/unit/single-take.test.ts`:**
+
+| Caso | Valores | Comprobación | Resultado esperado |
+| --- | --- | --- | --- |
+| Límite inclusivo exacto | `script = SINGLE_TAKE_DURATION_TOLERANCE_SEC`, `wav = 0` (y orden inverso) | `delta === SINGLE_TAKE_DURATION_TOLERANCE_SEC` (bit-idéntico) | acepta |
+| Justo por encima | `script = T + 0,001`, `wav = 0` | `delta > SINGLE_TAKE_DURATION_TOLERANCE_SEC` | lanza `/no coincide con la duración del WAV/` |
+
+**Suite (evidencia del micro-test; no re-ejecutada en este acto documental de cierre):**
+
+```text
+npm test -- tests/unit/single-take.test.ts
+Test Files  1 passed (1)
+Tests       7 passed (7)
+EXIT_CODE=0
+```
+
+**Estado registrado:** **Cerrada**. Tarea `T-CHATTERBOX-007C-R1` → **`accepted`**.
+
+**Limitación explícita:** esta evidencia cubre el **contrato unitario** del límite de tolerancia. **No** afirma re-ejecución del pipeline completo, FFmpeg, Remotion ni QC.
+
+**Explícitamente fuera de este cierre:**
+
+- Reservas **R4**, **R5** (siguen **abiertas**).
+- Reabrir o alterar el cierre histórico de **R2** / **R3**.
+- Habilitar P8; avanzar `T-CHATTERBOX-001`; publicación; aprobación editorial del MP4 regenerado en R2.
+- Staging / commit / push / merge.
+
+**En el acto de este registro documental:** no se re-ejecutaron tests, typecheck, pipeline, Remotion, FFmpeg ni QC; no hubo staging, commit ni push. Código de producción no modificado en el micro-test ni en este cierre.
 
 #### Cierre humano — 007C-R3 (2026-10-22)
 
@@ -257,7 +370,7 @@ Opción A (single-take `VOICE_PROVIDER=file`) implementada y **aceptada con rese
 | Duración / formato | 9,6 s · 1080×1920 · 30 FPS · 288 frames |
 | QC local | `report.json` · `ok: true` · `blocking: []` |
 
-**Estado registrado:** **Cerrada**. **No** cierra R1, R2, R4 ni R5. **No** altera P8 (`blocked`) ni `T-CHATTERBOX-001` (`proposed`). **≠** publicación.
+**Estado registrado:** **Cerrada**. **No** cierra R1, R2, R4 ni R5 *(en el acto de cierre R3; R2 ya cerrada; R1 cerrada después el mismo día — ver secciones)*. **No** altera P8 (`blocked`) ni `T-CHATTERBOX-001` (`proposed`). **≠** publicación.
 
 **Explícitamente no autorizado en el acto de aceptación opción A (histórico):** piloto / Remotion / QC (luego autorizados aparte); opción B; publicación; auto-cierre R1–R5.
 
@@ -271,17 +384,17 @@ Opción A (single-take `VOICE_PROVIDER=file`) implementada y **aceptada con rese
 | Base | `dbd86d27084a1692267b25cbfcd60b16ea73dda4` |
 | Entrega técnica (opción A) | `30cf3d3414366ab2a79d55a5714c1da6ca50d952` (padre `dbd86d2`) |
 | HEAD documental vigente | `93054b9ab6eeb7440007386f1cbcd65bef682072` (padre `30cf3d3`) |
-| Sincronización remota | `main` = `origin/main` (0 ahead / 0 behind); dirty local solo en `tasks/*` **sin staging** |
-| Working tree | registro de aceptación documental **sin staging** |
+| Sincronización remota | `main` = `origin/main` (0 ahead / 0 behind) |
+| Working tree | dirty local **sin staging**: `tasks/active.md`, `tasks/approvals.md`, `tests/unit/single-take.test.ts` (cierre R1 + micro-tests) |
 | Topic piloto | `data/topics/t007b-file-pilot.json` versionado en la entrega técnica |
 | WAV ref. | `/tmp/t007a-narration-concat.wav` (SHA-256 `13f80d920828554b506e543003adf98fa3a0d6b47162ee5fc369915d60a7a4c2`) |
-| Gobernanza | `accepted` opción A con reservas; re-piloto file posterior documentado bajo `T-CHATTERBOX-007B`; **≠** opción B / publicación / auto-cierre de reservas |
+| Gobernanza | `accepted` opción A con reservas (**R4/R5** abiertas; **R1/R2/R3** cerradas); R1 micro-tests en `tests/unit/single-take.test.ts`; re-piloto R2 documentado bajo `T-CHATTERBOX-007C-R2`; **≠** opción B / publicación |
 
 **Histórico (antes de `93054b9`):** se afirmó «topic untracked» / «sin commit/push» respecto de la entrega. Eso describía el estado anterior a `93054b9` / a la entrega `30cf3d3`, no el estado versionado de opción A.
 
 #### Auditoría solo lectura (2026-10-22)
 
-Veredicto **APTO CON RESERVAS** (sin re-ejecución de tests en auditoría ni en el acto de aceptación). Reservas R1–R5: ver tabla actualizada arriba (`tasks/active.md` alineado).
+Veredicto **APTO CON RESERVAS** (sin re-ejecución de tests en auditoría ni en el acto de aceptación). Reservas vigentes: ver tabla actualizada arriba (`tasks/active.md` alineado; **R1/R2/R3** cerradas; **R4/R5** abiertas).
 
 #### Fase correctiva de gobernanza (histórico pre-aceptación)
 

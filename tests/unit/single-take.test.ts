@@ -19,6 +19,29 @@ describe('single-take helpers', () => {
     ).not.toThrow();
   });
 
+  it('accepts authorship at the inclusive tolerance boundary (exact Δ = 0.05s)', () => {
+    // Use 0 and the exported constant so |Δ| is bit-identical to the
+    // tolerance the implementation compares against (avoid 9.6±T float drift).
+    const script = SINGLE_TAKE_DURATION_TOLERANCE_SEC;
+    const wav = 0;
+    const delta = Math.abs(script - wav);
+    expect(delta).toBe(SINGLE_TAKE_DURATION_TOLERANCE_SEC);
+    expect(() => assertSingleTakeDurationMatch(script, wav)).not.toThrow();
+    expect(() => assertSingleTakeDurationMatch(wav, script)).not.toThrow();
+  });
+
+  it('rejects authorship just above the tolerance boundary', () => {
+    // Increment +0.001s → effective |Δ| = 0.051… > 0.05 (reliably representable).
+    const overBy = 0.001;
+    const wav = 0;
+    const script = SINGLE_TAKE_DURATION_TOLERANCE_SEC + overBy;
+    const delta = Math.abs(script - wav);
+    expect(delta).toBeGreaterThan(SINGLE_TAKE_DURATION_TOLERANCE_SEC);
+    expect(() => assertSingleTakeDurationMatch(script, wav)).toThrow(
+      /no coincide con la duración del WAV/,
+    );
+  });
+
   it('rejects authorship beyond tolerance with an actionable message', () => {
     expect(() => assertSingleTakeDurationMatch(9.6, 12)).toThrow(
       /no coincide con la duración del WAV/,
