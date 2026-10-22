@@ -15,10 +15,14 @@ Completar **todos** los campos del esquema. Estados: `proposed` | `approved` | `
 
 `review_required` (opción A · single-take `VOICE_PROVIDER=file`)
 
-> Autorización humana 2026-10-22 (chat Cursor): implementar **opción A** del diseño aprobado (sin pipeline de producción ni Remotion).  
-> Ciclo: `approved` (chat) → `in_progress` → **`review_required`**.  
-> HEAD de partida: `dbd86d27084a1692267b25cbfcd60b16ea73dda4`.  
-> **No** autorizado / **no** hecho: opción B (fronteras verificadas); `npm run short` / `generar-short`; Remotion; FFmpeg real; loudnorm; QC; inferencia; publicación; commit/push.
+> Autorización humana 2026-10-22 (chat Cursor): implementar **opción A** del diseño aprobado (sin pipeline de producción ni Remotion).
+> Ciclo: `approved` (chat) → `in_progress` → **`review_required`** (sin `accepted` humano aún).
+> HEAD de partida (base de implementación): `dbd86d27084a1692267b25cbfcd60b16ea73dda4`.
+> HEAD de entrega versionada (observado): `30cf3d3414366ab2a79d55a5714c1da6ca50d952` (padre `dbd86d2`); rama `main` = `origin/main`.
+> Topic piloto `data/topics/t007b-file-pilot.json`: **versionado** en esa entrega (ya no untracked).
+> Auditoría solo lectura (2026-10-22): veredicto técnico **APTO CON RESERVAS**; fase correctiva de gobernanza documental en curso (este archivo).
+> **No** autorizado / **no** hecho: opción B; piloto real (`npm run short` / `generar-short`); Remotion; FFmpeg real; loudnorm real; QC real; inferencia; publicación.
+> **No** interpretar commit/push de la entrega como aceptación humana ni como autorización del piloto.
 
 ## Objetivo
 
@@ -29,7 +33,7 @@ Tratar `VOICE_PROVIDER=file` como un único take: duración total del probe WAV;
 1. Meta single-take (`timingMode`, `cuesKind: uniform`) sin equal-split.
 2. `planScenes` / `planning_scenes` / `generating_subtitles` con `voiceTimingMode: 'single-take'`.
 3. Error explícito si `|Σ escenas − WAV| > 0,05 s`.
-4. Invalidación mínima de caché `file` (`file:single-take-v1`).
+4. Invalidación mínima de caché `file` (`file:single-take-v1` — cambio de clave; no purge de artefactos).
 5. Tests unitarios/offline + `typecheck`.
 6. Docs mínimas en `docs/voice.md`.
 
@@ -37,9 +41,9 @@ Tratar `VOICE_PROVIDER=file` como un único take: duración total del probe WAV;
 
 - Opción B / forced alignment / fronteras en el topic.
 - Ejecutar pipeline real, Remotion, FFmpeg, loudnorm, QC, inferencia, red.
-- Modificar `.env`, topic piloto, WAV T-006.
-- Commit / push / merge / staging del topic.
-- Cambiar comportamiento medido de OpenAI TTS / Chatterbox multi-segmento (salvo no-regresión).
+- Modificar `.env`, contenido del topic piloto, o el WAV T-006 de referencia.
+- Alterar código funcional / pruebas de opción A en esta fase correctiva documental.
+- Cambiar comportamiento medido de OpenAI TTS / Chatterbox multi-segmento (salvo no-regresión ya entregada).
 
 ## Archivos afectados
 
@@ -51,21 +55,25 @@ Tratar `VOICE_PROVIDER=file` como un único take: duración total del probe WAV;
 | `src/shorts/pipeline/generate-scenes.ts` | `voiceTimingMode` si provider=file |
 | `src/shorts/pipeline/generate-subtitles.ts` | Ignora segmentos legacy file |
 | `docs/voice.md` | Documentación del contrato |
+| `data/topics/t007b-file-pilot.json` | Topic piloto (versionado en entrega `30cf3d3`) |
 | `tests/unit/*single-take*` / openai-multisegment / extensiones | Cobertura offline |
+| `tasks/active.md`, `tasks/approvals.md` | Gobernanza (esta corrección documental) |
 
 ## Dependencias
 
 - Diseño 007C-SYNC opción A (chat Cursor).
-- Topic piloto untracked `data/topics/t007b-file-pilot.json` (intact).
-- WAV autorizado `/tmp/t007a-narration-concat.wav` (referencia; no usado en tests).
+- Topic piloto versionado `data/topics/t007b-file-pilot.json` (en HEAD `30cf3d3`).
+- WAV autorizado `/tmp/t007a-narration-concat.wav` (referencia; SHA-256 `13f80d920828554b506e543003adf98fa3a0d6b47162ee5fc369915d60a7a4c2`; no usado en tests unitarios).
 
 ## Criterios de aceptación
 
-- [x] WAV/guion coherente → suma 9,6 s / 288 frames @ 30 fps; outro mudo válido.
+- [x] WAV/guion coherente → suma 9,6 s / 288 frames @ 30 fps; outro mudo válido (cubierto offline).
 - [x] Sin segmentos file 4,8+4,8; sin redistribute a 25 en caso coherente.
 - [x] Error si desajuste > tolerancia.
 - [x] Meta antigua file / cues uniformes compatibles; OpenAI + Chatterbox sin regresión offline.
-- [x] `typecheck` OK; sin Remotion/FFmpeg/inferencia/publicación en esta entrega.
+- [x] `typecheck` OK en la entrega; sin Remotion/FFmpeg/inferencia/publicación en el alcance de opción A.
+- [ ] Aceptación humana explícita de la entrega técnica (`accepted`) — **pendiente**.
+- [ ] Piloto real — **no** forma parte de esta aceptación; requiere `approved` independiente.
 
 ## Pruebas a ejecutar
 
@@ -81,20 +89,26 @@ npx vitest run \
   tests/unit/generate-voice-chatterbox-cache.test.ts \
   tests/unit/file-provider.test.ts \
   tests/integration/chatterbox-voice-qc-offline.test.ts
-# → passed (ver informe)
+# → passed en la entrega de implementación (ver informe previo; esta fase correctiva no re-ejecuta)
 
 npm run typecheck
-# → OK
+# → OK en la entrega de implementación (esta fase correctiva no re-ejecuta)
 ```
 
-## Riesgos y pendientes
+## Riesgos y pendientes (reservas abiertas)
 
-- Cues `uniform` ≠ alineación fonética (opción B pendiente).
-- Jobs antiguos con equal-split: se ignoran en subtítulos si `provider=file`; caché file invalidada con token v1 (no se borran jobs).
-- Loudnorm real / duración post-loudnorm no auditados en esta tarea.
-- Piloto real (`generar-short`) requiere autorización independiente.
+| ID | Reserva / prueba pendiente | Notas |
+| --- | --- | --- |
+| **007C-R1** | Test del límite exacto `Δ = 0,05 s` | Código usa `delta <= 0,05`; falta caso unitario en el borde exacto |
+| **007C-R2** | Duración / sync tras loudnorm **real** | No auditado con FFmpeg real en esta tarea; mock en tests |
+| **007C-R3** | QC real y duración vídeo/audio | Pipeline/Remotion/QC no ejecutados en el alcance opción A |
+| **007C-R4** | Reanudación con `voice-meta` antiguo en disco | Compatibilidad parcial cubierta offline; resume de job real pendiente |
+| **007C-R5** | Caché `file:single-take-v1` | Cambia la **clave** de identidad; **no** purga artefactos/jobs existentes |
+| — | Cues `uniform` ≠ alineación fonética | Opción B pendiente (`proposed`) |
+| — | Piloto real `generar-short` | `proposed` hasta nuevo `approved` humano |
 
 ## Notas
 
-- Topic `data/topics/t007b-file-pilot.json` permanece untracked e intacto.
-- Siguiente fase sugerida: ejecución piloto file **o** opción B — ambas en `proposed` hasta nuevo `approved`.
+- Corrección documental 2026-10-22: se elimina la afirmación obsoleta de «topic untracked» / «sin commit/push de la entrega». El estado Git real es entrega en `30cf3d3` en `main`/`origin/main`.
+- Esta fase correctiva deja cambios **solo** en `tasks/*`, sin staging ni commit, a la espera de revisión humana.
+- Siguiente fase sugerida: aceptación técnica de opción A **o** autorización de piloto file **o** opción B — cada una en `proposed` hasta nuevo `approved` / `accepted` humano.
