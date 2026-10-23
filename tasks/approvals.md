@@ -31,7 +31,7 @@ Código terminado ≠ `accepted`.
 | P5 | Pulido logic-lateral | `accepted` | `T-POLISH-001` + `T-QC-LOUDNORM-001` `accepted`. BGM=0 pistas; sin validación audiovisual MP4 no-mock | humano (chat Cursor; código/tests/typecheck; limitación AV doc.) | 2026-10-19 |
 | P6 | Más familias plantilla | `accepted` | A+B+C+D `accepted`. Incorporación técnica (validate/tests); no AV de todos los formatos | humano (chat Cursor: aceptación D + cierre P6) | 2026-10-19 |
 | P7 | Studio/preview estable | `accepted` | `T-STUDIO-001` aceptación abajo; re-verificación 2026-10-19 (test/typecheck/studio-props); AV pendiente → propuesta `T-AV-QC-001` | humano (chat Cursor: aceptación explícita sujeta a comprobaciones) | 2026-10-19 |
-| P8 | Publicación YouTube | `blocked` | Descartado por ahora (`ROADMAP` / D-future). **No** iniciado por `T-AV-QC-001` | — | — |
+| P8 | Publicación YouTube | `blocked` | Descartado por ahora según `ROADMAP.md` (fase P8 en estado `blocked`; diagrama «futuro / blocked»; prioridad actual no la inicia; upload YouTube sin gate humano fuera de alcance). **No** iniciado por `T-AV-QC-001`. Sin entrada `D0xx` en `docs/DECISIONS.md` que la cierre | — | — |
 
 ## Tablero de tareas
 
@@ -44,11 +44,13 @@ Código terminado ≠ `accepted`.
 | `T-MULTIFORMAT-001` | P6 | Multiformato (entregas A–D) | A+B+C+D: `accepted` · P6: `accepted` | Cierre 2026-10-19; P8 `blocked` |
 | `T-STUDIO-001` | P7 | Studio / preview workflow estable | `accepted` | Aceptado 2026-10-19; audio Studio = `public/shorts/<id>/`; AV → `T-AV-QC-001` `accepted`; P8 `blocked` |
 | `T-AV-QC-001` | post-P7 / pre-P8 | Validación audiovisual real (4 familias) | `accepted` | Aceptado 2026-10-19 (chat Cursor); 4× MP4 Cedar; P8 `blocked` |
-| `T-CHATTERBOX-001` | transversal post-P7 / pre-P8 | Estudio + piloto Chatterbox (fuera del pipeline) | `proposed` | Historial intacto. Nota 2026-10-21: piloto técnico MPS OK; humano aceptó la muestra. **No** `accepted`. Integración → `T-CHATTERBOX-002`. P8 `blocked` |
-| `T-CHATTERBOX-002` | transversal post-P7 / pre-P8 | Integración Chatterbox (`VoiceProvider`) | fase 1: `accepted` (con reservas) · fase 2A: `accepted` (con reserva técnica) · fase 2B: `accepted` (con limitaciones) · **fase 2C: `accepted` (H1–H4)** | 2C H1–H4 `accepted` 2026-10-21 (auditoría favorable; HEAD `0774e02`). Sin inferencia real. Reservas I-R*/M-R* y reserva 2A **abiertas**; limitaciones 2B **intactas**. P8 `blocked` |
-| `T-CHATTERBOX-007C-SYNC` | transversal post-P7 / pre-P8 | Sync single-take `VOICE_PROVIDER=file` (opción A) | `accepted` (con reservas) | Aceptado 2026-10-22; **R4/R5 abiertas**; **R1/R2/R3 cerradas**. Entrega `30cf3d3`. Opción B fuera de alcance. |
+| `T-CHATTERBOX-001` | transversal post-P7 / pre-P8 | Estudio + piloto Chatterbox (fuera del pipeline) | `accepted` (alcance limitado) | **Aceptado 2026-10-22** (chat Cursor): estudio + piloto local fuera de `generar-short`. Métricas técnicas completas y comparación V3/`es-es` **fuera de alcance** y **no verificadas**. **No** autoriza integración adicional, inferencia real con pesos, publicación ni P8. Integración → `T-CHATTERBOX-002`. P8 `blocked` |
+| `T-CHATTERBOX-002` | transversal post-P7 / pre-P8 | Integración Chatterbox (`VoiceProvider`) | fase 1: `accepted` (con reservas) · fase 2A: `accepted` (con reserva técnica) · fase 2B: `accepted` (con limitaciones) · **fase 2C: `accepted` (H1–H4)** · **inferencia real / job con pesos: `proposed`** | 2C H1–H4 `accepted` 2026-10-21. Borrador de solicitud de aprobación para inferencia real (2026-10-22, abajo) — **sigue `proposed`**; **no** `approved`. Reservas I-R*/M-R*, reserva 2A y limitaciones 2B **abiertas**. P8 `blocked` |
+| `T-CHATTERBOX-007C-SYNC` | transversal post-P7 / pre-P8 | Sync single-take `VOICE_PROVIDER=file` (opción A) | `accepted` (reservas R1–R5 cerradas) | Aceptado 2026-10-22; **R1–R5 cerradas** (R5 2026-10-22). Entrega `30cf3d3`. Opción B fuera de alcance. |
 | `T-CHATTERBOX-007C-R1` | transversal post-P7 / pre-P8 | Micro-tests límite tolerancia single-take (`Δ = 0,05 s`) | `accepted` | **R1 cerrada** 2026-10-22 (humano): cobertura unitaria límite inclusivo + superior en `tests/unit/single-take.test.ts` (7 passed). Solo contrato unitario; ≠ pipeline completo. P8 `blocked`. |
 | `T-CHATTERBOX-007C-R2` | transversal post-P7 / pre-P8 | Contrato audio loudnorm 24 kHz | `accepted` | **R2 cerrada** 2026-10-22 (humano): contrato WAV 24 kHz cumplido — validación aislada + re-piloto integrado. Sin contrato AAC; sin revisión AV audio; ≠ publicación. P8 `blocked`. |
+| `T-CHATTERBOX-007C-R4` | transversal post-P7 / pre-P8 | Resume `short:resume` con `voice-meta` legacy (subtítulos) | `accepted` | **R4 cerrada** 2026-10-22 (humano): job aislado `t007c-r4-resume-legacy`; resume leyó meta legacy sin regenerar voz; duraciones = autoría. ≠ render/QC legacy; ≠ voice pendiente. P8 `blocked`. |
+| `T-CHATTERBOX-007C-R5` | transversal post-P7 / pre-P8 | Invalidación lógica de caché file (clave legacy vs actual) | `accepted` | **R5 cerrada** 2026-10-22 (humano): prueba unitaria offline — legacy regenera; clave actual reutiliza; sin purge auto (manual). Suite 5/5; `git diff --check` 0. ≠ publicación. P8 `blocked`. |
 | `T-CHATTERBOX-007B` | transversal post-P7 / pre-P8 | Hotfix SceneFade (`planSceneFade`) | `accepted` | Aceptado 2026-10-22; commit `1f03b70`. Re-piloto file `t007b-file-pilot` completado; **aprobación editorial humana del vídeo** (audiovisual) 2026-10-22. **≠** validación acertijo; **≠** publicación. **007C-R3 cerrada** (misma fecha; ver 007C). |
 
 ## Cómo aprobar el **inicio** de una fase/tarea
@@ -67,7 +69,7 @@ Código terminado ≠ `accepted`.
 
 ## Tarea activa / alcance aprobado
 
-> Última reserva cerrada: **007C-R1** · **`accepted`** (2026-10-22; micro-tests límite tolerancia en `tests/unit/single-take.test.ts`). Precedente de implementación: `T-CHATTERBOX-007C-R2` · **`accepted`** / **R2 cerrada**; hotfix `T-CHATTERBOX-007B` · `accepted` (`1f03b70`); `T-CHATTERBOX-007C-SYNC` opción A · **`accepted` (con reservas R4/R5)**; `T-CHATTERBOX-001` `proposed`; P8 `blocked`. **R4/R5 abiertas**; **R1/R2/R3 cerradas**. Sin nueva tarea `approved` pendiente de implementar.
+> **Propuesta pendiente:** `T-CHATTERBOX-002` · **inferencia real / job con pesos** · **`proposed`** (borrador 2026-10-22; **no** `approved`; **no** ejecutar). Precedente: `T-CHATTERBOX-001` · **`accepted` (alcance limitado)** (2026-10-22). Reservas I-R*/M-R*, 2A y limitaciones 2B **abiertas**. P8 `blocked`. Sin alcance de implementación autorizado.
 
 ---
 
@@ -144,7 +146,7 @@ Corrección mínima del fallo de render Remotion del piloto file (`inputRange [0
 
 #### Resumen
 
-Opción A (single-take `VOICE_PROVIDER=file`) implementada y **aceptada con reservas** 2026-10-22. Ciclo: `approved` → `in_progress` → `review_required` → **`accepted` (con reservas 007C-R1…R5)**. Estado vigente: sigue **`accepted` (con reservas)**. Re-piloto file posterior ejercitó Remotion+QC (evidencia en `T-CHATTERBOX-007B`). Opción B permanece fuera de alcance (`proposed` / sin autorización).
+Opción A (single-take `VOICE_PROVIDER=file`) implementada y **aceptada con reservas** 2026-10-22. Ciclo: `approved` → `in_progress` → `review_required` → **`accepted` (con reservas 007C-R1…R5)**. Estado vigente: **`accepted` (reservas R1–R5 cerradas)**. Re-piloto file posterior ejercitó Remotion+QC (evidencia en `T-CHATTERBOX-007B`). Opción B permanece fuera de alcance (`proposed` / sin autorización).
 
 #### Aceptación humana — opción A únicamente (2026-10-22)
 
@@ -162,15 +164,15 @@ Opción A (single-take `VOICE_PROVIDER=file`) implementada y **aceptada con rese
 
 **HEAD documental vigente al registrar:** `93054b9` (padre `30cf3d3`); dirty WT solo en `tasks/*` **sin staging**.
 
-**Reservas (vinculantes — estado 2026-10-22 tras cierre humano de R1, R2 y R3):**
+**Reservas (vinculantes — estado 2026-10-22 tras cierre humano de R1, R2, R3, R4 y R5):**
 
 | ID | Riesgo residual | Estado | Seguimiento |
 | --- | --- | --- | --- |
 | **007C-R1** | Sin test del borde exacto `Δ = 0,05 s` (histórico al abrir) | **Cerrada** | **Decisión humana 2026-10-22:** micro-tests del límite inclusivo y superior en `tests/unit/single-take.test.ts`. Ver sección cierre R1 abajo. **Limitación:** contrato unitario; no afirma pipeline completo |
 | **007C-R2** | Loudnorm real / sync post-norm + contrato de frecuencia WAV | **Cerrada** | **Decisión humana 2026-10-22:** contrato WAV 24 kHz cumplido (validación aislada + re-piloto integrado). Ver secciones R2 abajo. **Fuera del cierre:** contrato AAC; revisión AV humana del audio; publicación |
 | **007C-R3** | QC real / duración vídeo-audio | **Cerrada** | **Decisión humana 2026-10-22:** criterio original satisfecho. Job `t007b-file-pilot`; render Remotion real OK; `output/t007b-file-pilot/video.mp4` SHA-256 `908786352adc643f5acf8372968562c01ed7382a50000e39acf773bc2872b60e` (9,6 s · 1080×1920 · 30 FPS · 288 frames; **artefacto pre-repilot R2**); QC local `report.json` `ok: true` / `blocking: []`. **Nota:** el re-piloto R2 regeneró un MP4 distinto (`887c945e…`); el hash citado aquí es el de la evidencia con la que se cerró R3, sin reescribir esa decisión |
-| **007C-R4** | Resume job real con meta antigua no probado | **Abierta** | Resume real o doc operativa (`approved` aparte) |
-| **007C-R5** | Caché = cambio de clave; sin purge de artefactos | **Abierta** | Operativo; purge manual si hace falta |
+| **007C-R4** | Resume job real con meta antigua no probado (histórico al abrir) | **Cerrada** | **Decisión humana 2026-10-22:** validación aislada `short:resume` + meta legacy (job `t007c-r4-resume-legacy`). Ver sección cierre R4 abajo. **Limitación:** subtítulos con meta legacy; ≠ render/QC legacy; ≠ `generating_voice` pendiente; ≠ todas las rutas de resume |
+| **007C-R5** | Caché = cambio de clave; sin purge de artefactos | **Cerrada** | **Decisión humana 2026-10-22:** prueba unitaria offline (camino B) — clave legacy regenera; clave actual reutiliza; invalidación lógica sin purge auto (eliminación manual). Ver sección cierre R5 abajo. **Limitación:** unitario offline; ≠ pipeline real; ≠ publicación |
 
 #### Histórico — propuesta `T-CHATTERBOX-007C-R2` · `proposed` (2026-10-22)
 
@@ -311,7 +313,7 @@ Ruta: `output/t007b-file-pilot/video.mp4`
 
 - Contrato normativo AAC (sample rate / canales).
 - Revisión audiovisual humana del audio.
-- Reservas **R1**, **R4**, **R5** (**abiertas en el acto de cierre R2**; **R1 cerrada después** el mismo día — ver sección R1).
+- Reservas **R1**, **R4**, **R5** (**abiertas en el acto de cierre R2**; **R1**, **R4** y **R5** cerradas después el mismo día — ver secciones R1 / R4 / R5).
 - Aprobación editorial humana del audio regenerado.
 - Interpretar `publishEligibility.eligible: true` como autorización de publicación.
 - Habilitar P8; avanzar `T-CHATTERBOX-001`; commit / push / publicación.
@@ -346,12 +348,79 @@ EXIT_CODE=0
 
 **Explícitamente fuera de este cierre:**
 
-- Reservas **R4**, **R5** (siguen **abiertas**).
+- Reservas **R4**, **R5** (**abiertas en el acto de cierre R1**; **R4** y **R5** cerradas después el mismo día — ver secciones R4 / R5).
 - Reabrir o alterar el cierre histórico de **R2** / **R3**.
 - Habilitar P8; avanzar `T-CHATTERBOX-001`; publicación; aprobación editorial del MP4 regenerado en R2.
 - Staging / commit / push / merge.
 
 **En el acto de este registro documental:** no se re-ejecutaron tests, typecheck, pipeline, Remotion, FFmpeg ni QC; no hubo staging, commit ni push. Código de producción no modificado en el micro-test ni en este cierre.
+
+#### Cierre humano — 007C-R4 (2026-10-22)
+
+**Decisión humana:** cerrar la reserva **007C-R4** (resume de job real con `voice-meta` antiguo) tras verificación de solo lectura de la validación aislada autorizada (camino A).
+
+**Contrato cerrado (acotado):** `npm run short:resume` sobre un job con `voice-meta.json` legacy (`provider: file`, segments equal-split 4.8+4.8, **sin** `timingMode`) reejecuta `generating_subtitles`, **lee** ese meta sin regenerar la voz, y conserva las duraciones de autoría single-take (no sustituye por el reparto uniforme legacy).
+
+**Evidencia citada:**
+
+| Campo | Valor |
+| --- | --- |
+| Job | `t007c-r4-resume-legacy` (aislado; **≠** `t007b-file-pilot`) |
+| Comando | `VOICE_PROVIDER=file npm run short:resume -- --id t007c-r4-resume-legacy` (override de proceso; `.env` intacto) |
+| Exit | **0** |
+| Fase reejecutada | solo `generating_subtitles` (`pending` → `done`) |
+| `voice-meta.json` SHA-256 | `4b4581ab272974ba3540b4bdaaf8f04ae0ef961df721b3a758b5785b6d8cfb41` (inicial = final = ref inmutable) |
+| Duraciones finales | `4` / `5.5666…` / `0.0333…` (autoría); **no** `4.8`+`4.8` |
+| Informe | `output/t007c-r4-resume-legacy/_r4_evidence/validation-report.json` |
+| Logs | `…/_r4_evidence/resume.stdout.txt`, `resume.log`, `resume.stderr.txt` |
+| Piloto R2/R3 | intacto (`PILOT_UNCHANGED=yes`) |
+
+**Estado registrado:** **Cerrada**. Tarea `T-CHATTERBOX-007C-R4` → **`accepted`**.
+
+**Limitación explícita:** cobertura del escenario de **reanudación → subtítulos** con meta legacy. **No** es validación integral de todas las rutas de `resume`. **No** validó render/post/QC con meta legacy. **No** cubre el caso con `generating_voice` pendiente.
+
+**Explícitamente fuera de este cierre:**
+
+- Reserva **R5** (**abierta en el acto de cierre R4**; **cerrada después** el mismo día — ver sección R5).
+- Reabrir R1/R2/R3; habilitar P8; avanzar `T-CHATTERBOX-001`; publicación.
+- Staging / commit / push / merge.
+
+**En el acto de este registro documental:** no se re-ejecutaron resume, tests, typecheck, pipeline, Remotion, FFmpeg ni QC; no hubo staging, commit ni push. Código de producción no modificado.
+
+#### Cierre humano — 007C-R5 (2026-10-22)
+
+**Decisión humana:** cerrar la reserva **007C-R5** (caché = cambio de clave; sin purge de artefactos) tras revisión del informe de validación técnica camino B mínimo (prueba unitaria offline).
+
+**Contrato cerrado (acotado):**
+
+1. Una **clave legacy** de identidad file (`file|speed:1|<voiceFile>`, pre-`FILE_SINGLE_TAKE_CACHE_TOKEN`) **provoca regeneración** (no reutiliza narración antigua).
+2. Una **clave actual válida** (`file:single-take-v1|<voiceFile>`) **permite reutilizar** la caché.
+3. La invalidación es **lógica**: los artefactos antiguos **no** se purgan automáticamente.
+4. La eliminación de artefactos obsoletos sigue siendo **manual**.
+
+**Evidencia citada (informe técnico revisado; no re-ejecutada en este acto):**
+
+| Campo | Valor |
+| --- | --- |
+| Suite | `tests/unit/generate-voice-file-single-take.test.ts` |
+| Resultado | **5 passed (5)** · EXIT **0** |
+| `git diff --check` | exit **0** |
+| Legacy → regen | WAV stale 1 s sustituido por take 9,6 s; sin warning de reutilización; meta `timingMode: 'single-take'` |
+| Actual → reuso | warning `/Reutilizando narración en caché/`; misma clave |
+| Producción | **sin cambio** en el acto de la prueba ni en este cierre documental |
+| Purge | **no** automático |
+
+**Estado registrado:** **Cerrada**. Tarea `T-CHATTERBOX-007C-R5` → **`accepted`**.
+
+**Limitación explícita:** cobertura **unitaria offline** de la identidad de caché file. **No** afirma pipeline real, Remotion, FFmpeg ni QC. **No** introduce purge automático.
+
+**Explícitamente fuera de este cierre:**
+
+- Reabrir R1/R2/R3/R4; habilitar P8; avanzar `T-CHATTERBOX-001`; publicación.
+- Interpretar este cierre como autorización de publicación.
+- Staging / commit / push / merge; modificar `.env`, jobs, artefactos, backups o cachés.
+
+**En el acto de este registro documental:** no se re-ejecutaron tests, typecheck, pipeline, Remotion, FFmpeg ni QC; no hubo staging, commit ni push. Código de producción y el test de evidencia **no** se modifican aquí (el diff del test, si está en el WT, es preexistente y se preserva).
 
 #### Cierre humano — 007C-R3 (2026-10-22)
 
@@ -385,16 +454,16 @@ EXIT_CODE=0
 | Entrega técnica (opción A) | `30cf3d3414366ab2a79d55a5714c1da6ca50d952` (padre `dbd86d2`) |
 | HEAD documental vigente | `93054b9ab6eeb7440007386f1cbcd65bef682072` (padre `30cf3d3`) |
 | Sincronización remota | `main` = `origin/main` (0 ahead / 0 behind) |
-| Working tree | dirty local **sin staging**: `tasks/active.md`, `tasks/approvals.md`, `tests/unit/single-take.test.ts` (cierre R1 + micro-tests) |
+| Working tree | dirty local **sin staging**: `tasks/active.md`, `tasks/approvals.md` (cierre documental R5); posible `tests/unit/generate-voice-file-single-take.test.ts` preexistente (evidencia R5; **no** tocado en este acto); evidencias R4 bajo `output/` gitignored |
 | Topic piloto | `data/topics/t007b-file-pilot.json` versionado en la entrega técnica |
 | WAV ref. | `/tmp/t007a-narration-concat.wav` (SHA-256 `13f80d920828554b506e543003adf98fa3a0d6b47162ee5fc369915d60a7a4c2`) |
-| Gobernanza | `accepted` opción A con reservas (**R4/R5** abiertas; **R1/R2/R3** cerradas); R1 micro-tests en `tests/unit/single-take.test.ts`; re-piloto R2 documentado bajo `T-CHATTERBOX-007C-R2`; **≠** opción B / publicación |
+| Gobernanza | `accepted` opción A (**R1–R5** cerradas); R5 = invalidación lógica de caché file; R4 job `t007c-r4-resume-legacy`; re-piloto R2 documentado bajo `T-CHATTERBOX-007C-R2`; **≠** opción B / publicación |
 
 **Histórico (antes de `93054b9`):** se afirmó «topic untracked» / «sin commit/push» respecto de la entrega. Eso describía el estado anterior a `93054b9` / a la entrega `30cf3d3`, no el estado versionado de opción A.
 
 #### Auditoría solo lectura (2026-10-22)
 
-Veredicto **APTO CON RESERVAS** (sin re-ejecución de tests en auditoría ni en el acto de aceptación). Reservas vigentes: ver tabla actualizada arriba (`tasks/active.md` alineado; **R1/R2/R3** cerradas; **R4/R5** abiertas).
+Veredicto histórico **APTO CON RESERVAS** (sin re-ejecución de tests en auditoría ni en el acto de aceptación de opción A). **Estado vigente tras cierre R5:** reservas **R1–R5** cerradas (`tasks/active.md` alineado). **≠** publicación.
 
 #### Fase correctiva de gobernanza (histórico pre-aceptación)
 
@@ -773,27 +842,258 @@ Superseded por la aceptación acotada de fase 1 (sección anterior).
 6. Pendientes manuales aún abiertos: **`conds.pt`**, auditoría **Perth**. No afirmarlos como superados. Pins declarados ≠ venv instalado.
 7. Inferencia real / job con pesos: **`proposed`**; requiere nuevo `approved` humano. P8 permanece **`blocked`**. Sin alcance de implementación autorizado.
 
+#### Propuesta de aprobación — inferencia real / job con pesos · `proposed` (2026-10-22)
+
+**Estado tras este registro:** **`proposed`**. **No** `approved`. **No** GO. **No** ejecución. Solo borrador para revisión humana.
+
+**Contexto confirmado (documental):**
+
+| Hecho | Estado |
+| --- | --- |
+| `T-CHATTERBOX-001` | `accepted` (alcance limitado: estudio + piloto local fuera de `generar-short`). Métricas técnicas completas y comparación V3/`es-es` **fuera de alcance** y **no verificadas**. |
+| `T-CHATTERBOX-002` fases 1 / 2A / 2B / 2C (H1–H4) | Aceptaciones acotadas; **sin** inferencia real en 2C. |
+| Smoke CLI MPS (2026-10-21) | Una inferencia CLI controlada documentada; **≠** job pipeline; **≠** cierre de reservas. |
+| Inferencia real / job con pesos | Requiere **nuevo** `approved` humano independiente (D017 / aceptación 2C). |
+| P8 | `blocked` |
+| Este acto | **No** autoriza publicación, integración adicional, ni ejecución de inferencia. |
+
+##### Prerrequisitos y reservas — clasificación (solo evidencia documental; sin ejecución)
+
+| Punto | Clasificación | Evidencia / nota |
+| --- | --- | --- |
+| Infra CLI Python fase 1 (`tools/chatterbox/`) | Satisfecho (documental) | `accepted` con reservas; smoke MPS exit 0 |
+| Provider Node + factory + env (2A) | Satisfecho (documental) | `accepted` con reserva técnica abierta |
+| Caché SHA-256 ref + huella pins (2B) | Satisfecho (documental) | `accepted` con limitaciones abiertas |
+| Preflight + integración offline (2C H1–H4) | Satisfecho (documental) | `accepted`; sin inferencia real |
+| Stack pinneado documentado (Python 3.11.17 / torch·torchaudio 2.6.0 / chatterbox-tts 0.1.7 / modelo `ResembleAI/Chatterbox-Multilingual-es-es`) | Satisfecho (documental) | README + smoke + continuidad 001 |
+| Variables preflight Chatterbox (`CHATTERBOX_PYTHON`, `CHATTERBOX_CKPT_DIR`, `CHATTERBOX_REF_WAV`) | Documentadas | `docs/voice.md`, `.env.example` (placeholders) |
+| Rutas reales locales de venv / ckpt / ref | **NEEDS_CLARIFICATION** | Fuera de Git; no verificadas en este acto; no leer ni modificar `.env` |
+| Presencia actual de pesos / venv / ref en disco | **NEEDS_CLARIFICATION** | No se ejecutó preflight operativo ni listado de artefactos |
+| `conds.pt` / `Conditionals.load` | Pendiente | Ausente en smoke; checklist manual abierta |
+| Auditoría watermark Perth | Pendiente | Solo política `left_intact` |
+| Pins declarados = paquetes instalados en venv | Pendiente (limitación 2B) | Huella de pins ≠ prueba de instalación |
+| Hash / manifiesto de checkpoints en disco | Pendiente (limitación 2B) | Sin hash de pesos |
+| Reserva 2A (`exists`/`size`/`mtimeMs`) | Abierta | ≠ garantía criptográfica de identidad de audio |
+| I-R1–I-R4, M-R1–M-R5 | Abiertas | Siguen vinculantes |
+| Autorización humana para ejecutar inferencia / job con pesos | **Pendiente de aprobación humana** | Esta propuesta |
+| Modo exacto (CLI vs `short:voice` vs full `generar-short`) | **NEEDS_CLARIFICATION** | Docs hablan de «inferencia real» y «job con pesos»; smoke fue solo CLI |
+| Job id / paths de salida aislados | **NEEDS_CLARIFICATION** | Patrón de jobs aislados existe (p. ej. 007C); id concreto no fijado |
+| Texto / topic / nº de segmentos a sintetizar | **NEEDS_CLARIFICATION** | No documentado para esta corrida |
+| Presupuesto RAM/disco/tiempo para un job multi-segmento | **NEEDS_CLARIFICATION** | Smoke: ~18,6 s load + ~25 s generate (texto corto); coste N× cold-start documentado sin presupuesto |
+| Si hace falta `--force` | **NEEDS_CLARIFICATION** | Smoke histórico **prohibió** `--force`; política para esta corrida no fijada |
+| Device (`auto` vs `mps` vs obligatorio MPS) | **NEEDS_CLARIFICATION** | Smoke usó MPS; `.env.example` sugiere `auto` |
+| Post-pasos (loudnorm / QC / render / escucha) | **NEEDS_CLARIFICATION** | Qué queda dentro del `approved` vs autorización adicional |
+| Modificar `.env` | **Pendiente de aprobación humana** | Prohibido sin autorización específica (AGENTS / esta propuesta) |
+| Publicación / P8 | Bloqueado | P8 `blocked`; no parte del alcance |
+
+##### Alcance mínimo propuesto (para decisión humana — no aplicado)
+
+**Objetivo propuesto:** una **ejecución aislada** de inferencia Chatterbox **con pesos locales ya presentes**, que demuestre el camino integrado post-2C **o** revalide el CLI, según lo que el humano elija abajo — **sin** cerrar reservas, **sin** publicación, **sin** P8.
+
+**Modo de ejecución (elegir uno — hoy `NEEDS_CLARIFICATION`):**
+
+| Opción | Qué implicaría (según docs) | Nota |
+| --- | --- | --- |
+| **A — CLI only** | `python3.11 tools/chatterbox/synthesize.py` con `--text` / `--ref` / `--ckpt-dir` / `--output` / `--meta-out` (patrón README + smoke 2026-10-21) | Ya hubo un smoke CLI exitoso; ¿re-corrida o distinto texto/ref? |
+| **B — pipeline voz aislado** | `VOICE_PROVIDER=chatterbox` + preflight 2C + `npm run short:voice` (o equivalente documentado) sobre **job id nuevo** | Ejercita provider Node + caché 2B + generate-voice; **sin** afirmar render/QC salvo que se autoricen aparte |
+| **C — short completo** | `generar-short` / full hasta render+QC | **Más amplio**; casi seguro requiere límites y autorizaciones adicionales explícitas |
+
+**Hasta que el humano elija A/B/C, no hay comando canónico aprobado.**
+
+###### Entorno / modelo / pesos (solo lo documentado)
+
+| Campo | Valor documentado | Estado |
+| --- | --- | --- |
+| Modelo | `ResembleAI/Chatterbox-Multilingual-es-es` (pack es-es) | Documentado |
+| Runtime | Python **3.11.17**, torch/torchaudio **2.6.0**, `chatterbox-tts==0.1.7` | Documentado (piloto/smoke) |
+| Checkpoints esperados (loader) | `ve.pt`, `t3_es_es.safetensors`, `s3gen_v3.pt`, `grapheme_mtl_merged_expanded_v1.json` | Documentados; presencia en disco = **NEEDS_CLARIFICATION** |
+| `conds.pt` | Opcional / no verificado | Pendiente; smoke OK **sin** él |
+| Device | Smoke: **mps**; config tipica: `CHATTERBOX_DEVICE=auto` | **NEEDS_CLARIFICATION** cuál exigir |
+| Rutas `CHATTERBOX_*` | Placeholders en `.env.example` | Rutas reales = **NEEDS_CLARIFICATION** (humano; sin editar `.env` aquí) |
+
+**Prohibido en la propuesta (salvo autorización explícita aparte):** `pip install`, descarga HF de pesos, crear/alterar venv, `--force` (hasta decidir), tocar jobs/artefactos/cachés existentes.
+
+###### Comprobaciones previas obligatorias (propuestas; no ejecutadas aquí)
+
+1. Confirmación humana de modo **A / B / C** y de job id / directorios de salida **nuevos** (no reutilizar `t007b-file-pilot`, jobs 007C, ni otros artefactos de referencia).
+2. Confirmación humana de que venv + ckpt dir + ref WAV **ya existen** localmente (sin instalar/descargar en el acto).
+3. Confirmación de **no** modificar `.env` sin orden específica; si hace falta config, el humano la aporta o autoriza el cambio.
+4. Confirmación de device y de si se exige MPS sin fallback (como smoke) o se admite `auto`.
+5. Confirmación de texto/topic y de si multi-segmento está permitido (coste N× cold-start).
+6. Inventario de protección: no sobrescribir `--ref`; no `--force` salvo OK; outputs en paths nuevos; no purge de caché ajena.
+7. Recordatorio vinculante: I-R1 (WAV huérfano si falla meta), I-R2 (parche MPS), limitaciones 2B, `conds.pt`/Perth **siguen abiertos** aunque la corrida tenga éxito.
+
+###### Evidencia a recoger (si se aprueba y se ejecuta después)
+
+- Exit code; `device_requested` / `device_used`; `load_seconds` / `generate_seconds`.
+- Meta: `peak_abs_before`, `samples_clamped`, `s3gen_missing_keys`, `perth_watermark`, `runtime_pin` / claims de corrida (I-R3: no mezclar con hechos de otras corridas).
+- Para modo B/C: id de job, paths de `narration.wav` / `voice-meta.json`, si la caché reutilizó o regeneró (sin afirmar procedencia verificada).
+- Constancia explícita de lo **no** validado: `conds.pt`, Perth, hash de pesos, pins==venv, reserva 2A.
+
+###### Criterios de éxito / fallo / parada (propuestos)
+
+| Resultado | Criterio propuesto |
+| --- | --- |
+| **Éxito mínimo** | Exit 0; WAV PCM16 mono 24 kHz; meta coherente con **esta** corrida; sin tocar artefactos ajenos; sin degradar a mock. |
+| **Fallo** | Preflight incompleto; ckpt/ref/python ausentes; device exigido no disponible; NaN/Inf; solape con `--ref`; timeout; degradación a mock; escritura sobre job/caché no autorizado. |
+| **Parada inmediata** | Cualquier petición de download/install; intento de publicar; cambio de P8; edición de `.env` no autorizada; `--force` no autorizado; riesgo de sobrescribir ref o jobs de evidencia. |
+
+**Éxito ≠** cierre de reservas I-R*/M-R*/2A/2B; ≠ `verified_provenance` de modelo/ref; ≠ autorización de publicación.
+
+###### Secretos y `.env`
+
+- Secretos solo en `.env` local (AGENTS).
+- **Prohibido** modificar `.env` en la ejecución salvo **autorización humana específica** en el mismo acto que apruebe la corrida.
+- No copiar rutas personales, ref WAV ni pesos al tree de Git.
+- No imprimir contenidos biométricos de la ref en docs.
+
+###### Aislamiento y protección
+
+- Job / outputs en id o directorio **nuevo** (valor concreto = **NEEDS_CLARIFICATION**).
+- No modificar ni borrar: `output/t007b-file-pilot/`, evidencias 007C, cachés de otros jobs, backups, ref vocal.
+- No purge automático de caché (precedente 007C-R5: invalidación lógica; purge manual).
+- CLI: respetar protección `--ref` / destinos existentes (README).
+
+###### Validaciones posteriores
+
+| Permitidas **solo si** el `approved` las incluye explícitamente | Requieren **autorización adicional** |
+| --- | --- |
+| Inspección de exit code / meta JSON de la corrida | Render Remotion / MP4 |
+| Escucha humana del WAV generado (fuera de Git) | QC completo / `publishEligibility` como gate de publicación |
+| `ffprobe` u otra medición **no destructiva** del WAV **nuevo** (si se autoriza) | Cambiar umbrales QC; loudnorm+QC como cierre de reservas |
+| Registro documental del resultado en `tasks/approvals.md` | Cerrar I-R*/M-R*/2A/limitaciones 2B; `conds.pt`; Perth |
+| | Publicación / YouTube / P8 |
+| | Commit / push / merge |
+| | Segunda corrida, `--force`, multi-job, daemon |
+
+###### Reservas / limitaciones que **seguirían abiertas** tras un éxito
+
+- Fase 1: **I-R1–I-R4**, **M-R1–M-R5**
+- Manuales: **`conds.pt`**, auditoría **Perth**
+- Fase 2A: reserva técnica anti-reuso
+- Fase 2B: limitaciones (pins≠venv; sin hash checkpoints; `refSha256`≠procedencia; sin `verified_provenance` de modelo/ref)
+- Exclusiones de `T-CHATTERBOX-001`: métricas completas y V3 vs `es-es` **siguen** no verificadas (fuera del alcance de 001; **no** se reabren aquí como requisito salvo que el humano las añada)
+
+###### Límites explícitos de esta propuesta
+
+- **No** publicación / upload / distribución.
+- **No** desbloquear **P8**.
+- **No** ampliar a otras fases (daemon, cambio de segmentación, nuevos providers, APIs de pago).
+- **No** cerrar reservas ni reclasificar limitaciones.
+- **No** marcar `T-CHATTERBOX-002` completo como cerrado.
+- **No** ejecutar nada hasta `approved` (o autorización expresa equivalente) sobre **este** texto.
+
+##### Condiciones sugeridas para un futuro `approved` (solo humano)
+
+1. Elegir modo **A / B / C** (o variante escrita).
+2. Fijar: job id / paths de salida, device, texto/topic, política `--force`, y si post-pasos (escucha / ffprobe / loudnorm / QC / render) entran o no.
+3. Autorizar o prohibir explícitamente cualquier cambio de `.env`.
+4. Confirmar que pesos/venv/ref ya están locales (sin download/install en el acto).
+5. Reafirmar que reservas abiertas **permanecen** abiertas y que P8 sigue `blocked`.
+
+**Siguiente tras este borrador:** esperar decisión humana. Sin implementación. Sin GO.
+
 ---
 
-### `T-CHATTERBOX-001` · transversal post-P7 / pre-P8 · `proposed`
+### `T-CHATTERBOX-001` · transversal post-P7 / pre-P8 · `accepted` (alcance limitado)
 
 #### Resumen
 
-Estudiar Chatterbox como proveedor local de voz (clonación con muestra propia) para Shorts, sin tocar Remotion ni el contrato loudnorm/QC aceptado. Esta entrega es **solo propuesta**.
+Estudiar Chatterbox como proveedor local de voz (clonación con muestra propia) para Shorts, sin tocar Remotion ni el contrato loudnorm/QC aceptado. **Aceptado** 2026-10-22 bajo el alcance limitado documentado abajo (estudio + piloto local fuera de `generar-short`).
 
 #### Estado de aprobación
 
-`proposed` — 2026-10-21 (agente, chat Cursor). Historial **conservado**; **no** pasado a `accepted` en el registro de 002.
+`accepted` (alcance limitado) — **2026-10-22** (humano, chat Cursor). Historial de `proposed` / propuesta de alcance **conservado** abajo como evidencia del cierre.
 
-##### Nota posterior (2026-10-21) — piloto / muestra (sin cerrar la tarea)
+##### Nota posterior (2026-10-21) — piloto / muestra (evidencia de estudio; histórico)
 
-Registro **separado** del estado oficial (sigue `proposed`):
+Registro **histórico** (entonces el estado oficial seguía `proposed`):
 
 - Piloto técnico fuera de Git: generación OK en Apple Silicon vía **MPS** (métricas en entorno piloto local).
 - Humano (chat Cursor): escuchó el resultado y **aceptó la muestra** para el uso previsto.
-- La planificación de integración continúa en **`T-CHATTERBOX-002`** (`proposed`); 001 no se marca `accepted` sin autorización expresa.
+- La planificación de integración continúa en **`T-CHATTERBOX-002`**; este hecho **no** autorizaba por sí solo el cierre de 001.
 
-**No autorizado (001):** marcar `accepted` automáticamente; integrar pipeline; commit/push/merge; P8; publicar; APIs de pago.
+**No autorizado entonces (ni por este cierre):** integrar pipeline adicional; commit/push/merge; P8; publicar; APIs de pago.
+
+##### Propuesta de aceptación — alcance final (2026-10-22) — **aplicada**
+
+**Histórico de la propuesta (mismo día, antes de la decisión):** pedía aceptar solo estudio + piloto; excluir métricas completas y comparación V3/`es-es`; no autorizar integración/inferencia/publicación/P8. Pendiente de humano.
+
+###### Alcance aceptado (decisión humana aplicada)
+
+Limitar `T-CHATTERBOX-001` al **estudio de Chatterbox** y al **piloto local de generación de voz fuera de `generar-short`**.
+
+| Incluido | Excluido del alcance aceptado |
+| --- | --- |
+| Estudio documental (diagnóstico voz, requisitos upstream, arquitectura A vs B, riesgos; secciones 1–5, 7) | Métricas técnicas **completas** del piloto (duración, sr, canales, tiempos load/generate/RAM, etc.) |
+| Piloto local fuera de Git / fuera de `generar-short` (generación MPS + escucha) | Comparación Multilingual **V3** frente a pack **`es-es`** |
+| Recomendación de arquitectura **A** (one-shot) como base de diseño | Integración pipeline / `VoiceProvider` / CLI·caché·preflight·QC de job |
+| | Inferencia real con pesos, trabajo posterior, daemon, APIs de pago |
+| | Publicación; desbloqueo de **P8** |
+
+**Separación vinculante:** integración con el pipeline, inferencia real con pesos y cualquier trabajo posterior corresponden a **`T-CHATTERBOX-002`** (y aprobaciones propias). **No** se atribuyen a 001.
+
+###### Avisos expresos (condiciones del alcance — vigentes)
+
+1. El **piloto local** y la **aceptación humana de la muestra** constituyen **evidencia del estudio**, pero **no equivalen por sí solos** a la **aceptación formal** de la tarea (esta última se registra en el acto humano abajo).
+2. Las **métricas técnicas completas** del piloto quedan **fuera del alcance** aceptado y **no se consideran verificadas**.
+3. La **comparación V3 frente a `es-es`** queda **fuera del alcance** aceptado y **no se considera realizada ni verificada**.
+4. Integración / inferencia real / trabajo posterior → **`T-CHATTERBOX-002`** + autorizaciones propias.
+5. Esta aceptación **no** autoriza integración adicional, inferencia real con pesos, publicación ni desbloqueo de P8.
+
+###### Hechos documentados (base del cierre)
+
+| Hecho | Fuente | Límite |
+| --- | --- | --- |
+| Estudio redactado y conservado | Secciones 1–9 de esta entrada | Diseño; no implica todos los ítems del plan §6/§8 originales |
+| Piloto fuera de Git: generación OK en Apple Silicon vía **MPS** | Nota posterior 2026-10-21; continuidad bajo 002 | Evidencia de estudio |
+| Stack / WAV Float32 citados como del piloto 001 | Nota de continuidad `T-CHATTERBOX-002` (respecto a 001) | **No** sustituyen métricas completas verificadas (excluidas) |
+| Humano **aceptó la muestra** para el uso previsto | Nota posterior 2026-10-21 | Evidencia de estudio; no sustituye sola el cierre |
+| Entregas de código/tests/pipeline Chatterbox | Secciones `T-CHATTERBOX-002` | **Fuera** de 001 |
+
+###### Criterios originales (§8) — clasificación del alcance aceptado
+
+| Criterio original | Clasificación | Estado de verificación |
+| --- | --- | --- |
+| WAV local sin pasar por `generar-short` | **Dentro** del alcance aceptado | Documentado como hecho de piloto (evidencia de estudio); formalizado en el acto humano de aceptación |
+| Escucha humana (muestra) | **Dentro** (como evidencia de estudio) | Muestra aceptada 2026-10-21 |
+| Métricas técnicas completas | **Fuera** del alcance aceptado | **No verificadas** (no se exigen bajo este alcance) |
+| Comparación V3 vs `es-es` | **Fuera** del alcance aceptado | **No realizada ni verificada** |
+| Go/no-go formal | **Registrado en la decisión humana de aceptación** (abajo) | Cerrado en este acto |
+| Bloque «Integración futura» §8 | **Fuera** → `T-CHATTERBOX-002` | No aplica a 001; requiere autorizaciones propias |
+
+#### Aceptación humana — alcance limitado (2026-10-22)
+
+**Decisión humana (chat Cursor):** aprobar formalmente `T-CHATTERBOX-001` como **estudio** y **piloto local** de Chatterbox, con el alcance y las exclusiones documentadas en esta entrada (propuesta de alcance final 2026-10-22).
+
+**Estado de gobernanza registrado:** **`accepted` (alcance limitado)**.
+
+**Aceptado por:** humano (chat Cursor: formalización explícita 2026-10-22).
+
+**Alcance aceptado:** estudio documental + piloto local de generación de voz **fuera** de `generar-short` (generación MPS + escucha / muestra).
+
+**Go/no-go formal:**
+
+| Decisión | Contenido |
+| --- | --- |
+| **GO** | Cerrar `T-CHATTERBOX-001` bajo el alcance limitado (estudio + piloto local fuera de `generar-short`). |
+| **NO autorizado por este GO** | Integración adicional al pipeline; inferencia real con pesos; publicación; desbloqueo de **P8**. Esos actos requieren tarea/`approved` propios (p. ej. continuidad en `T-CHATTERBOX-002`). |
+
+**Exclusiones aceptadas expresamente (no verificadas / fuera de alcance):**
+
+- Métricas técnicas **completas** del piloto — **fuera de alcance** y **no verificadas**.
+- Comparación Multilingual **V3** frente a pack **`es-es`** — **fuera de alcance** y **no realizada ni verificada**.
+
+**Explícitamente no autorizado por esta aceptación:**
+
+- Integración adicional (pipeline / `VoiceProvider` / CLI·caché·preflight·QC de job más allá de lo ya gobernado en `T-CHATTERBOX-002`).
+- Inferencia real con pesos.
+- Publicación / upload / distribución.
+- Desbloqueo de **P8**.
+- Commit / push / merge en este acto documental.
+- Interpretar la aceptación de la muestra (2026-10-21) como sustituto automático del cierre (el cierre es este acto).
+
+**En el acto de este registro documental:** no se ejecutaron tests, typecheck, pipeline, Remotion, FFmpeg, ffprobe ni QC; no hubo staging, commit ni push; no se modificó código de producción.
 
 #### Diagnóstico Git (2026-10-21)
 

@@ -146,12 +146,72 @@ python3.11 tools/chatterbox/synthesize.py ... --force
 
 Errores (ref ausente, ckpt incompleto, solape con ref, NaN, etc.) → exit ≠ 0. **No** degrada a audio mock.
 
+## Supervisor externo (modo A · one-shot)
+
+`supervise_oneshot.py` envuelve **una** ejecución de `synthesize.py` con límites de pared y RSS. No forma parte del pipeline Node (`short:voice` / Remotion / render / QC). Solo stdlib + herramientas del SO (`ps`).
+
+### Qué hace
+
+- Lanza el hijo en un **nuevo process group** (`start_new_session`).
+- Timeout global por defecto **300 s** (toda la corrida; no por segmento).
+- Muestrea el RSS del proceso líder; techo por defecto **16 GiB**.
+- Al timeout o techo RSS: **SIGTERM** al grupo → gracia **2 s** → **SIGKILL** si sigue vivo.
+- La misma secuencia aplica si el supervisor recibe **SIGINT/SIGTERM**.
+- **Nunca** añade `--force`. Si `--output`, `--meta-out` o `--run-log` ya existen → aborta **sin** spawn.
+- Drena stdout/stderr en hilos con tope de bytes retenidos (evita bloqueo por pipe llena).
+- Escribe un JSON de corrida (`--run-log`) con duración, pico RSS, motivo, exit/señal y `text_chars` — **sin** el texto completo.
+- **No** borra archivos parciales ni limpia directorios existentes.
+
+### RSS = aproximación
+
+El tope usa RSS del proceso líder (p. ej. `ps -o rss=` en Darwin, en KB → bytes). Es una **aproximación** de memoria residente del PID — **no** un límite exacto de memoria unificada Apple Silicon ni de asignaciones GPU/MPS.
+
+### Ejemplo (paths locales; no ejecutar inferencia sin autorización)
+
+```bash
+python3.11 tools/chatterbox/supervise_oneshot.py \
+  --python /path/to/chatterbox-venv/bin/python3.11 \
+  --script tools/chatterbox/synthesize.py \
+  --text-file /path/to/prompt.txt \
+  --ref /path/to/ref.wav \
+  --ckpt-dir /path/to/es-es-weights \
+  --output /path/to/exclusive-new/out.wav \
+  --meta-out /path/to/exclusive-new/out.meta.json \
+  --run-log /path/to/exclusive-new/supervisor.json \
+  --device mps
+```
+
+### Exit codes del supervisor
+
+| Code | Significado |
+| --- | --- |
+| `0` | Hijo exit 0, sin kill por límite |
+| `1` | Hijo terminó con exit ≠ 0 (sin kill del supervisor) |
+| `2` | Error del supervisor (p. ej. spawn) |
+| `3` | Abort pre-spawn (destino existente, texto vacío, …) |
+| `4` | Timeout |
+| `5` | Techo RSS |
+| `6` | Interrupción del supervisor (SIGINT/SIGTERM) |
+
+### Limitaciones
+
+- No instala deps, no descarga pesos, no lee `.env`, no sustituye el preflight del CLI.
+- No valida inferencia real ni cierra reservas de `T-CHATTERBOX-002`.
+- No gestiona multi-segmento / modo B–C del pipeline.
+- Tras SIGKILL pueden quedar tempfiles del CLI; **no** hay purge automático.
+
 ## Pruebas unitarias (sin modelos)
 
 Comando verificado (ejecutar desde este directorio; **no** existe el paquete `tools.chatterbox`):
 
 ```bash
 cd tools/chatterbox && python3.11 -m unittest test_synthesize -v
+```
+
+Supervisor (solo procesos ficticios; sin torch / pesos / audio):
+
+```bash
+cd tools/chatterbox && python3.11 -m unittest test_supervise_oneshot -v
 ```
 
 ### Qué cubren estos tests
@@ -163,6 +223,7 @@ cd tools/chatterbox && python3.11 -m unittest test_synthesize -v
 - Restauración del patch sintético de atributos (sin PyTorch)
 - Rangos numéricos; CLI `--print-pins` / args faltantes / NaN en flags
 - Tokens de README / pins
+- Supervisor: éxito fake, rechazo de destinos existentes, timeout, RSS simulado, kill de process group, interrupción del supervisor, ausencia de texto completo en el log
 
 ### Qué **no** demuestran
 
